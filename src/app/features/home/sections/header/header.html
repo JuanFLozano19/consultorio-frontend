@@ -1,0 +1,17 @@
+<header class="header">
+  <div class="wrap nav">
+    <a class="brand" href="#inicio" [attr.aria-label]="doctor.name + ', inicio'">
+      <app-logo [size]="44" class="brand__mark" />
+      <span>
+        <span class="brand__name">{{ doctor.name }}</span>
+        <span class="brand__sub">{{ doctor.title.toUpperCase() }}</span>
+      </span>
+    </a>
+    <nav class="links" aria-label="Secciones">
+      @for (l of links; track l.href) {
+        <a [href]="l.href">{{ l.label }}</a>
+      }
+    </nav>
+    <a class="btn nav__cta" href="#reserva">Reserva tu consulta</a>
+  </div>
+</header>

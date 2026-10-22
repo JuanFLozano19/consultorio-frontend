@@ -1,0 +1,21 @@
+.services {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+}
+.svc {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 20px;
+  padding: 32px 0;
+  border-bottom: 1px solid var(--line);
+  &:nth-child(odd) { padding-right: 40px; border-right: 1px solid var(--line); }
+  &:nth-child(even) { padding-left: 40px; }
+}
+.svc__icon { color: var(--slate); }
+h3 { font-size: 30px; margin-bottom: 8px; }
+p { color: var(--muted); }
+@media (max-width: 760px) {
+  .services { grid-template-columns: 1fr; }
+  .svc, .svc:nth-child(odd), .svc:nth-child(even) { padding: 26px 0; border-right: 0; }
+}

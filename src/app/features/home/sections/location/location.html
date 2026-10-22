@@ -1,0 +1,21 @@
+<section id="ubicacion" class="band">
+  <div class="wrap loc">
+    <div>
+      <p class="eyebrow">Ubicación</p>
+      <address class="addr">{{ address.street }}<br />{{ address.floor }}</address>
+      <p class="addr__sub">{{ address.building }}@if (address.city) { · {{ address.city }} }</p>
+      <a class="btn btn--ghost loc__btn" [href]="mapsHref" target="_blank" rel="noopener">Ver en Google Maps</a>
+    </div>
+    <div>
+      <p class="eyebrow loc__label">Horario de atención</p>
+      <dl class="hours">
+        @for (h of hours; track h.days) {
+          <div>
+            <dt>{{ h.days }}</dt>
+            <dd>{{ h.time }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+  </div>
+</section>

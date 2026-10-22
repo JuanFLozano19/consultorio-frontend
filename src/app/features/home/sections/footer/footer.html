@@ -1,0 +1,18 @@
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <app-logo [size]="44" />
+      <span>
+        <span class="footer__name">{{ doctor.name }}</span>
+        <span class="footer__sub">{{ doctor.title.toUpperCase() }}</span>
+      </span>
+    </div>
+    <p>
+      Registro médico {{ doctor.medicalRegistry }} · {{ address.street }}, {{ address.floor.toLowerCase() }},
+      {{ address.building }}
+    </p>
+    <p class="footer__copy">
+      © {{ year }} {{ doctor.name }} · <a routerLink="/admin">Acceso consultorio</a>
+    </p>
+  </div>
+</footer>

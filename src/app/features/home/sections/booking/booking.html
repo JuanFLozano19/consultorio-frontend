@@ -1,0 +1,122 @@
+<section id="reserva" class="band band--sand">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Reserva tu consulta</p>
+      <h2>Agendar es fácil</h2>
+    </div>
+
+    <ol class="steps">
+      @for (s of pasos; track s.title; let i = $index) {
+        <li class="step">
+          <span class="step__n">{{ i + 1 }}</span>
+          <h3>{{ s.title }}</h3>
+          <p>{{ s.text }}</p>
+        </li>
+      }
+    </ol>
+
+    <div class="booking">
+      <div class="card">
+        @if (estado() === 'enviado') {
+          <div class="done" role="status">
+            <h3>Solicitud recibida</h3>
+            <p>{{ mensaje() }}</p>
+            <button type="button" class="btn btn--ghost" (click)="otraSolicitud()">Enviar otra solicitud</button>
+          </div>
+        } @else {
+          <form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+            <div class="grid">
+              <div class="field field--full">
+                <label for="nombrePaciente">Nombre completo</label>
+                <input id="nombrePaciente" formControlName="nombrePaciente" autocomplete="name" />
+                @if (invalido('nombrePaciente')) { <small class="err">Escribe tu nombre completo.</small> }
+              </div>
+
+              <div class="field">
+                <label for="documento">Documento de identidad</label>
+                <input id="documento" formControlName="documento" inputmode="numeric" />
+                @if (invalido('documento')) { <small class="err">Solo números o letras, sin puntos.</small> }
+              </div>
+
+              <div class="field">
+                <label for="telefono">Celular / WhatsApp</label>
+                <input id="telefono" formControlName="telefono" type="tel" autocomplete="tel" />
+                @if (invalido('telefono')) { <small class="err">Escribe un número válido.</small> }
+              </div>
+
+              <div class="field">
+                <label for="correo">Correo <span class="opt">(opcional)</span></label>
+                <input id="correo" formControlName="correo" type="email" autocomplete="email" />
+                @if (invalido('correo')) { <small class="err">Revisa el correo.</small> }
+              </div>
+
+              <div class="field">
+                <label for="servicioId">Servicio</label>
+                <select id="servicioId" formControlName="servicioId">
+                  <option value="">No estoy seguro</option>
+                  @for (s of servicios(); track s.id) {
+                    <option [value]="s.id">{{ s.nombre }}</option>
+                  }
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="fechaPreferida">Fecha preferida</label>
+                <input id="fechaPreferida" formControlName="fechaPreferida" type="date" [min]="hoy" [max]="maxFecha" />
+                @if (invalido('fechaPreferida')) {
+                  <small class="err">
+                    @if (form.controls.fechaPreferida.hasError('domingo')) { No atendemos los domingos. }
+                    @else if (form.controls.fechaPreferida.hasError('pasada')) { Elige hoy o una fecha futura. }
+                    @else if (form.controls.fechaPreferida.hasError('muyLejana')) { Máximo 90 días de anticipación. }
+                    @else { Elige una fecha. }
+                  </small>
+                }
+              </div>
+
+              <fieldset class="field franja">
+                <legend>Franja</legend>
+                <label class="pill"><input type="radio" formControlName="franja" value="MANANA" /> Mañana</label>
+                <label class="pill"><input type="radio" formControlName="franja" value="TARDE" /> Tarde</label>
+              </fieldset>
+
+              <div class="field field--full">
+                <label for="motivo">Motivo de consulta <span class="opt">(opcional)</span></label>
+                <textarea id="motivo" formControlName="motivo" rows="3" maxlength="500"></textarea>
+              </div>
+
+              <label class="consent field--full">
+                <input type="checkbox" formControlName="aceptaTratamientoDatos" />
+                <span>
+                  Autorizo el tratamiento de mis datos personales y de salud para gestionar mi cita, de acuerdo con la
+                  Ley 1581 de 2012.
+                </span>
+              </label>
+              @if (invalido('aceptaTratamientoDatos')) {
+                <small class="err field--full">Debes aceptar para poder enviar la solicitud.</small>
+              }
+            </div>
+
+            @if (estado() === 'error') {
+              <p class="alert" role="alert">{{ mensaje() }}</p>
+            }
+
+            <button type="submit" class="btn submit" [disabled]="estado() === 'enviando'">
+              {{ estado() === 'enviando' ? 'Enviando…' : 'Solicitar cita' }}
+            </button>
+          </form>
+        }
+      </div>
+
+      <aside class="alt">
+        <h3>¿Prefieres escribirnos?</h3>
+        <p>Por WhatsApp te respondemos con los horarios disponibles.</p>
+        @if (hayWhatsapp) {
+          <a class="btn" [href]="whatsappHref" target="_blank" rel="noopener">
+            <app-icon name="whatsapp" [size]="22" /> Escribir por WhatsApp
+          </a>
+        }
+        <p class="alt__num">WhatsApp: <b>{{ whatsappDisplay }}</b></p>
+      </aside>
+    </div>
+  </div>
+</section>

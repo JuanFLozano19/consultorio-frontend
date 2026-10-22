@@ -1,0 +1,37 @@
+<section id="sobre-mi" class="band">
+  <div class="wrap about">
+    @if (doctor.photo) {
+      <img class="photo" [src]="doctor.photo" [alt]="'Foto de ' + doctor.name" width="480" height="600" loading="lazy" />
+    } @else {
+      <div class="photo photo--empty">[FOTO DEL DR. JEISON CON BATA]</div>
+    }
+    <div class="about__body">
+      <p class="eyebrow">Conoce a tu médico</p>
+      <h2>{{ doctor.fullName }}</h2>
+      <div class="bio">
+        @for (p of doctor.bio; track $index) {
+          <p>{{ p }}</p>
+        }
+      </div>
+      <dl class="facts">
+        @for (e of doctor.education; track e.label) {
+          <div class="fact">
+            <dt>{{ e.label }}</dt>
+            <dd>
+              <span class="fact__degree">{{ e.degree }}</span>
+              <span class="fact__school">{{ e.school }}</span>
+            </dd>
+          </div>
+        }
+        <div class="fact">
+          <dt>Registro médico</dt>
+          <dd><span class="fact__degree">{{ doctor.medicalRegistry }}</span></dd>
+        </div>
+        <div class="fact">
+          <dt>Atención</dt>
+          <dd><span class="fact__degree">Consulta particular</span></dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+</section>
