@@ -27,6 +27,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
           <path d="M7 33l2.2-6.5A13.3 13.3 0 1 1 13.5 31z" />
           <path d="M15 15.8c.5 3.4 4.2 7 7.5 7.5l1.7-2 3 1.5c-.3 1.7-1.7 3-3.3 3-6-.3-11-5.3-11.3-11.3 0-1.7 1.3-3 3-3.3l1.5 3z" fill="currentColor" stroke="none" />
         }
+        @case ('instagram') {
+          <rect x="7" y="7" width="26" height="26" rx="8" />
+          <circle cx="20" cy="20" r="6" />
+          <circle cx="27.5" cy="12.5" r="1.4" fill="currentColor" stroke="none" />
+        }
         @default {
           <path d="M20 36s-11-10-11-18a11 11 0 0 1 22 0c0 8-11 18-11 18z" />
           <circle cx="20" cy="18" r="4" />

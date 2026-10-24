@@ -68,7 +68,7 @@ src/
 ## Pendientes de contenido
 
 - [ ] Nombre completo del doctor
-- [ ] WhatsApp laboral y horario
+- [ ] Horario de atención
 - [ ] Foto con bata (`public/images/`)
 
 ## Despliegue (Vercel)

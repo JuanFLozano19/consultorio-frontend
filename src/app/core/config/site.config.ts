@@ -31,8 +31,10 @@ export const SITE = {
   },
   contact: {
     /** WhatsApp laboral con indicativo 57, solo dígitos. Ej: '573001234567'. */
-    whatsapp: '',
+    whatsapp: '573126885199',
     whatsappMessage: 'Hola Dr. Patiño, quiero reservar una consulta.',
+    /** Usuario de Instagram sin @. */
+    instagram: 'dr.jeisonpatino',
     address: {
       street: 'Carrera 18 # 80-74',
       floor: 'Piso 5',
@@ -43,11 +45,11 @@ export const SITE = {
     hours: [
       { days: 'Lunes a viernes', time: '[HORARIO]' },
       { days: 'Sábados', time: '[HORARIO]' },
-      { days: 'Domingos y festivos', time: 'Cerrado' },
+      { days: 'Domingos y festivos', time: 'Sin atención' },
     ],
   },
   activity: {
-    lead: 'Con formación de máster en actividad física y salud, uso el ejercicio como parte del tratamiento. En tu plan defino el tipo, la intensidad, la frecuencia y el número de repeticiones, según lo que encuentre en tu consulta.',
+    lead: 'Con máster en Actividad Física y Salud, hago uso del ejercicio como parte del tratamiento. En tu plan defino el tipo, la intensidad, la frecuencia y el número de repeticiones, según lo que encuentre en tu consulta.',
     prescription: ['Tipo', 'Intensidad', 'Frecuencia', 'Número de repeticiones'],
     audiences: [
       { title: 'Si quieres empezar a hacer ejercicio', text: 'Previniendo ciertas lesiones.' },
@@ -73,6 +75,10 @@ export function whatsappHref(): string {
 export function whatsappDisplay(): string {
   const n = SITE.contact.whatsapp;
   return n ? '+' + n.replace(/^57(\d{3})(\d{3})(\d{4})$/, '57 $1 $2 $3') : '[WHATSAPP]';
+}
+
+export function instagramHref(): string {
+  return SITE.contact.instagram ? `https://www.instagram.com/${SITE.contact.instagram}/` : '';
 }
 
 export function mapsHref(): string {

@@ -1,4 +1,4 @@
-export type IconName = 'stethoscope' | 'pulse' | 'heart' | 'document' | 'whatsapp' | 'pin';
+export type IconName = 'stethoscope' | 'pulse' | 'heart' | 'document' | 'whatsapp' | 'instagram' | 'pin';
 
 export interface Servicio {
   id: number;

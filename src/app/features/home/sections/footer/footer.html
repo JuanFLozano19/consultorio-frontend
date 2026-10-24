@@ -12,6 +12,11 @@
       {{ address.floor.toLowerCase() }},
       {{ address.building }}
     </p>
+    @if (instagram) {
+      <a class="footer__ig" [href]="instagramHref" target="_blank" rel="noopener" [attr.aria-label]="'Instagram @' + instagram">
+        <app-icon name="instagram" [size]="26" /> &#64;{{ instagram }}
+      </a>
+    }
     <p class="footer__copy">
       © {{ year }} {{ doctor.name }}
       @if (enLinea) {

@@ -16,6 +16,19 @@
           </div>
         }
       </dl>
+      <p class="eyebrow loc__label loc__label--contact">Contacto</p>
+      <ul class="contact">
+        @if (whatsappHref.startsWith('http')) {
+          <li>
+            <a [href]="whatsappHref" target="_blank" rel="noopener"><app-icon name="whatsapp" [size]="24" /> {{ whatsappDisplay }}</a>
+          </li>
+        }
+        @if (instagram) {
+          <li>
+            <a [href]="instagramHref" target="_blank" rel="noopener"><app-icon name="instagram" [size]="24" /> &#64;{{ instagram }}</a>
+          </li>
+        }
+      </ul>
     </div>
   </div>
 </section>
