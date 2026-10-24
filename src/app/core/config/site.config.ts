@@ -43,8 +43,8 @@ export const SITE = {
       mapsQuery: 'Habital Medical Center Carrera 18 80-74',
     },
     hours: [
-      { days: 'Lunes a viernes', time: '[HORARIO]' },
-      { days: 'Sábados', time: '[HORARIO]' },
+      { days: 'Lunes a viernes', time: '3:00 p. m. – 7:00 p. m.' },
+      { days: 'Sábados', time: '9:00 a. m. – 12:00 m.' },
       { days: 'Domingos y festivos', time: 'Sin atención' },
     ],
   },

@@ -68,7 +68,6 @@ src/
 ## Pendientes de contenido
 
 - [ ] Nombre completo del doctor
-- [ ] Horario de atención
 
 ## Despliegue (Vercel)
 
