@@ -69,7 +69,6 @@ src/
 
 - [ ] Nombre completo del doctor
 - [ ] Horario de atención
-- [ ] Foto con bata (`public/images/`)
 
 ## Despliegue (Vercel)
 

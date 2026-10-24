@@ -24,7 +24,7 @@ export const SITE = {
       { label: 'Posgrado', degree: 'Máster en Actividad Física y Salud', school: 'Fundación Universitaria Iberoamericana' },
     ],
     /** Ruta dentro de /public, ej. 'images/dr-jeison.jpg'. Vacío = recuadro de espera. */
-    photo: '',
+    photo: 'images/dr-jeison.jpg',
     bio: [
       'Soy médico y cirujano general y Máster en Actividad Física y Salud. En mi consulta me tomo el tiempo de escucharte y explicarte con claridad cada síntoma, la posible patología, la forma de manejo, el tratamiento y las prevenciones.',
     ],

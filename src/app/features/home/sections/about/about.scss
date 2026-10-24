@@ -7,10 +7,12 @@
 .about__body { min-width: 0; }
 .photo {
   width: 100%;
+  height: auto;
   aspect-ratio: 4 / 5;
   max-width: 100%;
   border-radius: 220px 220px 14px 14px;
   object-fit: cover;
+  object-position: 50% 20%;
   background: var(--sand);
 }
 .photo--empty {
