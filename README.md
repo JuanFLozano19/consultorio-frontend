@@ -1,13 +1,23 @@
 # Consultorio Dr. Jeison Patiño · Frontend
 
-Sitio web público y panel administrativo del consultorio. Hecho con **Angular 22** (componentes standalone, signals, zoneless).
-Consume la API del repositorio `consultorio-backend`.
+Sitio web del consultorio. Hecho con **Angular 22** (componentes standalone, signals, zoneless).
+
+## Dos modos de funcionamiento
+
+El interruptor está en `src/app/core/config/site.config.ts` → `features.citasEnLinea`.
+
+| `citasEnLinea`       | Cómo funciona                                                                                       | Necesita backend / BD |
+| -------------------- | --------------------------------------------------------------------------------------------------- | --------------------- |
+| `false` **(actual)** | Web estática. El formulario arma el mensaje y abre WhatsApp. Servicios desde `site.config.ts`. Sin `/admin`. | No                    |
+| `true`               | El formulario guarda la cita en `consultorio-backend`, los servicios vienen de la API y se activa `/admin`. | Sí                    |
+
+Para activar el modo en línea: publicar el backend (ver su README), poner su URL en
+`src/environments/environment.ts` y cambiar `citasEnLinea` a `true`.
 
 ## Requisitos
 
 - Node.js 24 (o 22.22.3+): `nvm use` lee el archivo `.nvmrc`
-- La API corriendo en `http://localhost:8080` para el formulario y el panel
-  (sin API la web igual carga, con la lista de servicios local)
+- Solo en modo en línea: la API corriendo en `http://localhost:8080`
 
 ## Desarrollo
 
@@ -42,8 +52,8 @@ src/
 | Ruta           | Qué es                                            |
 | -------------- | ------------------------------------------------- |
 | `/`            | Web pública con formulario de cita                |
-| `/admin/login` | Ingreso del doctor o la secretaria                |
-| `/admin`       | Solicitudes: confirmar, cancelar, marcar atendida |
+| `/admin/login` | Ingreso del doctor o la secretaria (solo en línea) |
+| `/admin`       | Solicitudes: confirmar, cancelar, marcar atendida (solo en línea) |
 
 ## Cambios frecuentes
 
@@ -51,7 +61,7 @@ src/
 | --------------------------------- | ----------------------------------------------- |
 | WhatsApp, horario, dirección      | `core/config/site.config.ts` → `contact`        |
 | Nombre, estudios, biografía, foto | `core/config/site.config.ts` → `doctor`         |
-| Servicios                         | Base de datos (tabla `servicios`) vía la API    |
+| Servicios                         | `core/config/site.config.ts` → `servicios` (en línea: tabla `servicios`) |
 | Colores y tipografía              | `src/styles.scss`                               |
 | URL de la API en producción       | `src/environments/environment.ts`               |
 
@@ -60,14 +70,13 @@ src/
 - [ ] Nombre completo del doctor
 - [ ] WhatsApp laboral y horario
 - [ ] Foto con bata (`public/images/`)
-- [ ] URL real de la API en `environment.ts`
 
 ## Despliegue (Vercel)
 
 1. Importar el repositorio en [vercel.com](https://vercel.com). `vercel.json` ya trae el comando de build,
    la carpeta de salida y la regla para que `/admin` funcione al recargar.
 2. Cada push a `main` publica; cada Pull Request genera una vista previa.
-3. Agregar el dominio del frontend en `CORS_ALLOWED_ORIGINS` del backend.
+3. Solo en modo en línea: agregar el dominio del frontend en `CORS_ALLOWED_ORIGINS` del backend.
 
 ## Ramas y flujo de trabajo
 

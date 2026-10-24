@@ -14,6 +14,6 @@ import { Icon } from '../../../../shared/components/icon/icon';
 export class Services {
   private readonly servicioService = inject(ServicioService);
   protected readonly servicios = toSignal(this.servicioService.listarActivos(), {
-    initialValue: SITE.fallbackServices,
+    initialValue: SITE.servicios,
   });
 }

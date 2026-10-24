@@ -1,12 +1,19 @@
 /**
  * Datos fijos del consultorio que muestra la web.
- * Para cambiar teléfono, horario o textos, edite este archivo.
- * Los servicios vienen de la API (tabla `servicios`); la lista de aquí solo
- * se usa si la API no responde.
+ * Para cambiar teléfono, horario, servicios o textos, edite este archivo.
  */
 import { Servicio } from '../models/servicio.model';
 
 export const SITE = {
+  features: {
+    /**
+     * false (actual): web 100 % estática. El formulario arma el mensaje y abre WhatsApp;
+     *   los servicios salen de `servicios` de abajo; no hay /admin ni base de datos.
+     * true: el formulario guarda la cita en consultorio-backend, los servicios se leen
+     *   de la API y se activa el panel /admin. Requiere la API publicada (ver README).
+     */
+    citasEnLinea: false,
+  },
   doctor: {
     name: 'Dr. Jeison Patiño',
     fullName: '[NOMBRE COMPLETO]',
@@ -49,7 +56,8 @@ export const SITE = {
       { title: 'Si eres adulto mayor', text: 'Para mantener fuerza, equilibrio y masa muscular.' },
     ],
   },
-  fallbackServices: [
+  /** Servicios de la web. Con citasEnLinea=true se leen de la API y esta lista queda de respaldo. */
+  servicios: [
     { id: 1, nombre: 'Consulta médica general', descripcion: 'Valoración completa, diagnóstico y tratamiento para adultos y niños.', icono: 'stethoscope', orden: 1, activo: true },
     { id: 2, nombre: 'Asesoría en actividad física', descripcion: 'Plan de ejercicio a tu medida: tipo, intensidad, frecuencia y número de repeticiones.', icono: 'pulse', orden: 2, activo: true },
     { id: 3, nombre: 'Chequeo preventivo', descripcion: 'Control de presión, peso y factores de riesgo antes de que aparezcan los síntomas.', icono: 'heart', orden: 3, activo: true },

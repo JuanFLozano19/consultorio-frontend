@@ -14,4 +14,5 @@ export class Footer {
   protected readonly doctor = SITE.doctor;
   protected readonly address = SITE.contact.address;
   protected readonly year = new Date().getFullYear();
+  protected readonly enLinea = SITE.features.citasEnLinea;
 }

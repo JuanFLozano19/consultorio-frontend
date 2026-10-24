@@ -10,8 +10,9 @@ export class ServicioService {
   private readonly http = inject(HttpClient);
   private readonly url = `${environment.apiUrl}/servicios`;
 
-  /** Servicios activos. Si la API no responde, usa la lista local para que la web no quede vacía. */
+  /** Servicios activos: de la API si está activa, si no (o si falla) la lista de site.config. */
   listarActivos(): Observable<Servicio[]> {
-    return this.http.get<Servicio[]>(this.url).pipe(catchError(() => of(SITE.fallbackServices)));
+    if (!SITE.features.citasEnLinea) return of(SITE.servicios);
+    return this.http.get<Servicio[]>(this.url).pipe(catchError(() => of(SITE.servicios)));
   }
 }
