@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dr-jeison-patino.vercel.app/sitemap.xml

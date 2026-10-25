@@ -59,7 +59,10 @@ src/
 
 | Quiero cambiar…                   | Dónde                                           |
 | --------------------------------- | ----------------------------------------------- |
-| WhatsApp, horario, dirección      | `core/config/site.config.ts` → `contact`        |
+| WhatsApp, Instagram, dirección    | `core/config/site.config.ts` → `contact`        |
+| Horario (tabla, "Abierto ahora" y días para reservar) | `core/config/site.config.ts` → `contact.horario` (festivos de Colombia automáticos) |
+| Preguntas frecuentes              | `core/config/site.config.ts` → `faq`            |
+| URL publicada (vista previa y Google) | `site.config.ts` → `siteUrl` y `src/index.html` |
 | Nombre, estudios, biografía, foto | `core/config/site.config.ts` → `doctor`         |
 | Servicios                         | `core/config/site.config.ts` → `servicios` (en línea: tabla `servicios`) |
 | Colores y tipografía              | `src/styles.scss`                               |
@@ -67,7 +70,6 @@ src/
 
 ## Pendientes de contenido
 
-- [ ] Nombre completo del doctor
 
 ## Despliegue (Vercel)
 

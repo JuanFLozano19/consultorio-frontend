@@ -2,7 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Cita, EstadoCita, Pagina, SolicitarCitaRequest, SolicitudCitaResponse } from '../models/cita.model';
+import {
+  Cita,
+  EstadoCita,
+  Pagina,
+  SolicitarCitaRequest,
+  SolicitudCitaResponse,
+} from '../models/cita.model';
 
 @Injectable({ providedIn: 'root' })
 export class CitaService {

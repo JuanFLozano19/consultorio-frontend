@@ -1,19 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
-import { SITE, whatsappDisplay, whatsappHref } from '../../../../core/config/site.config';
-import { Franja } from '../../../../core/models/cita.model';
+import { DiaAtencion, ahoraEnBogota, proximosDias } from '../../../../core/config/horario';
+import { SITE } from '../../../../core/config/site.config';
 import { mensajeDeError } from '../../../../core/services/api-error';
 import { CitaService } from '../../../../core/services/cita.service';
 import { ServicioService } from '../../../../core/services/servicio.service';
 import { Icon } from '../../../../shared/components/icon/icon';
-import { fechaCitaValidator, isoLocal, sumarDias } from './fechas';
 import { enlaceWhatsapp, mensajeCita } from './whatsapp-mensaje';
 
 type EstadoEnvio = 'editando' | 'enviando' | 'enviado' | 'error';
 
 /** Validadores que solo aplican cuando la cita se guarda en el backend. */
-const soloEnLinea = (validators: ValidatorFn[]): ValidatorFn[] => (SITE.features.citasEnLinea ? validators : []);
+const soloEnLinea = (validators: ValidatorFn[]): ValidatorFn[] =>
+  SITE.features.citasEnLinea ? validators : [];
 
 @Component({
   selector: 'app-booking',
@@ -26,43 +26,36 @@ export class Booking {
   private readonly fb = inject(FormBuilder);
   private readonly citaService = inject(CitaService);
 
-  /** false = el formulario abre WhatsApp; true = guarda la cita en la API. */
+  /** false = la solicitud se envía por WhatsApp; true = se guarda en la API. */
   protected readonly enLinea = SITE.features.citasEnLinea;
-  protected readonly servicios = toSignal(inject(ServicioService).listarActivos(), { initialValue: SITE.servicios });
-  protected readonly whatsappHref = whatsappHref();
-  protected readonly whatsappDisplay = whatsappDisplay();
-  protected readonly hayWhatsapp = !!SITE.contact.whatsapp;
-  protected readonly hoy = isoLocal(new Date());
-  protected readonly maxFecha = isoLocal(sumarDias(new Date(), 90));
+  protected readonly servicios = toSignal(inject(ServicioService).listarActivos(), {
+    initialValue: SITE.servicios,
+  });
+  /** Días con atención (sin domingos ni festivos), según el horario de site.config. */
+  protected readonly dias: DiaAtencion[] = proximosDias(ahoraEnBogota());
 
   protected readonly estado = signal<EstadoEnvio>('editando');
   protected readonly mensaje = signal('');
-  /** En modo WhatsApp: enlace ya armado, por si el navegador bloquea la ventana nueva. */
+  /** Enlace ya armado, por si el navegador bloquea la ventana nueva. */
   protected readonly enlaceGenerado = signal('');
 
-  protected readonly pasos = this.enLinea
-    ? [
-        { title: 'Envía tu solicitud', text: 'Con el formulario o por WhatsApp, con el día y la franja que prefieres.' },
-        { title: 'Confirmamos tu hora', text: 'Te contactamos con los horarios disponibles y separamos tu cita.' },
-        { title: 'Llega al piso 5', text: 'Edificio Habital Medical Center. Llega 10 minutos antes.' },
-      ]
-    : [
-        { title: 'Llena tus datos', text: 'Elige el servicio, el día y la franja que prefieres.' },
-        { title: 'Envía por WhatsApp', text: 'Se abre WhatsApp con tu mensaje listo. Solo dale enviar.' },
-        { title: 'Confirmamos tu hora', text: 'Te respondemos con los horarios disponibles y separamos tu cita.' },
-      ];
-
   protected readonly form = this.fb.nonNullable.group({
+    servicioId: [''],
+    fechaPreferida: ['', Validators.required],
     nombrePaciente: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(150)]],
+    motivo: ['', Validators.maxLength(500)],
     documento: ['', soloEnLinea([Validators.required, Validators.pattern(/^[0-9A-Za-z]{5,20}$/)])],
     telefono: ['', soloEnLinea([Validators.required, Validators.pattern(/^\+?[0-9 ]{7,20}$/)])],
     correo: ['', [Validators.email, Validators.maxLength(255)]],
-    servicioId: [''],
-    fechaPreferida: ['', [Validators.required, fechaCitaValidator]],
-    franja: ['MANANA' as Franja, Validators.required],
-    motivo: ['', Validators.maxLength(500)],
     aceptaTratamientoDatos: [false, soloEnLinea([Validators.requiredTrue])],
   });
+
+  private readonly fechaElegida = toSignal(this.form.controls.fechaPreferida.valueChanges, {
+    initialValue: '',
+  });
+  protected readonly diaElegido = computed(
+    () => this.dias.find((d) => d.iso === this.fechaElegida()) ?? null,
+  );
 
   protected invalido(campo: keyof typeof this.form.controls): boolean {
     const c = this.form.controls[campo];
@@ -82,8 +75,9 @@ export class Booking {
   }
 
   private abrirWhatsapp(): void {
-    if (!this.hayWhatsapp) {
-      this.mensaje.set('El número de WhatsApp del consultorio aún no está configurado.');
+    const dia = this.diaElegido();
+    if (!SITE.contact.whatsapp || !dia) {
+      this.mensaje.set('No pudimos preparar el mensaje. Escríbenos directamente por WhatsApp.');
       this.estado.set('error');
       return;
     }
@@ -91,16 +85,25 @@ export class Booking {
     const servicio = this.servicios().find((s) => String(s.id) === v.servicioId)?.nombre ?? null;
     const url = enlaceWhatsapp(
       SITE.contact.whatsapp,
-      mensajeCita({ nombre: v.nombrePaciente, servicio, fecha: v.fechaPreferida, franja: v.franja, motivo: v.motivo }),
+      mensajeCita({
+        nombre: v.nombrePaciente,
+        servicio,
+        dia: dia.largo,
+        rango: dia.rango,
+        motivo: v.motivo,
+      }),
     );
     this.enlaceGenerado.set(url);
-    this.mensaje.set('Te abrimos WhatsApp con tu mensaje listo. Envíalo y te responderemos para confirmar tu cita.');
+    this.mensaje.set(
+      'Abrimos WhatsApp con tu solicitud lista. Envíala y te responderemos con la hora disponible.',
+    );
     this.estado.set('enviado');
     window.open(url, '_blank', 'noopener');
   }
 
   private enviarAlBackend(): void {
     const v = this.form.getRawValue();
+    const dia = this.diaElegido();
     this.estado.set('enviando');
     this.citaService
       .solicitar({
@@ -110,7 +113,7 @@ export class Booking {
         correo: v.correo || null,
         servicioId: v.servicioId ? Number(v.servicioId) : null,
         fechaPreferida: v.fechaPreferida,
-        franja: v.franja,
+        franja: dia && dia.franja.desde < '12:00' ? 'MANANA' : 'TARDE',
         motivo: v.motivo || null,
         aceptaTratamientoDatos: v.aceptaTratamientoDatos,
       })

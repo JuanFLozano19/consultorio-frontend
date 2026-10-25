@@ -31,17 +31,23 @@ export class AuthService {
   }
 
   login(correo: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/login`, { correo, password }).pipe(
-      tap((r) => {
-        const s: Sesion = { token: r.token, usuario: r.usuario, expiraEn: Date.now() + r.expiraEnMs };
-        this.sesion.set(s);
-        try {
-          sessionStorage.setItem(STORAGE_KEY, JSON.stringify(s));
-        } catch {
-          /* almacenamiento no disponible: la sesión vive solo en memoria */
-        }
-      }),
-    );
+    return this.http
+      .post<AuthResponse>(`${environment.apiUrl}/auth/login`, { correo, password })
+      .pipe(
+        tap((r) => {
+          const s: Sesion = {
+            token: r.token,
+            usuario: r.usuario,
+            expiraEn: Date.now() + r.expiraEnMs,
+          };
+          this.sesion.set(s);
+          try {
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+          } catch {
+            /* almacenamiento no disponible: la sesión vive solo en memoria */
+          }
+        }),
+      );
   }
 
   logout(): void {

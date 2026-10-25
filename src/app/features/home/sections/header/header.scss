@@ -19,7 +19,9 @@
   gap: 12px;
   text-decoration: none;
 }
-.brand__mark { color: var(--slate); }
+.brand__mark {
+  color: var(--slate);
+}
 .brand__name {
   display: block;
   font-family: var(--display);
@@ -39,9 +41,25 @@
   display: flex;
   gap: 26px;
   font-size: 15px;
-  a { text-decoration: none; color: var(--muted); }
-  a:hover { color: var(--slate-ink); }
+  a {
+    text-decoration: none;
+    color: var(--muted);
+  }
+  a:hover {
+    color: var(--slate-ink);
+  }
 }
-.nav__cta { padding: 11px 20px; font-size: 14px; }
-@media (max-width: 860px) { .links { display: none; } }
-@media (max-width: 420px) { .nav__cta { display: none; } }
+.nav__cta {
+  padding: 11px 20px;
+  font-size: 14px;
+}
+@media (max-width: 860px) {
+  .links {
+    display: none;
+  }
+}
+@media (max-width: 420px) {
+  .nav__cta {
+    display: none;
+  }
+}

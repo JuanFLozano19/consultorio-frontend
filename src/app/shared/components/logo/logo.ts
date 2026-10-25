@@ -22,10 +22,29 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
       </g>
       <circle cx="152" cy="186" r="17" fill="none" stroke="currentColor"></circle>
       <circle cx="152" cy="186" r="7" fill="currentColor"></circle>
-      <text x="96" y="98" text-anchor="middle" font-family="Cormorant Garamond, Georgia, serif" font-size="52" fill="currentColor" stroke="none">J<tspan dx="-9">P</tspan></text>
+      <text
+        x="96"
+        y="98"
+        text-anchor="middle"
+        font-family="Cormorant Garamond, Georgia, serif"
+        font-size="52"
+        fill="currentColor"
+        stroke="none"
+      >
+        J
+        <tspan dx="-9">P</tspan>
+      </text>
     </svg>
   `,
-  styles: `:host { display: inline-flex; } svg { max-width: 100%; height: auto; }`,
+  styles: `
+    :host {
+      display: inline-flex;
+    }
+    svg {
+      max-width: 100%;
+      height: auto;
+    }
+  `,
 })
 export class Logo {
   readonly size = input(44);

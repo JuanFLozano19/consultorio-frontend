@@ -7,8 +7,14 @@ import { Icon } from '../../../../shared/components/icon/icon';
   imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <a class="float" [href]="href" [attr.target]="externo ? '_blank' : null" [attr.rel]="externo ? 'noopener' : null"
-       aria-label="Escribir por WhatsApp para reservar">
+    <a
+      class="float"
+      [href]="href"
+      [attr.target]="externo ? '_blank' : null"
+      [attr.rel]="externo ? 'noopener' : null"
+      aria-label="¿Tienes una pregunta? Escríbenos por WhatsApp"
+      title="¿Tienes una pregunta? Escríbenos"
+    >
       <app-icon name="whatsapp" [size]="30" />
     </a>
   `,
@@ -28,7 +34,9 @@ import { Icon } from '../../../../shared/components/icon/icon';
       justify-content: center;
       box-shadow: 0 8px 24px rgb(30 45 50 / 0.28);
     }
-    .float:hover { background: var(--slate-ink); }
+    .float:hover {
+      background: var(--slate-ink);
+    }
   `,
 })
 export class WhatsappFloat {

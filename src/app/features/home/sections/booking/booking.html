@@ -2,166 +2,175 @@
   <div class="wrap">
     <div class="section-head">
       <p class="eyebrow">Reserva tu consulta</p>
-      <h2>Agendar es fácil</h2>
+      <h2>Agenda en tres pasos</h2>
+      <p>
+        Elige el servicio y el día.
+        {{
+          enLinea
+            ? 'Te contactaremos'
+            : 'Te enviamos a WhatsApp con tu solicitud lista y te respondemos'
+        }}
+        con la hora disponible.
+      </p>
     </div>
-
-    <ol class="steps">
-      @for (s of pasos; track s.title; let i = $index) {
-        <li class="step">
-          <span class="step__n">{{ i + 1 }}</span>
-          <h3>{{ s.title }}</h3>
-          <p>{{ s.text }}</p>
-        </li>
-      }
-    </ol>
 
     <div class="booking">
       <div class="card">
         @if (estado() === 'enviado') {
           <div class="done" role="status">
-            <h3>{{ enLinea ? 'Solicitud recibida' : 'Mensaje listo' }}</h3>
+            <app-icon class="done__icon" [name]="enLinea ? 'document' : 'whatsapp'" [size]="40" />
+            <h3>{{ enLinea ? 'Solicitud recibida' : 'Solicitud lista' }}</h3>
             <p>{{ mensaje() }}</p>
-            @if (enlaceGenerado()) {
-              <a class="btn" [href]="enlaceGenerado()" target="_blank" rel="noopener">
-                <app-icon name="whatsapp" [size]="22" /> Abrir WhatsApp de nuevo
-              </a>
-            }
-            <button type="button" class="btn btn--ghost" (click)="otraSolicitud()">
-              Enviar otra solicitud
-            </button>
+            <div class="done__actions">
+              @if (enlaceGenerado()) {
+                <a class="btn" [href]="enlaceGenerado()" target="_blank" rel="noopener"
+                  >Abrir WhatsApp de nuevo</a
+                >
+              }
+              <button type="button" class="btn btn--ghost" (click)="otraSolicitud()">
+                Hacer otra solicitud
+              </button>
+            </div>
           </div>
         } @else {
           <form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
-            <div class="grid">
-              <div class="field field--full">
-                <label for="nombrePaciente">Nombre completo</label>
-                <input id="nombrePaciente" formControlName="nombrePaciente" autocomplete="name" />
-                @if (invalido('nombrePaciente')) {
-                  <small class="err">Escribe tu nombre completo.</small>
+            <fieldset class="paso">
+              <legend><span class="paso__n">1</span> ¿Qué servicio necesitas?</legend>
+              <div class="opciones">
+                @for (s of servicios(); track s.id) {
+                  <label class="opcion">
+                    <input type="radio" formControlName="servicioId" [value]="'' + s.id" />
+                    <app-icon [name]="s.icono" [size]="26" />
+                    <span>{{ s.nombre }}</span>
+                  </label>
                 }
-              </div>
-
-              @if (enLinea) {
-                <div class="field">
-                  <label for="documento">Documento de identidad</label>
-                  <input id="documento" formControlName="documento" inputmode="numeric" />
-                  @if (invalido('documento')) {
-                    <small class="err">Solo números o letras, sin puntos.</small>
-                  }
-                </div>
-
-                <div class="field">
-                  <label for="telefono">Celular / WhatsApp</label>
-                  <input id="telefono" formControlName="telefono" type="tel" autocomplete="tel" />
-                  @if (invalido('telefono')) {
-                    <small class="err">Escribe un número válido.</small>
-                  }
-                </div>
-
-                <div class="field">
-                  <label for="correo">Correo <span class="opt">(opcional)</span></label>
-                  <input id="correo" formControlName="correo" type="email" autocomplete="email" />
-                  @if (invalido('correo')) {
-                    <small class="err">Revisa el correo.</small>
-                  }
-                </div>
-              }
-
-              <div class="field">
-                <label for="servicioId">Servicio</label>
-                <select id="servicioId" formControlName="servicioId">
-                  <option value="">No estoy seguro</option>
-                  @for (s of servicios(); track s.id) {
-                    <option [value]="s.id">{{ s.nombre }}</option>
-                  }
-                </select>
-              </div>
-
-              <div class="field">
-                <label for="fechaPreferida">Fecha preferida</label>
-                <input
-                  id="fechaPreferida"
-                  formControlName="fechaPreferida"
-                  type="date"
-                  [min]="hoy"
-                  [max]="maxFecha"
-                />
-                @if (invalido('fechaPreferida')) {
-                  <small class="err">
-                    @if (form.controls.fechaPreferida.hasError('domingo')) {
-                      No atendemos los domingos.
-                    } @else if (form.controls.fechaPreferida.hasError('pasada')) {
-                      Elige hoy o una fecha futura.
-                    } @else if (form.controls.fechaPreferida.hasError('muyLejana')) {
-                      Máximo 90 días de anticipación.
-                    } @else {
-                      Elige una fecha.
-                    }
-                  </small>
-                }
-              </div>
-
-              <fieldset class="field franja">
-                <legend>Franja</legend>
-                <label class="pill"
-                  ><input type="radio" formControlName="franja" value="MANANA" /> Mañana</label
-                >
-                <label class="pill"
-                  ><input type="radio" formControlName="franja" value="TARDE" /> Tarde</label
-                >
-              </fieldset>
-
-              <div class="field field--full">
-                <label for="motivo">Motivo de consulta <span class="opt">(opcional)</span></label>
-                <textarea id="motivo" formControlName="motivo" rows="3" maxlength="500"></textarea>
-              </div>
-
-              @if (enLinea) {
-                <label class="consent field--full">
-                  <input type="checkbox" formControlName="aceptaTratamientoDatos" />
-                  <span>
-                    Autorizo el tratamiento de mis datos personales y de salud para gestionar mi
-                    cita, de acuerdo con la Ley 1581 de 2012.
-                  </span>
+                <label class="opcion">
+                  <input type="radio" formControlName="servicioId" value="" />
+                  <app-icon name="pin" [size]="26" />
+                  <span>No estoy seguro</span>
                 </label>
-                @if (invalido('aceptaTratamientoDatos')) {
-                  <small class="err field--full"
-                    >Debes aceptar para poder enviar la solicitud.</small
-                  >
+              </div>
+            </fieldset>
+
+            <fieldset class="paso">
+              <legend><span class="paso__n">2</span> ¿Qué día te queda bien?</legend>
+              <div class="dias">
+                @for (d of dias; track d.iso) {
+                  <label class="dia">
+                    <input type="radio" formControlName="fechaPreferida" [value]="d.iso" />
+                    <span class="dia__nombre">{{ d.etiqueta }}</span>
+                    <span class="dia__rango">{{ d.rangoCorto }}</span>
+                  </label>
                 }
+              </div>
+              @if (invalido('fechaPreferida')) {
+                <small class="err">Elige un día.</small>
               }
-            </div>
+              <p class="nota">
+                Solo aparecen días con atención: no atendemos domingos ni festivos.
+              </p>
+            </fieldset>
+
+            <fieldset class="paso">
+              <legend><span class="paso__n">3</span> Tus datos</legend>
+              <div class="grid">
+                <div class="field field--full">
+                  <label for="nombrePaciente">Nombre completo</label>
+                  <input id="nombrePaciente" formControlName="nombrePaciente" autocomplete="name" />
+                  @if (invalido('nombrePaciente')) {
+                    <small class="err">Escribe tu nombre completo.</small>
+                  }
+                </div>
+
+                @if (enLinea) {
+                  <div class="field">
+                    <label for="documento">Documento de identidad</label>
+                    <input id="documento" formControlName="documento" inputmode="numeric" />
+                    @if (invalido('documento')) {
+                      <small class="err">Solo números o letras, sin puntos.</small>
+                    }
+                  </div>
+                  <div class="field">
+                    <label for="telefono">Celular / WhatsApp</label>
+                    <input id="telefono" formControlName="telefono" type="tel" autocomplete="tel" />
+                    @if (invalido('telefono')) {
+                      <small class="err">Escribe un número válido.</small>
+                    }
+                  </div>
+                  <div class="field field--full">
+                    <label for="correo">Correo <span class="opt">(opcional)</span></label>
+                    <input id="correo" formControlName="correo" type="email" autocomplete="email" />
+                    @if (invalido('correo')) {
+                      <small class="err">Revisa el correo.</small>
+                    }
+                  </div>
+                }
+
+                <div class="field field--full">
+                  <label for="motivo">Motivo de consulta <span class="opt">(opcional)</span></label>
+                  <textarea
+                    id="motivo"
+                    formControlName="motivo"
+                    rows="3"
+                    maxlength="500"
+                    placeholder="Ej.: control de presión, quiero empezar a hacer ejercicio…"
+                  ></textarea>
+                </div>
+
+                @if (enLinea) {
+                  <label class="consent field--full">
+                    <input type="checkbox" formControlName="aceptaTratamientoDatos" />
+                    <span>
+                      Autorizo el tratamiento de mis datos personales y de salud para gestionar mi
+                      cita, de acuerdo con la Ley 1581 de 2012.
+                    </span>
+                  </label>
+                  @if (invalido('aceptaTratamientoDatos')) {
+                    <small class="err field--full"
+                      >Debes aceptar para poder enviar la solicitud.</small
+                    >
+                  }
+                }
+              </div>
+            </fieldset>
 
             @if (estado() === 'error') {
               <p class="alert" role="alert">{{ mensaje() }}</p>
             }
 
-            <button type="submit" class="btn submit" [disabled]="estado() === 'enviando'">
-              @if (!enLinea) {
-                <app-icon name="whatsapp" [size]="22" />
+            <div class="submit-row">
+              <button type="submit" class="btn submit" [disabled]="estado() === 'enviando'">
+                @if (!enLinea) {
+                  <app-icon name="whatsapp" [size]="22" />
+                }
+                {{
+                  estado() === 'enviando'
+                    ? 'Enviando…'
+                    : enLinea
+                      ? 'Solicitar cita'
+                      : 'Enviar solicitud por WhatsApp'
+                }}
+              </button>
+              @if (diaElegido(); as d) {
+                <span class="resumen">{{ d.largo }} · {{ d.rango }}</span>
               }
-              {{
-                estado() === 'enviando'
-                  ? 'Enviando…'
-                  : enLinea
-                    ? 'Solicitar cita'
-                    : 'Enviar por WhatsApp'
-              }}
-            </button>
+            </div>
           </form>
         }
       </div>
 
-      <aside class="alt">
-        <h3>{{ enLinea ? '¿Prefieres escribirnos?' : '¿Prefieres escribir tú mismo?' }}</h3>
-        <p>Por WhatsApp te respondemos con los horarios disponibles.</p>
-        @if (hayWhatsapp) {
-          <a class="btn" [href]="whatsappHref" target="_blank" rel="noopener">
-            <app-icon name="whatsapp" [size]="22" /> Escribir por WhatsApp
-          </a>
-        }
-        <p class="alt__num">
-          WhatsApp: <b>{{ whatsappDisplay }}</b>
+      <aside class="antes">
+        <h3>Antes de tu cita</h3>
+        <ul>
+          <li>Llega 10 minutos antes al piso 5 del Edificio Habital Medical Center.</li>
+          <li>Trae tu documento de identidad.</li>
+          <li>
+            Si los tienes, trae exámenes recientes, fórmulas y la lista de medicamentos que tomas.
+          </li>
+          <li>Para la asesoría en actividad física, ven con ropa cómoda.</li>
+        </ul>
+        <p class="antes__nota">
+          ¿Tienes una pregunta antes de reservar? Usa el botón de WhatsApp de la esquina.
         </p>
       </aside>
     </div>

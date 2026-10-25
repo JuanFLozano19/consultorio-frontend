@@ -5,21 +5,31 @@
         <p class="eyebrow">Consulta médica particular</p>
         <h1>Tu salud,<br /><em>en buenas manos.</em></h1>
         <p class="hero__lead">
-          Consulta de medicina general con tiempo para escucharte, y un plan de actividad física pensado para tu salud.
+          Consulta de medicina general con tiempo para escucharte, y un plan de actividad física
+          pensado para tu salud.
         </p>
         <div class="hero__actions">
           <a class="btn" href="#reserva">Reserva tu consulta</a>
           <a class="btn btn--ghost" href="#servicios">Ver servicios</a>
         </div>
+        <app-estado class="hero__estado" />
       </div>
       <div class="hero__art">
-        <app-logo [size]="360" [strokeWidth]="3.2" label="Logo: estetoscopio en forma de corazón con las iniciales JP" />
+        <app-logo
+          [size]="360"
+          [strokeWidth]="3.2"
+          label="Logo: estetoscopio en forma de corazón con las iniciales JP"
+        />
       </div>
     </div>
     <div class="hero__creds">
-      <span><b>{{ doctor.title }}</b> · Registro médico {{ doctor.medicalRegistry }}</span>
+      <span
+        ><b>{{ doctor.title }}</b> · Registro médico {{ doctor.medicalRegistry }}</span
+      >
       <span><b>Máster</b> en Actividad Física y Salud</span>
-      <span><b>{{ address.floor }}</b> · {{ address.building }}</span>
+      <span
+        ><b>{{ address.floor }}</b> · {{ address.building }}</span
+      >
     </div>
   </div>
 </section>

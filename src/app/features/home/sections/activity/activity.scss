@@ -1,7 +1,14 @@
 $rule: color-mix(in srgb, var(--on-slate) 30%, transparent);
 
-.move { background: var(--slate); color: var(--on-slate); }
-.move h2, .move h3, .move .eyebrow { color: var(--on-slate); }
+.move {
+  background: var(--slate);
+  color: var(--on-slate);
+}
+.move h2,
+.move h3,
+.move .eyebrow {
+  color: var(--on-slate);
+}
 .move__grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -12,9 +19,16 @@ h2 {
   font-size: clamp(44px, 6vw, 80px);
   line-height: 0.95;
   margin-top: 18px;
-  em { font-style: italic; }
+  em {
+    font-style: italic;
+  }
 }
-.move__lead { font-size: 19px; margin-top: 24px; opacity: 0.92; max-width: 30em; }
+.move__lead {
+  font-size: 19px;
+  margin-top: 24px;
+  opacity: 0.92;
+  max-width: 30em;
+}
 .rx {
   list-style: none;
   padding: 0;
@@ -41,17 +55,29 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 4px;
-    &:last-child { border-bottom: 1px solid $rule; }
+    &:last-child {
+      border-bottom: 1px solid $rule;
+    }
   }
-  h3 { font-size: 26px; }
-  p { opacity: 0.85; font-size: 16px; }
+  h3 {
+    font-size: 26px;
+  }
+  p {
+    opacity: 0.85;
+    font-size: 16px;
+  }
 }
 .btn {
   background: var(--on-slate);
   color: var(--slate-ink);
   margin-top: 32px;
-  &:hover { background: var(--sand); }
+  &:hover {
+    background: var(--sand);
+  }
 }
 @media (max-width: 820px) {
-  .move__grid { grid-template-columns: 1fr; gap: 40px; }
+  .move__grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
 }

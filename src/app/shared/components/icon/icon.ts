@@ -4,8 +4,17 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   selector: 'app-icon',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <svg [attr.width]="size()" [attr.height]="size()" viewBox="0 0 40 40" fill="none" stroke="currentColor"
-         stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <svg
+      [attr.width]="size()"
+      [attr.height]="size()"
+      viewBox="0 0 40 40"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
       @switch (name()) {
         @case ('stethoscope') {
           <path d="M12 6v10a8 8 0 0 0 16 0V6" />
@@ -25,7 +34,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
         }
         @case ('whatsapp') {
           <path d="M7 33l2.2-6.5A13.3 13.3 0 1 1 13.5 31z" />
-          <path d="M15 15.8c.5 3.4 4.2 7 7.5 7.5l1.7-2 3 1.5c-.3 1.7-1.7 3-3.3 3-6-.3-11-5.3-11.3-11.3 0-1.7 1.3-3 3-3.3l1.5 3z" fill="currentColor" stroke="none" />
+          <path
+            d="M15 15.8c.5 3.4 4.2 7 7.5 7.5l1.7-2 3 1.5c-.3 1.7-1.7 3-3.3 3-6-.3-11-5.3-11.3-11.3 0-1.7 1.3-3 3-3.3l1.5 3z"
+            fill="currentColor"
+            stroke="none"
+          />
         }
         @case ('instagram') {
           <rect x="7" y="7" width="26" height="26" rx="8" />
@@ -39,7 +52,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       }
     </svg>
   `,
-  styles: `:host { display: inline-flex; }`,
+  styles: `
+    :host {
+      display: inline-flex;
+    }
+  `,
 })
 export class Icon {
   readonly name = input.required<string>();

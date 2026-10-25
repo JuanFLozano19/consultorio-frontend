@@ -15,6 +15,7 @@ export class Header {
     { href: '#servicios', label: 'Servicios' },
     { href: '#actividad', label: 'Actividad física' },
     { href: '#sobre-mi', label: 'Sobre mí' },
+    { href: '#preguntas', label: 'Preguntas' },
     { href: '#ubicacion', label: 'Ubicación' },
   ];
 }

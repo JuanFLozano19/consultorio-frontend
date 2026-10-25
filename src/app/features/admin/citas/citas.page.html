@@ -14,8 +14,14 @@
 <main class="wrap admin">
   <div class="tabs" role="tablist" aria-label="Filtrar por estado">
     @for (f of filtros; track f.etiqueta) {
-      <button type="button" role="tab" class="tab" [class.tab--on]="filtro() === f.valor"
-              [attr.aria-selected]="filtro() === f.valor" (click)="cambiarFiltro(f.valor)">
+      <button
+        type="button"
+        role="tab"
+        class="tab"
+        [class.tab--on]="filtro() === f.valor"
+        [attr.aria-selected]="filtro() === f.valor"
+        (click)="cambiarFiltro(f.valor)"
+      >
         {{ f.etiqueta }}
       </button>
     }
@@ -28,7 +34,9 @@
   @if (cargando() && !datos()) {
     <p class="empty">Cargando solicitudes…</p>
   } @else if (citas().length === 0) {
-    <p class="empty">No hay solicitudes en esta lista. Las nuevas llegan desde el formulario de la web.</p>
+    <p class="empty">
+      No hay solicitudes en esta lista. Las nuevas llegan desde el formulario de la web.
+    </p>
   } @else {
     <ul class="list" [class.list--busy]="cargando()">
       @for (c of citas(); track c.id) {
@@ -43,23 +51,42 @@
               {{ c.franja === 'MANANA' ? 'Mañana' : 'Tarde' }}
             </p>
             <dl class="item__meta">
-              <div><dt>Teléfono</dt><dd class="sel">{{ c.telefono }}</dd></div>
-              <div><dt>Documento</dt><dd>{{ c.documento }}</dd></div>
-              <div><dt>Servicio</dt><dd>{{ c.servicioNombre ?? 'No especificado' }}</dd></div>
+              <div>
+                <dt>Teléfono</dt>
+                <dd class="sel">{{ c.telefono }}</dd>
+              </div>
+              <div>
+                <dt>Documento</dt>
+                <dd>{{ c.documento }}</dd>
+              </div>
+              <div>
+                <dt>Servicio</dt>
+                <dd>{{ c.servicioNombre ?? 'No especificado' }}</dd>
+              </div>
               @if (c.correo) {
-                <div><dt>Correo</dt><dd class="sel">{{ c.correo }}</dd></div>
+                <div>
+                  <dt>Correo</dt>
+                  <dd class="sel">{{ c.correo }}</dd>
+                </div>
               }
             </dl>
             @if (c.motivo) {
               <p class="item__motivo">{{ c.motivo }}</p>
             }
-            <p class="item__stamp">Solicitada el {{ c.fechaSolicitud | date: 'd MMM, h:mm a' : undefined : 'es-CO' }}</p>
+            <p class="item__stamp">
+              Solicitada el {{ c.fechaSolicitud | date: 'd MMM, h:mm a' : undefined : 'es-CO' }}
+            </p>
           </div>
           @if (acciones(c).length) {
             <div class="item__actions">
               @for (e of acciones(c); track e) {
-                <button type="button" class="btn" [class.btn--ghost]="e === 'CANCELADA'"
-                        [disabled]="actualizando() === c.id" (click)="cambiarEstado(c, e)">
+                <button
+                  type="button"
+                  class="btn"
+                  [class.btn--ghost]="e === 'CANCELADA'"
+                  [disabled]="actualizando() === c.id"
+                  (click)="cambiarEstado(c, e)"
+                >
                   {{ accion[e] }}
                 </button>
               }
@@ -71,10 +98,23 @@
 
     @if ((datos()?.totalPaginas ?? 0) > 1) {
       <nav class="pager" aria-label="Páginas">
-        <button type="button" class="btn btn--ghost" [disabled]="pagina() === 0" (click)="irA(pagina() - 1)">Anterior</button>
+        <button
+          type="button"
+          class="btn btn--ghost"
+          [disabled]="pagina() === 0"
+          (click)="irA(pagina() - 1)"
+        >
+          Anterior
+        </button>
         <span>Página {{ pagina() + 1 }} de {{ datos()?.totalPaginas }}</span>
-        <button type="button" class="btn btn--ghost" [disabled]="pagina() + 1 >= (datos()?.totalPaginas ?? 0)"
-                (click)="irA(pagina() + 1)">Siguiente</button>
+        <button
+          type="button"
+          class="btn btn--ghost"
+          [disabled]="pagina() + 1 >= (datos()?.totalPaginas ?? 0)"
+          (click)="irA(pagina() + 1)"
+        >
+          Siguiente
+        </button>
       </nav>
     }
   }

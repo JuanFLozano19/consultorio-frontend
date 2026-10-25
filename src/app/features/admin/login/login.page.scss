@@ -15,12 +15,33 @@
   flex-direction: column;
   gap: 8px;
 }
-.brand { color: var(--slate); align-self: flex-start; }
-h1 { font-size: 38px; margin-top: 14px; }
-.sub { color: var(--muted); margin-bottom: 18px; }
-form { display: flex; flex-direction: column; gap: 16px; }
-.field { display: flex; flex-direction: column; gap: 6px; }
-label { font-size: 14px; font-weight: 500; color: var(--slate-ink); }
+.brand {
+  color: var(--slate);
+  align-self: flex-start;
+}
+h1 {
+  font-size: 38px;
+  margin-top: 14px;
+}
+.sub {
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--slate-ink);
+}
 input {
   font: inherit;
   font-size: 16px;
@@ -29,7 +50,18 @@ input {
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 12px 14px;
-  &:focus { outline: 2px solid var(--slate); outline-offset: 1px; }
+  &:focus {
+    outline: 2px solid var(--slate);
+    outline-offset: 1px;
+  }
 }
-.alert { color: var(--danger); font-size: 14px; }
-.btn { justify-content: center; &:disabled { opacity: 0.6; } }
+.alert {
+  color: var(--danger);
+  font-size: 14px;
+}
+.btn {
+  justify-content: center;
+  &:disabled {
+    opacity: 0.6;
+  }
+}
