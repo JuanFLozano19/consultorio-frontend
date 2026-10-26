@@ -49,6 +49,11 @@
   </script>
 </head>
 <body>
+  <script>
+    if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      document.documentElement.classList.add('js-reveal');
+    }
+  </script>
   <app-root></app-root>
 </body>
 </html>

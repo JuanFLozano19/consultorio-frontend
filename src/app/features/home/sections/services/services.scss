@@ -19,6 +19,16 @@
 }
 .svc__icon {
   color: var(--slate);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.svc:hover .svc__icon {
+  transform: translateY(-3px) scale(1.08);
+}
+.svc h3 {
+  transition: color 0.2s;
+}
+.svc:hover h3 {
+  color: var(--clay);
 }
 h3 {
   font-size: 30px;

@@ -1,6 +1,6 @@
 <section id="actividad" class="band move">
   <div class="wrap move__grid">
-    <div>
+    <div appReveal>
       <p class="eyebrow">Actividad física y salud</p>
       <h2>Moverte también<br /><em>es medicina.</em></h2>
       <p class="move__lead">{{ activity.lead }}</p>
@@ -12,8 +12,8 @@
       <a class="btn" href="#reserva">Pide tu plan</a>
     </div>
     <ul class="who">
-      @for (a of activity.audiences; track a.title) {
-        <li>
+      @for (a of activity.audiences; track a.title; let i = $index) {
+        <li [appReveal]="120 + i * 100">
           <h3>{{ a.title }}</h3>
           <p>{{ a.text }}</p>
         </li>

@@ -1,3 +1,4 @@
+import { Reveal } from '../../../../shared/directives/reveal';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { tablaHorario } from '../../../../core/config/horario';
@@ -13,7 +14,7 @@ import { Icon } from '../../../../shared/components/icon/icon';
 
 @Component({
   selector: 'app-location',
-  imports: [Icon, Estado],
+  imports: [Reveal, Icon, Estado],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './location.html',
   styleUrl: './location.scss',
@@ -22,6 +23,7 @@ export class Location {
   protected readonly address = SITE.contact.address;
   protected readonly hours = tablaHorario();
   protected readonly mapsHref = mapsHref();
+  protected readonly wazeHref = `https://waze.com/ul?q=${encodeURIComponent(SITE.contact.address.mapsQuery)}&navigate=yes`;
   protected readonly whatsappHref = whatsappHref();
   protected readonly whatsappDisplay = whatsappDisplay();
   protected readonly instagram = SITE.contact.instagram;

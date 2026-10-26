@@ -2,6 +2,7 @@
   <div class="wrap about">
     @if (doctor.photo) {
       <img
+        appReveal
         class="photo"
         [src]="doctor.photo"
         [alt]="'Foto de ' + doctor.name + ', médico general'"
@@ -10,9 +11,9 @@
         loading="lazy"
       />
     } @else {
-      <div class="photo photo--empty">[FOTO DEL DR. JEISON CON BATA]</div>
+      <div appReveal class="photo photo--empty">[FOTO DEL DR. JEISON CON BATA]</div>
     }
-    <div class="about__body">
+    <div class="about__body" [appReveal]="150">
       <p class="eyebrow">Conoce a tu médico</p>
       <h2>Dr. {{ doctor.fullName }}</h2>
       <div class="bio">

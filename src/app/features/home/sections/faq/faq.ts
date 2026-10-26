@@ -1,17 +1,19 @@
+import { Reveal } from '../../../../shared/directives/reveal';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { SITE } from '../../../../core/config/site.config';
 
 @Component({
   selector: 'app-faq',
+  imports: [Reveal],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="preguntas" class="band">
       <div class="wrap faq">
-        <div class="section-head">
+        <div class="section-head" appReveal>
           <p class="eyebrow">Preguntas frecuentes</p>
           <h2>Antes de reservar</h2>
         </div>
-        <div class="lista">
+        <div class="lista" [appReveal]="120">
           @for (f of faq; track f.q) {
             <details>
               <summary>{{ f.q }}</summary>

@@ -1,6 +1,11 @@
-<header class="header">
+<header class="header" [class.header--compacto]="compacto()" [class.header--menu]="menuAbierto()">
   <div class="wrap nav">
-    <a class="brand" href="#inicio" [attr.aria-label]="doctor.name + ', inicio'">
+    <a
+      class="brand"
+      href="#inicio"
+      [attr.aria-label]="doctor.name + ', inicio'"
+      (click)="menuAbierto.set(false)"
+    >
       <app-logo [size]="44" class="brand__mark" />
       <span>
         <span class="brand__name">{{ doctor.name }}</span>
@@ -9,9 +14,38 @@
     </a>
     <nav class="links" aria-label="Secciones">
       @for (l of links; track l.href) {
-        <a [href]="l.href">{{ l.label }}</a>
+        <a
+          [href]="l.href"
+          [class.activo]="activo() === l.href"
+          [attr.aria-current]="activo() === l.href ? 'location' : null"
+          >{{ l.label }}</a
+        >
       }
     </nav>
     <a class="btn nav__cta" href="#reserva">Reserva tu consulta</a>
+    <button
+      type="button"
+      class="burger"
+      [attr.aria-expanded]="menuAbierto()"
+      aria-controls="menu-movil"
+      [attr.aria-label]="menuAbierto() ? 'Cerrar menú' : 'Abrir menú'"
+      (click)="alternarMenu()"
+    >
+      <span></span><span></span>
+    </button>
   </div>
+
+  <nav id="menu-movil" class="movil" aria-label="Menú" [attr.inert]="menuAbierto() ? null : ''">
+    <div class="wrap movil__inner">
+      @for (l of links; track l.href; let i = $index) {
+        <a
+          [href]="l.href"
+          [style.transition-delay.ms]="menuAbierto() ? 60 + i * 40 : 0"
+          (click)="menuAbierto.set(false)"
+          >{{ l.label }}</a
+        >
+      }
+      <a class="btn" href="#reserva" (click)="menuAbierto.set(false)">Reserva tu consulta</a>
+    </div>
+  </nav>
 </header>

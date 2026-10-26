@@ -1,3 +1,4 @@
+import { Reveal } from '../../../../shared/directives/reveal';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SITE } from '../../../../core/config/site.config';
@@ -6,7 +7,7 @@ import { Icon } from '../../../../shared/components/icon/icon';
 
 @Component({
   selector: 'app-services',
-  imports: [Icon],
+  imports: [Reveal, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './services.html',
   styleUrl: './services.scss',

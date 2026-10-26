@@ -1,3 +1,4 @@
+import { Reveal } from '../../../../shared/directives/reveal';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
@@ -17,7 +18,7 @@ const soloEnLinea = (validators: ValidatorFn[]): ValidatorFn[] =>
 
 @Component({
   selector: 'app-booking',
-  imports: [ReactiveFormsModule, Icon],
+  imports: [Reveal, ReactiveFormsModule, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './booking.html',
   styleUrl: './booking.scss',

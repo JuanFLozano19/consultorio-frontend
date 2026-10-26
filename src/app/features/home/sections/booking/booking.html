@@ -1,6 +1,6 @@
 <section id="reserva" class="band band--sand">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" appReveal>
       <p class="eyebrow">Reserva tu consulta</p>
       <h2>Agenda en tres pasos</h2>
       <p>
@@ -15,7 +15,7 @@
     </div>
 
     <div class="booking">
-      <div class="card">
+      <div class="card" [appReveal]="100">
         @if (estado() === 'enviado') {
           <div class="done" role="status">
             <app-icon class="done__icon" [name]="enLinea ? 'document' : 'whatsapp'" [size]="40" />
@@ -159,7 +159,7 @@
         }
       </div>
 
-      <aside class="antes">
+      <aside class="antes" [appReveal]="220">
         <h3>Antes de tu cita</h3>
         <ul>
           <li>Llega 10 minutos antes al piso 5 del Edificio Habital Medical Center.</li>

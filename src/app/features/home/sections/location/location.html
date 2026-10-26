@@ -1,6 +1,6 @@
 <section id="ubicacion" class="band">
   <div class="wrap loc">
-    <div>
+    <div appReveal>
       <p class="eyebrow">Ubicación</p>
       <address class="addr">{{ address.street }}<br />{{ address.floor }}</address>
       <p class="addr__sub">
@@ -17,11 +17,12 @@
           referrerpolicy="no-referrer-when-downgrade"
         ></iframe>
       </div>
-      <a class="btn btn--ghost loc__btn" [href]="mapsHref" target="_blank" rel="noopener"
-        >Cómo llegar</a
-      >
+      <div class="loc__acciones">
+        <a class="btn btn--ghost" [href]="mapsHref" target="_blank" rel="noopener">Google Maps</a>
+        <a class="btn btn--ghost" [href]="wazeHref" target="_blank" rel="noopener">Waze</a>
+      </div>
     </div>
-    <div>
+    <div [appReveal]="150">
       <p class="eyebrow loc__label">Horario de atención</p>
       <app-estado class="loc__estado" />
       <dl class="hours">

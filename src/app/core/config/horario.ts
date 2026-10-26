@@ -234,7 +234,14 @@ export function proximosDias(ahora: Ahora, cantidad = 8, maxDias = 30): DiaAtenc
         : i === 1
           ? 'Mañana'
           : `${DIAS_CORTOS[dia.getDay()]} ${dia.getDate()} ${MESES[dia.getMonth()].slice(0, 3)}`;
-    r.push({ iso: iso(dia), etiqueta, largo: fechaLarga(dia), rango: rango(f), rangoCorto: rango(f).replaceAll(':00', ''), franja: f });
+    r.push({
+      iso: iso(dia),
+      etiqueta,
+      largo: fechaLarga(dia),
+      rango: rango(f),
+      rangoCorto: rango(f).replaceAll(':00', ''),
+      franja: f,
+    });
   }
   return r;
 }
