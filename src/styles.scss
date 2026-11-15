@@ -19,22 +19,32 @@
   color-scheme: light;
 }
 
+/* Modo oscuro: sigue al sistema, salvo que la persona elija uno con el botón (data-theme) */
+@mixin tema-oscuro {
+  --ground: #1c2427;
+  --sand: #232d31;
+  --slate: #9db6be;
+  --slate-ink: #c9d9de;
+  --text: #e6e0d7;
+  --muted: #aeb8ba;
+  --clay: #dfa27f;
+  --line: #36444a;
+  --on-slate: #1c2427;
+  --card: #263136;
+  --danger: #f0907f;
+  --ok: #9fd0aa;
+  color-scheme: dark;
+}
 @media (prefers-color-scheme: dark) {
-  :root {
-    --ground: #1c2427;
-    --sand: #232d31;
-    --slate: #9db6be;
-    --slate-ink: #c9d9de;
-    --text: #e6e0d7;
-    --muted: #aeb8ba;
-    --clay: #dfa27f;
-    --line: #36444a;
-    --on-slate: #1c2427;
-    --card: #263136;
-    --danger: #f0907f;
-    --ok: #9fd0aa;
-    color-scheme: dark;
+  :root:not([data-theme='light']) {
+    @include tema-oscuro;
   }
+}
+:root[data-theme='dark'] {
+  @include tema-oscuro;
+}
+:root[data-theme='light'] {
+  color-scheme: light;
 }
 
 *,
@@ -238,4 +248,15 @@ details[open]::details-content {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Transición suave al cambiar de tema */
+.cambiando-tema,
+.cambiando-tema *,
+.cambiando-tema *::before,
+.cambiando-tema *::after {
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease,
+    border-color 0.4s ease !important;
 }

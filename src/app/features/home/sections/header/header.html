@@ -22,17 +22,56 @@
         >
       }
     </nav>
-    <a class="btn nav__cta" href="#reserva">Reserva tu consulta</a>
-    <button
-      type="button"
-      class="burger"
-      [attr.aria-expanded]="menuAbierto()"
-      aria-controls="menu-movil"
-      [attr.aria-label]="menuAbierto() ? 'Cerrar menú' : 'Abrir menú'"
-      (click)="alternarMenu()"
-    >
-      <span></span><span></span>
-    </button>
+    <div class="nav__der">
+      <button
+        type="button"
+        class="tema"
+        (click)="alternarTema()"
+        [attr.aria-label]="oscuro() ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'"
+        [attr.title]="oscuro() ? 'Modo claro' : 'Modo oscuro'"
+      >
+        @if (oscuro()) {
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          >
+            <circle cx="12" cy="12" r="4.5" />
+            <path
+              d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"
+            />
+          </svg>
+        } @else {
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+          </svg>
+        }
+      </button>
+      <a class="btn nav__cta" href="#reserva">Reservar cita</a>
+      <button
+        type="button"
+        class="burger"
+        [attr.aria-expanded]="menuAbierto()"
+        aria-controls="menu-movil"
+        [attr.aria-label]="menuAbierto() ? 'Cerrar menú' : 'Abrir menú'"
+        (click)="alternarMenu()"
+      >
+        <span></span><span></span>
+      </button>
+    </div>
   </div>
 
   <nav id="menu-movil" class="movil" aria-label="Menú" [attr.inert]="menuAbierto() ? null : ''">

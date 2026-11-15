@@ -24,10 +24,10 @@ export class Header {
   protected readonly doctor = SITE.doctor;
   protected readonly links = [
     { href: '#servicios', label: 'Servicios' },
-    { href: '#actividad', label: 'Actividad física' },
+    { href: '#actividad', label: 'Actividad' },
+    { href: '#herramientas', label: 'Herramientas' },
     { href: '#galeria', label: 'Galería' },
     { href: '#sobre-mi', label: 'Sobre mí' },
-    { href: '#preguntas', label: 'Preguntas' },
     { href: '#ubicacion', label: 'Ubicación' },
   ];
 
@@ -36,10 +36,18 @@ export class Header {
   /** Sección visible, para resaltar su enlace. */
   protected readonly activo = signal('');
   protected readonly menuAbierto = signal(false);
+  /** Tema que se ve ahora (el del sistema o el que eligió la persona). */
+  protected readonly oscuro = signal(false);
 
   constructor() {
     const destroyRef = inject(DestroyRef);
     afterNextRender(() => {
+      const elegido = document.documentElement.dataset['theme'];
+      this.oscuro.set(
+        elegido
+          ? elegido === 'dark'
+          : (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false),
+      );
       this.alHacerScroll();
       if (typeof IntersectionObserver === 'undefined') return;
       const obs = new IntersectionObserver(
@@ -64,5 +72,20 @@ export class Header {
 
   protected alternarMenu(): void {
     this.menuAbierto.update((v) => !v);
+  }
+
+  /** Cambia entre modo claro y oscuro y lo recuerda en este navegador. */
+  protected alternarTema(): void {
+    const raiz = document.documentElement;
+    const nuevo = this.oscuro() ? 'light' : 'dark';
+    raiz.classList.add('cambiando-tema');
+    raiz.dataset['theme'] = nuevo;
+    this.oscuro.set(nuevo === 'dark');
+    try {
+      localStorage.setItem('tema', nuevo);
+    } catch {
+      /* sin almacenamiento: el tema dura hasta recargar */
+    }
+    setTimeout(() => raiz.classList.remove('cambiando-tema'), 500);
   }
 }

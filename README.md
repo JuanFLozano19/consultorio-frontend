@@ -104,3 +104,15 @@ Las fotos de la sección **Galería** y las piezas de **Novedades** se configura
 El carrusel (`src/app/shared/components/carrusel`) se desliza con el dedo, las flechas o el
 teclado, avanza solo (con botón de pausa) y abre cada imagen en grande; en Novedades además
 permite compartir por WhatsApp y descargar.
+
+## Otras funciones de la página
+
+- **Herramientas de salud** (`sections/herramientas`, cálculos en `core/salud/calculos.ts` con pruebas):
+  IMC con categorías de la OMS, zonas de frecuencia cardíaca (Tanaka / Karvonen) y minutos de
+  actividad física semanal frente a la recomendación de la OMS. Cada resultado tiene un botón
+  para comentarlo con el doctor por WhatsApp.
+- **Tu primera consulta** (`sections/pasos`): los cuatro pasos para agendar.
+- **Modo claro / oscuro**: botón en el encabezado; se recuerda en el navegador.
+- **Barra de progreso de lectura** y botón **volver arriba** (`shared/components/progreso`).
+- **Carrusel con efecto de profundidad**: la tarjeta del centro se destaca y las demás giran y se
+  atenúan al deslizar; el punto activo muestra el tiempo del avance automático.

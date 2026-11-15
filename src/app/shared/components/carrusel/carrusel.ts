@@ -22,6 +22,9 @@ import { ImagenCarrusel } from '../../../core/config/galeria';
   host: {
     '[style.--ratio]': 'proporcion()',
     '[style.--col]': 'columna()',
+    '[style.--ms]': 'intervalo() + "ms"',
+    '[class.entrado]': 'entrado()',
+    '(window:resize)': 'efecto()',
   },
   template: `
     <div
@@ -40,6 +43,7 @@ import { ImagenCarrusel } from '../../../core/config/galeria';
           <figure
             class="slide"
             [class.slide--activa]="i === actual()"
+            [style.--i]="i"
             role="group"
             aria-roledescription="diapositiva"
             [attr.aria-label]="i + 1 + ' de ' + imagenes().length"
@@ -47,8 +51,10 @@ import { ImagenCarrusel } from '../../../core/config/galeria';
             <button
               type="button"
               class="slide__btn"
-              (click)="abrir(i)"
-              [attr.aria-label]="'Ver en grande: ' + (img.titulo ?? img.alt)"
+              (click)="i === actual() ? abrir(i) : irA(i)"
+              [attr.aria-label]="
+                (i === actual() ? 'Ver en grande: ' : 'Mostrar: ') + (img.titulo ?? img.alt)
+              "
             >
               <img
                 [src]="img.src"
@@ -88,6 +94,7 @@ import { ImagenCarrusel } from '../../../core/config/galeria';
               type="button"
               class="dot"
               [class.dot--on]="i === actual()"
+              [class.dot--corre]="i === actual() && corriendo()"
               [attr.aria-label]="'Ir a la imagen ' + (i + 1)"
               [attr.aria-current]="i === actual() ? 'true' : null"
               (click)="irA(i)"
@@ -160,7 +167,16 @@ import { ImagenCarrusel } from '../../../core/config/galeria';
     >
       @if (abierta(); as img) {
         <figure class="lb__fig" (pointerdown)="inicioGesto($event)" (pointerup)="finGesto($event)">
-          <img [src]="img.src" [alt]="img.alt" [attr.width]="img.ancho" [attr.height]="img.alto" />
+          @for (k of claveVisor(); track k) {
+            <img
+              class="lb__img"
+              [class.lb__img--izq]="direccion() < 0"
+              [src]="img.src"
+              [alt]="img.alt"
+              [attr.width]="img.ancho"
+              [attr.height]="img.alto"
+            />
+          }
           <figcaption>
             <span class="lb__titulo">{{ img.titulo ?? img.alt }}</span>
             <span class="lb__num">{{ (indiceVisor() ?? 0) + 1 }} / {{ imagenes().length }}</span>
@@ -243,7 +259,7 @@ export class Carrusel {
   /** Proporción de cada tarjeta (CSS aspect-ratio). */
   readonly proporcion = input('4 / 5');
   /** Ancho de cada tarjeta en pantallas grandes. */
-  readonly columna = input('clamp(240px, 30%, 360px)');
+  readonly columna = input('clamp(260px, 34%, 400px)');
   /** Muestra botones para compartir y descargar en la vista ampliada. */
   readonly compartir = input(false);
   /** Texto que acompaña el enlace al compartir. */
@@ -257,6 +273,23 @@ export class Carrusel {
   protected readonly enfocado = signal(false);
   private readonly visible = signal(false);
   protected readonly indiceVisor = signal<number | null>(null);
+  /** Dirección del último movimiento en la vista ampliada (1 o -1). */
+  protected readonly direccion = signal(1);
+  /** Clave que cambia con cada imagen para reiniciar su animación de entrada. */
+  protected readonly claveVisor = computed(() => [this.indiceVisor() ?? -1]);
+  /** El carrusel ya apareció en pantalla (para la entrada escalonada). */
+  protected readonly entrado = signal(false);
+  private readonly reducido = signal(false);
+  /** El avance automático está corriendo (muestra la barra de progreso). */
+  protected readonly corriendo = computed(
+    () =>
+      this.intervalo() > 0 &&
+      this.visible() &&
+      !this.pausa() &&
+      !this.encima() &&
+      !this.enfocado() &&
+      this.indiceVisor() === null,
+  );
   protected readonly abierta = computed(() => {
     const i = this.indiceVisor();
     return i === null ? null : this.imagenes()[i];
@@ -272,14 +305,22 @@ export class Carrusel {
     const host = inject(ElementRef<HTMLElement>);
     afterNextRender(() => {
       const reducido = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+      this.reducido.set(reducido);
       if (reducido) this.pausa.set(true);
+      this.efecto();
 
       let obs: IntersectionObserver | undefined;
       if (typeof IntersectionObserver !== 'undefined') {
-        obs = new IntersectionObserver(([e]) => this.visible.set(e.isIntersecting), {
-          threshold: 0.35,
-        });
+        obs = new IntersectionObserver(
+          ([e]) => {
+            this.visible.set(e.isIntersecting);
+            if (e.isIntersecting) this.entrado.set(true);
+          },
+          { threshold: 0.35 },
+        );
         obs.observe(host.nativeElement);
+      } else {
+        this.entrado.set(true);
       }
       const ms = this.intervalo();
       const timer =
@@ -307,49 +348,57 @@ export class Carrusel {
     return Array.from(this.track().nativeElement.children) as HTMLElement[];
   }
 
+  /** Centra la tarjeta i (con vuelta al inicio y al final). */
   irA(i: number): void {
     const t = this.track().nativeElement;
     const s = this.slides();
     if (!s.length) return;
     const n = s.length;
     const idx = ((i % n) + n) % n;
-    t.scrollTo({ left: s[idx].offsetLeft - s[0].offsetLeft, behavior: 'smooth' });
+    const el = s[idx];
+    t.scrollTo({
+      left: el.offsetLeft + el.offsetWidth / 2 - t.clientWidth / 2,
+      behavior: this.reducido() ? 'auto' : 'smooth',
+    });
     this.actual.set(idx);
   }
 
   siguiente(): void {
-    const t = this.track().nativeElement;
-    const alFinal = t.scrollLeft + t.clientWidth >= t.scrollWidth - 4;
-    this.irA(alFinal ? 0 : this.actual() + 1);
+    this.irA(this.actual() + 1);
   }
 
   anterior(): void {
-    const t = this.track().nativeElement;
-    this.irA(
-      t.scrollLeft <= 4 && this.actual() === 0 ? this.imagenes().length - 1 : this.actual() - 1,
-    );
+    this.irA(this.actual() - 1);
   }
 
   protected alDesplazar(): void {
     cancelAnimationFrame(this.raf);
-    this.raf = requestAnimationFrame(() => {
-      const t = this.track().nativeElement;
-      const s = this.slides();
-      if (!s.length) return;
-      const base = s[0].offsetLeft;
-      let mejor = 0;
-      let dist = Infinity;
-      s.forEach((el, i) => {
-        const d = Math.abs(el.offsetLeft - base - t.scrollLeft);
-        if (d < dist) {
-          dist = d;
-          mejor = i;
-        }
-      });
-      // Al llegar al final, marcar la última aunque no quede alineada a la izquierda.
-      if (t.scrollLeft + t.clientWidth >= t.scrollWidth - 4) mejor = Math.max(mejor, s.length - 1);
-      this.actual.set(mejor);
+    this.raf = requestAnimationFrame(() => this.efecto(true));
+  }
+
+  /**
+   * Efecto de profundidad: cada tarjeta recibe --d (distancia firmada al centro, en tarjetas)
+   * y --ad (distancia absoluta); el CSS las usa para girar, escalar y atenuar.
+   */
+  protected efecto(actualizarIndice = false): void {
+    const t = this.track().nativeElement;
+    const s = this.slides();
+    if (!s.length) return;
+    const centro = t.scrollLeft + t.clientWidth / 2;
+    let mejor = 0;
+    let dist = Infinity;
+    s.forEach((el, i) => {
+      const ancho = el.offsetWidth || 1;
+      const d = (el.offsetLeft + ancho / 2 - centro) / ancho;
+      const ad = Math.min(Math.abs(d), 2.5);
+      el.style.setProperty('--d', Math.max(-2.5, Math.min(2.5, d)).toFixed(3));
+      el.style.setProperty('--ad', ad.toFixed(3));
+      if (Math.abs(d) < dist) {
+        dist = Math.abs(d);
+        mejor = i;
+      }
     });
+    if (actualizarIndice) this.actual.set(mejor);
   }
 
   protected teclado(e: KeyboardEvent): void {
@@ -374,6 +423,7 @@ export class Carrusel {
   }
 
   protected moverVisor(delta: number): void {
+    this.direccion.set(delta < 0 ? -1 : 1);
     const n = this.imagenes().length;
     const i = ((this.indiceVisor() ?? 0) + delta + n) % n;
     this.indiceVisor.set(i);

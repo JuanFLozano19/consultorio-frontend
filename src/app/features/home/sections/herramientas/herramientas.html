@@ -1,0 +1,270 @@
+<section id="herramientas" class="band" aria-labelledby="herr-titulo">
+  <div class="wrap">
+    <div class="section-head" appReveal>
+      <p class="eyebrow">Herramientas de salud</p>
+      <h2 id="herr-titulo">Conoce tus <em>números</em></h2>
+      <p>
+        Calcula en segundos tu IMC, tus zonas de entrenamiento y si cumples la actividad física
+        recomendada.
+      </p>
+    </div>
+
+    <div class="herr" [appReveal]="120">
+      <div class="tabs" role="tablist" aria-label="Herramientas" (keydown)="tecladoTabs($event)">
+        @for (p of pestanas; track p.id; let i = $index) {
+          <button
+            type="button"
+            role="tab"
+            class="tab"
+            [id]="'tab-' + p.id"
+            [attr.aria-selected]="pestana() === p.id"
+            [attr.aria-controls]="'panel-' + p.id"
+            [attr.tabindex]="pestana() === p.id ? 0 : -1"
+            (click)="elegir(p.id)"
+          >
+            <span class="tab__num">0{{ i + 1 }}</span>
+            <span class="tab__txt"
+              ><b class="tab__largo">{{ p.titulo }}</b
+              ><b class="tab__corto">{{ p.corto }}</b
+              ><small>{{ p.sub }}</small></span
+            >
+          </button>
+        }
+      </div>
+
+      <div class="panel-wrap">
+        <!-- IMC -->
+        @if (pestana() === 'imc') {
+          <div class="panel" role="tabpanel" id="panel-imc" aria-labelledby="tab-imc">
+            <div class="campos">
+              <label class="campo">
+                <span>Peso</span>
+                <span class="campo__in"
+                  ><input
+                    type="number"
+                    inputmode="decimal"
+                    min="20"
+                    max="350"
+                    step="0.1"
+                    placeholder="70"
+                    [value]="peso() ?? ''"
+                    (input)="peso.set(numero($any($event.target).value))"
+                  /><em>kg</em></span
+                >
+              </label>
+              <label class="campo">
+                <span>Estatura</span>
+                <span class="campo__in"
+                  ><input
+                    type="number"
+                    inputmode="numeric"
+                    min="100"
+                    max="250"
+                    placeholder="170"
+                    [value]="estatura() ?? ''"
+                    (input)="estatura.set(numero($any($event.target).value))"
+                  /><em>cm</em></span
+                >
+              </label>
+            </div>
+            <div class="res" aria-live="polite">
+              @if (imc(); as r) {
+                <div class="res__top">
+                  <span class="res__valor">{{ dec(r.valor) }}</span>
+                  <span class="chip" [attr.data-cat]="r.categoria">{{ r.etiqueta }}</span>
+                </div>
+                <div class="escala" aria-hidden="true">
+                  <span class="escala__seg escala__seg--bajo" style="flex: 3.5"></span>
+                  <span class="escala__seg escala__seg--normal" style="flex: 6.5"></span>
+                  <span class="escala__seg escala__seg--sobre" style="flex: 5"></span>
+                  <span class="escala__seg escala__seg--obes" style="flex: 10"></span>
+                  <span class="escala__marca" [style.left.%]="posImc()"></span>
+                </div>
+                <div class="escala__leyenda" aria-hidden="true">
+                  <span>15</span><span>18,5</span><span>25</span><span>30</span><span>40</span>
+                </div>
+                <p class="res__txt">
+                  Para tu estatura, el peso saludable va de <b>{{ dec(r.pesoSano[0]) }}</b> a
+                  <b>{{ dec(r.pesoSano[1]) }} kg</b>.
+                </p>
+                <a class="btn btn--wa" [href]="whatsapp(textoImc())" target="_blank" rel="noopener"
+                  >Comentar mi resultado con el doctor</a
+                >
+              } @else {
+                <p class="vacio">Escribe tu peso y estatura para ver tu resultado.</p>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Frecuencia cardíaca -->
+        @if (pestana() === 'fc') {
+          <div class="panel" role="tabpanel" id="panel-fc" aria-labelledby="tab-fc">
+            <div class="campos">
+              <label class="campo">
+                <span>Edad</span>
+                <span class="campo__in"
+                  ><input
+                    type="number"
+                    inputmode="numeric"
+                    min="15"
+                    max="100"
+                    placeholder="35"
+                    [value]="edad() ?? ''"
+                    (input)="edad.set(numero($any($event.target).value))"
+                  /><em>años</em></span
+                >
+              </label>
+              <label class="campo">
+                <span>Pulso en reposo <small>(opcional)</small></span>
+                <span class="campo__in"
+                  ><input
+                    type="number"
+                    inputmode="numeric"
+                    min="35"
+                    max="110"
+                    placeholder="65"
+                    [value]="reposo() ?? ''"
+                    (input)="reposo.set(numero($any($event.target).value))"
+                  /><em>lpm</em></span
+                >
+              </label>
+            </div>
+            <div class="res" aria-live="polite">
+              @if (fc(); as r) {
+                <div class="res__top">
+                  <span class="res__valor">{{ r.fcMax }}<small> lpm</small></span>
+                  <span class="chip">Frecuencia máxima estimada</span>
+                </div>
+                <ul class="zonas">
+                  @for (z of r.zonas; track z.nombre; let i = $index) {
+                    <li [style.--z]="i">
+                      <span class="zonas__barra"></span>
+                      <span class="zonas__txt"
+                        ><b>{{ z.nombre }}</b
+                        ><small>{{ z.descripcion }}</small></span
+                      >
+                      <span class="zonas__lpm">{{ z.min }}–{{ z.max }}</span>
+                    </li>
+                  }
+                </ul>
+                <p class="res__txt res__txt--peq">
+                  Calculado con
+                  {{
+                    r.metodo === 'karvonen'
+                      ? 'el método de Karvonen (usa tu pulso en reposo)'
+                      : 'la fórmula de Tanaka'
+                  }}. Si tomas medicamentos para el corazón o la presión, consulta antes de
+                  entrenar.
+                </p>
+                <a class="btn btn--wa" [href]="whatsapp(textoFc())" target="_blank" rel="noopener"
+                  >Quiero un plan de entrenamiento</a
+                >
+              } @else {
+                <p class="vacio">Escribe tu edad para ver tus zonas de entrenamiento.</p>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Actividad semanal -->
+        @if (pestana() === 'act') {
+          <div class="panel" role="tabpanel" id="panel-act" aria-labelledby="tab-act">
+            <div class="campos">
+              <label class="campo">
+                <span>Minutos de actividad <b>moderada</b> por semana</span>
+                <span class="campo__in"
+                  ><input
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    max="3000"
+                    placeholder="90"
+                    [value]="moderada() ?? ''"
+                    (input)="moderada.set(numero($any($event.target).value))"
+                  /><em>min</em></span
+                >
+                <small class="ayuda">Caminar rápido, bailar, montar bicicleta suave.</small>
+              </label>
+              <label class="campo">
+                <span>Minutos de actividad <b>vigorosa</b> por semana</span>
+                <span class="campo__in"
+                  ><input
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    max="3000"
+                    placeholder="30"
+                    [value]="vigorosa() ?? ''"
+                    (input)="vigorosa.set(numero($any($event.target).value))"
+                  /><em>min</em></span
+                >
+                <small class="ayuda">Trotar, nadar rápido, deportes de equipo.</small>
+              </label>
+              <div class="campo">
+                <span id="fuerza-l">Días de ejercicios de fuerza</span>
+                <div class="dias" role="radiogroup" aria-labelledby="fuerza-l">
+                  @for (d of [0, 1, 2, 3, 4]; track d) {
+                    <button
+                      type="button"
+                      role="radio"
+                      class="dia"
+                      [attr.aria-checked]="fuerza() === d"
+                      (click)="fuerza.set(d)"
+                    >
+                      {{ d === 4 ? '4+' : d }}
+                    </button>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="res res--act" aria-live="polite">
+              @if (act(); as r) {
+                <div class="anillo" [attr.data-nivel]="r.nivel">
+                  <svg viewBox="0 0 120 120" aria-hidden="true">
+                    <circle class="anillo__fondo" cx="60" cy="60" r="52" pathLength="1" />
+                    <circle class="anillo__meta" cx="60" cy="60" r="52" pathLength="1" />
+                    <circle
+                      class="anillo__valor"
+                      cx="60"
+                      cy="60"
+                      r="52"
+                      pathLength="1"
+                      [style.stroke-dasharray]="anillo() + ' 1'"
+                    />
+                  </svg>
+                  <span class="anillo__txt"
+                    ><b>{{ r.equivalentes }}</b
+                    ><small>min / semana</small></span
+                  >
+                </div>
+                <div>
+                  <p class="res__txt">{{ r.mensaje }}</p>
+                  <p class="res__txt" [class.ok]="r.fuerzaOk">
+                    {{
+                      r.fuerzaOk
+                        ? '✓ Cumples los 2 días de fuerza recomendados.'
+                        : 'Suma ejercicios de fuerza al menos 2 días por semana.'
+                    }}
+                  </p>
+                  <a
+                    class="btn btn--wa"
+                    [href]="whatsapp(textoAct())"
+                    target="_blank"
+                    rel="noopener"
+                    >Quiero un plan de ejercicio</a
+                  >
+                </div>
+              } @else {
+                <p class="vacio">
+                  Escribe tus minutos de actividad para compararlos con la recomendación de la OMS.
+                </p>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    <p class="aviso">Resultados orientativos para adultos; no reemplazan una valoración médica.</p>
+  </div>
+</section>

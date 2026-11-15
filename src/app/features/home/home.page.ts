@@ -4,6 +4,9 @@ import { Activity } from './sections/activity/activity';
 import { Booking } from './sections/booking/booking';
 import { Faq } from './sections/faq/faq';
 import { Galeria } from './sections/galeria/galeria';
+import { Herramientas } from './sections/herramientas/herramientas';
+import { Pasos } from './sections/pasos/pasos';
+import { Progreso } from '../../shared/components/progreso/progreso';
 import { Novedades } from './sections/novedades/novedades';
 import { Instagram } from './sections/instagram/instagram';
 import { Footer } from './sections/footer/footer';
@@ -22,6 +25,9 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     Activity,
     About,
     Galeria,
+    Herramientas,
+    Pasos,
+    Progreso,
     Novedades,
     Booking,
     Faq,
@@ -32,13 +38,16 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
+    <app-progreso />
     <app-header />
     <main>
       <app-hero />
       <app-services />
       <app-activity />
+      <app-herramientas />
       <app-galeria />
       <app-about />
+      <app-pasos />
       <app-booking />
       <app-faq />
       <app-novedades />

@@ -20,7 +20,7 @@ import { Reveal } from '../../../../shared/directives/reveal';
           [appReveal]="120"
           [imagenes]="publicaciones"
           etiqueta="Publicaciones del consultorio"
-          columna="clamp(220px, 23%, 280px)"
+          columna="clamp(240px, 27%, 320px)"
           [compartir]="true"
           [textoCompartir]="textoCompartir"
           [intervalo]="4500"

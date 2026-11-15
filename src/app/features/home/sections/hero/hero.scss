@@ -3,7 +3,7 @@
 }
 .hero__grid {
   display: grid;
-  grid-template-columns: 1.25fr 0.75fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 48px;
   align-items: center;
 }
@@ -33,13 +33,105 @@ h1 {
 .hero__art {
   display: flex;
   justify-content: center;
+}
+
+/* Foto en arco con tarjetas flotantes */
+.arco {
+  position: relative;
+  width: min(100%, 380px);
+  aspect-ratio: 4 / 5;
+}
+.arco__fondo {
+  position: absolute;
+  inset: 22px -22px -22px 22px;
+  border-radius: 999px 999px 28px 28px;
+  border: 1.5px solid var(--clay);
+  opacity: 0.55;
+}
+.arco__foto {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px 999px 28px 28px;
+  box-shadow: 0 30px 60px -20px rgba(20, 40, 46, 0.45);
+}
+.sello {
+  position: absolute;
+  left: -26px;
+  bottom: 54px;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ground);
   color: var(--slate);
-  app-logo {
-    width: 100%;
-    max-width: 340px;
-    justify-content: center;
+  box-shadow: 0 12px 30px rgba(20, 40, 46, 0.18);
+}
+.flota {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px 12px 12px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--card) 88%, transparent);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 16px 34px -12px rgba(20, 40, 46, 0.35);
+  line-height: 1.2;
+  b {
+    display: block;
+    color: var(--slate-ink);
+    font-weight: 500;
+    font-size: 15px;
+  }
+  small {
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
   }
 }
+.flota__ic {
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: var(--slate);
+  color: var(--on-slate);
+  flex: none;
+}
+.flota--1 {
+  top: 18%;
+  right: -46px;
+}
+.flota--2 {
+  bottom: 12%;
+  right: -30px;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .flota--1 {
+    animation: flotar 6s ease-in-out infinite;
+  }
+  .flota--2 {
+    animation: flotar 7s ease-in-out 1.2s infinite;
+  }
+  .arco__fondo {
+    animation: respirar 8s ease-in-out infinite;
+  }
+}
+@keyframes flotar {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+@keyframes respirar {
+  50% {
+    transform: translate(-8px, -8px);
+  }
+}
+
 .hero__creds {
   display: flex;
   flex-wrap: wrap;
@@ -62,9 +154,20 @@ h1 {
     grid-template-columns: 1fr;
   }
   .hero__art {
-    order: -1;
-    app-logo {
-      max-width: 140px;
-    }
+    margin-top: 12px;
+  }
+  .arco {
+    width: min(78%, 320px);
+  }
+  .flota--1 {
+    right: -34px;
+  }
+  .flota--2 {
+    right: -18px;
+  }
+  .sello {
+    left: -18px;
+    width: 76px;
+    height: 76px;
   }
 }

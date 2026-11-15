@@ -52,7 +52,7 @@
 
 .links {
   display: flex;
-  gap: 26px;
+  gap: 22px;
   font-size: 15px;
   a {
     position: relative;
@@ -85,6 +85,29 @@
 .nav__cta {
   padding: 11px 20px;
   font-size: 14px;
+}
+.nav__der {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.tema {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--slate-ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  &:hover {
+    border-color: var(--slate);
+    transform: rotate(-20deg);
+  }
 }
 
 /* Menú en celular */
@@ -126,7 +149,7 @@
   transition: max-height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .header--menu .movil {
-  max-height: 420px;
+  max-height: 620px;
 }
 .movil__inner {
   display: flex;
@@ -155,11 +178,17 @@
   transform: none;
 }
 
+@media (max-width: 1180px) {
+  .links {
+    display: none;
+  }
+}
 @media (max-width: 860px) {
-  .links,
   .nav__cta {
     display: none;
   }
+}
+@media (max-width: 1180px) {
   .burger,
   .movil {
     display: block;

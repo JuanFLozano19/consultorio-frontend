@@ -14,13 +14,56 @@
         </div>
         <app-estado class="hero__estado entrada entrada--5" />
       </div>
-      <div class="hero__art">
-        <app-logo
-          [animado]="true"
-          [size]="360"
-          [strokeWidth]="3.2"
-          label="Logo: estetoscopio en forma de corazón con las iniciales JP"
-        />
+      <div class="hero__art entrada entrada--3">
+        <div class="arco">
+          <span class="arco__fondo" aria-hidden="true"></span>
+          <img
+            class="arco__foto"
+            src="images/dr-jeison-hero.webp"
+            [alt]="'Dr. ' + doctor.fullName + ', médico general'"
+            width="720"
+            height="900"
+            fetchpriority="high"
+          />
+          <div class="sello" aria-hidden="true">
+            <app-logo [animado]="true" [size]="62" [strokeWidth]="5" />
+          </div>
+          <div class="flota flota--1">
+            <span class="flota__ic" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M3 12h4l3-8 4 16 3-8h4" />
+              </svg>
+            </span>
+            <span><b>Máster</b><small>Actividad física y salud</small></span>
+          </div>
+          <div class="flota flota--2">
+            <span class="flota__ic" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+              </svg>
+            </span>
+            <span><b>Con tiempo</b><small>para escucharte</small></span>
+          </div>
+        </div>
       </div>
     </div>
     <div class="hero__creds entrada entrada--5">
