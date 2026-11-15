@@ -1,0 +1,246 @@
+<div
+  class="car"
+  role="region"
+  aria-roledescription="carrusel"
+  [attr.aria-label]="etiqueta()"
+  (keydown)="teclado($event)"
+  (pointerenter)="encima.set(true)"
+  (pointerleave)="encima.set(false)"
+  (focusin)="enfocado.set(true)"
+  (focusout)="enfocado.set(false)"
+>
+  <div
+    #escena
+    class="escena"
+    [class.escena--arrastre]="arrastrando()"
+    [style.--w.px]="anchoReal()"
+    (pointerdown)="bajar($event)"
+    (pointermove)="mover($event)"
+    (pointerup)="soltar()"
+    (pointercancel)="soltar()"
+  >
+    <div
+      class="anillo"
+      [style.transform]="'translateZ(' + -radio() + 'px) rotateY(' + -giro() * paso() + 'deg)'"
+    >
+      @for (img of imagenes(); track img.src; let i = $index) {
+        <figure
+          class="carta"
+          [class.carta--frente]="i === actual()"
+          [style.--i]="i"
+          [style.transform]="'rotateY(' + i * paso() + 'deg) translateZ(' + radio() + 'px)'"
+          [style.--brillo]="brillo(i)"
+          [style.opacity]="opacidad(i)"
+          [style.pointer-events]="tocable(i) ? null : 'none'"
+          [style.z-index]="tocable(i) ? 2 : 0"
+          role="group"
+          aria-roledescription="diapositiva"
+          [attr.aria-label]="i + 1 + ' de ' + imagenes().length"
+          [attr.aria-hidden]="i === actual() ? null : 'true'"
+        >
+          <button
+            type="button"
+            class="carta__btn"
+            [attr.tabindex]="i === actual() ? 0 : -1"
+            (click)="tocar(i)"
+            [attr.aria-label]="'Ver en grande: ' + (img.titulo ?? img.alt)"
+          >
+            <img
+              [src]="img.src"
+              [alt]="img.alt"
+              [attr.width]="img.ancho"
+              [attr.height]="img.alto"
+              loading="lazy"
+              decoding="async"
+              draggable="false"
+            />
+            <span class="vidrio vidrio--izq" aria-hidden="true">
+              <svg
+                viewBox="0 0 24 24"
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+              </svg>
+            </span>
+            <span class="vidrio vidrio--der" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path
+                  d="M12 21s-7.5-4.6-9.5-9.2C1.2 8.6 3.3 5 6.8 5c2 0 3.6 1.1 5.2 3 1.6-1.9 3.2-3 5.2-3 3.5 0 5.6 3.6 4.3 6.8C19.5 16.4 12 21 12 21z"
+                />
+              </svg>
+            </span>
+            @if (img.titulo && mostrarTitulo()) {
+              <span class="pildora">{{ img.titulo }}</span>
+            }
+          </button>
+        </figure>
+      }
+    </div>
+  </div>
+
+  <div class="ctrl">
+    <div class="dots" role="group" aria-label="Elegir imagen">
+      @for (img of imagenes(); track img.src; let i = $index) {
+        <button
+          type="button"
+          class="dot"
+          [class.dot--on]="i === actual()"
+          [class.dot--corre]="i === actual() && corriendo()"
+          [attr.aria-label]="'Ir a la imagen ' + (i + 1)"
+          [attr.aria-current]="i === actual() ? 'true' : null"
+          (click)="irA(i)"
+        >
+          <span></span>
+        </button>
+      }
+    </div>
+    <div class="nav">
+      <span class="contador" aria-hidden="true"
+        >{{ dosDigitos(actual() + 1) }} / {{ dosDigitos(imagenes().length) }}</span
+      >
+      <button
+        type="button"
+        class="redondo"
+        (click)="pausa.set(!pausa())"
+        [attr.aria-label]="
+          pausa() ? 'Reanudar el avance automático' : 'Pausar el avance automático'
+        "
+      >
+        @if (pausa()) {
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        } @else {
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+            <path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" />
+          </svg>
+        }
+      </button>
+      <button type="button" class="redondo" (click)="anterior()" aria-label="Imagen anterior">
+        <svg
+          viewBox="0 0 24 24"
+          width="22"
+          height="22"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m15 5-7 7 7 7" />
+        </svg>
+      </button>
+      <button type="button" class="redondo" (click)="siguiente()" aria-label="Imagen siguiente">
+        <svg
+          viewBox="0 0 24 24"
+          width="22"
+          height="22"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m9 5 7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<dialog
+  #visor
+  class="lb"
+  [attr.aria-label]="'Imagen ampliada: ' + (abierta()?.titulo ?? '')"
+  (click)="clickFondo($event)"
+  (close)="indiceVisor.set(null)"
+  (keydown)="tecladoVisor($event)"
+>
+  @if (abierta(); as img) {
+    <figure class="lb__fig" (pointerdown)="inicioGesto($event)" (pointerup)="finGesto($event)">
+      @for (k of claveVisor(); track k) {
+        <img
+          class="lb__img"
+          [class.lb__img--izq]="direccion() < 0"
+          [src]="img.src"
+          [alt]="img.alt"
+          [attr.width]="img.ancho"
+          [attr.height]="img.alto"
+        />
+      }
+      <figcaption>
+        <span class="lb__titulo">{{ img.titulo ?? img.alt }}</span>
+        <span class="lb__num">{{ (indiceVisor() ?? 0) + 1 }} / {{ imagenes().length }}</span>
+        @if (compartir()) {
+          <span class="lb__acciones">
+            <a
+              class="lb__btn lb__btn--wa"
+              [href]="enlaceCompartir(img)"
+              target="_blank"
+              rel="noopener"
+              >Compartir por WhatsApp</a
+            >
+            <a class="lb__btn" [href]="img.src" [attr.download]="nombreDescarga(img)">Descargar</a>
+          </span>
+        }
+      </figcaption>
+    </figure>
+    <button type="button" class="lb__x" (click)="cerrar()" aria-label="Cerrar">
+      <svg
+        viewBox="0 0 24 24"
+        width="24"
+        height="24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      >
+        <path d="M6 6l12 12M18 6 6 18" />
+      </svg>
+    </button>
+    <button
+      type="button"
+      class="lb__flecha lb__flecha--izq"
+      (click)="moverVisor(-1)"
+      aria-label="Anterior"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="26"
+        height="26"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m15 5-7 7 7 7" />
+      </svg>
+    </button>
+    <button
+      type="button"
+      class="lb__flecha lb__flecha--der"
+      (click)="moverVisor(1)"
+      aria-label="Siguiente"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        width="26"
+        height="26"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m9 5 7 7-7 7" />
+      </svg>
+    </button>
+  }
+</dialog>

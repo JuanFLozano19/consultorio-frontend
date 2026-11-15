@@ -2,157 +2,201 @@
   display: block;
 }
 
-.track {
+/* ----- Escena 3D ----- */
+.escena {
   position: relative;
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: var(--col);
-  gap: 26px;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
-  /* Relleno lateral para que la primera y la última tarjeta puedan quedar al centro */
-  padding: 26px calc((100% - var(--col)) / 2) 14px;
-  perspective: 1400px;
-  -webkit-overflow-scrolling: touch;
-  /* Bordes que se desvanecen */
-  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  @media (max-width: 640px) {
-    --col: 74%;
-    gap: 12px;
-    mask-image: none;
-  }
+  height: calc(var(--w) * 1.25 + 90px);
+  perspective: 1100px;
+  perspective-origin: 50% 40%;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  /* Bordes laterales que se desvanecen */
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
 }
-
-.slide {
-  --d: 0;
-  --ad: 0;
-  margin: 0;
-  scroll-snap-align: center;
-  min-width: 0;
+.escena--arrastre {
+  cursor: grabbing;
+}
+.anillo {
+  position: absolute;
+  left: 50%;
+  top: 34px;
+  width: var(--w);
+  margin-left: calc(var(--w) / -2);
   transform-style: preserve-3d;
-  /* Profundidad: gira, se achica y se atenúa según la distancia al centro */
-  transform: translateZ(calc(var(--ad) * -90px)) rotateY(calc(var(--d) * -14deg))
-    scale(calc(1 - var(--ad) * 0.07));
-  opacity: calc(1 - var(--ad) * 0.28);
-  filter: saturate(calc(1 - var(--ad) * 0.35));
-  transition:
-    transform 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.25s,
-    filter 0.25s;
-  will-change: transform;
+  transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.escena--arrastre .anillo,
+.escena--arrastre .carta {
+  transition: none;
 }
 
-/* Entrada escalonada la primera vez que el carrusel aparece en pantalla */
-:host(:not(.entrado)) .slide {
+/* Entrada: el anillo llega girando desde atrás */
+:host(:not(.entrado)) .anillo {
   opacity: 0;
-  transform: translateY(60px) rotateX(12deg) scale(0.92);
 }
-:host(.entrado) .slide {
-  animation: llegar 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(min(var(--i), 6) * 70ms);
+:host(.entrado) .escena {
+  animation: entrarEscena 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-@keyframes llegar {
+@keyframes entrarEscena {
   from {
     opacity: 0;
-    transform: translateY(60px) rotateX(12deg) scale(0.92);
+    transform: translateY(40px) scale(0.92);
   }
 }
 
-.slide__btn {
+.carta {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: var(--w);
+  margin: 0;
+  backface-visibility: visible;
+  filter: brightness(var(--brillo));
+  transition:
+    filter 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.6s;
+}
+
+/* Tarjeta de vidrio */
+.carta__btn {
   position: relative;
   display: block;
   width: 100%;
   padding: 0;
   border: 0;
-  border-radius: 24px;
+  border-radius: 26px;
   overflow: hidden;
-  background: var(--line);
   cursor: pointer;
-  box-shadow: 0 14px 28px -10px rgba(20, 40, 46, calc(0.1 + (1 - min(var(--ad), 1)) * 0.25));
-  transition: box-shadow 0.4s;
+  background: #16252a;
+  /* Borde de vidrio: brillo exterior + reflejo interior */
+  box-shadow:
+    0 0 0 1.5px rgba(255, 255, 255, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.35),
+    0 26px 50px -18px rgba(10, 22, 26, 0.6);
   img {
     width: 100%;
     height: auto;
     aspect-ratio: var(--ratio);
     object-fit: cover;
-    user-select: none;
-    /* Paralaje: la foto se desplaza dentro del marco al deslizar */
-    transform: translateX(calc(var(--d) * -7%)) scale(1.16);
-    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+    display: block;
+    pointer-events: none;
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
   }
-  /* Brillo que cruza la tarjeta activa al pasar el mouse */
-  &::after {
+  /* Reflejo líquido sobre el vidrio */
+  &::before {
     content: '';
     position: absolute;
     inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        125deg,
+        rgba(255, 255, 255, 0.38) 0%,
+        rgba(255, 255, 255, 0.08) 18%,
+        transparent 34%,
+        transparent 70%,
+        rgba(255, 255, 255, 0.12) 100%
+      ),
+      radial-gradient(120% 60% at 50% 120%, rgba(0, 0, 0, 0.45), transparent 60%);
+    box-shadow:
+      inset 0 2px 1px rgba(255, 255, 255, 0.5),
+      inset 0 -2px 6px rgba(0, 0, 0, 0.25);
+  }
+  /* Destello que cruza la tarjeta del frente */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    z-index: 1;
     background: linear-gradient(
-      115deg,
-      transparent 35%,
-      rgba(255, 255, 255, 0.28) 50%,
-      transparent 65%
+      105deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.35) 50%,
+      transparent 60%
     );
-    transform: translateX(-120%);
+    transform: translateX(-100%);
     pointer-events: none;
   }
 }
-.slide--activa .slide__btn {
+.carta--frente .carta__btn {
   cursor: zoom-in;
-  &:hover::after {
-    transform: translateX(120%);
-    transition: transform 0.9s ease;
+  &::after {
+    animation: destello 1.4s 0.5s ease-out;
   }
   &:hover img {
-    transform: scale(1.22);
-    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: scale(1.06);
+  }
+}
+@keyframes destello {
+  to {
+    transform: translateX(100%);
   }
 }
 
-.slide__zoom {
+/* Botoncitos de vidrio en las esquinas */
+.vidrio {
   position: absolute;
-  right: 14px;
-  bottom: 14px;
-  width: 44px;
-  height: 44px;
+  top: 12px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.92);
-  color: #2f474f;
-  opacity: 0;
-  transform: scale(0.6);
-  transition:
-    opacity 0.35s,
-    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
-  z-index: 1;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(10px) saturate(1.4);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.6),
+    0 0 0 1px rgba(255, 255, 255, 0.35);
 }
-.slide--activa .slide__zoom {
-  opacity: 1;
-  transform: none;
+.vidrio--izq {
+  left: 12px;
+}
+.vidrio--der {
+  right: 12px;
+  color: #ffd5c4;
 }
 
-figcaption {
-  margin-top: 14px;
-  font-size: 15px;
+/* Píldora esmerilada con el título */
+.pildora {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 2;
+  padding: 10px 14px;
+  border-radius: 999px;
   text-align: center;
-  color: var(--muted);
-  opacity: 0;
-  transform: translateY(8px);
-  transition:
-    opacity 0.4s,
-    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    color 0.3s;
-}
-.slide--activa figcaption {
-  opacity: 1;
-  transform: none;
-  color: var(--slate-ink);
+  color: #fff;
+  font-size: 14px;
   font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(14px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.3);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 640px) {
+  .escena {
+    mask-image: none;
+    perspective: 1100px;
+  }
+  .carta__btn {
+    border-radius: 22px;
+  }
+  .pildora {
+    font-size: 13px;
+    padding: 8px 10px;
+  }
 }
 
 /* ----- Controles ----- */
@@ -399,18 +443,13 @@ figcaption {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .track {
-    scroll-behavior: auto;
-  }
-  .slide,
-  :host(.entrado) .slide,
-  :host(:not(.entrado)) .slide,
-  .slide__btn img {
-    transform: none;
-    animation: none;
+  .anillo,
+  .carta,
+  .carta__btn img {
     transition: none;
-    opacity: 1;
   }
+  :host(.entrado) .escena,
+  .carta--frente .carta__btn::after,
   .lb__img {
     animation: none;
   }
