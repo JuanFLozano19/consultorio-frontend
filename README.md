@@ -92,3 +92,15 @@ src/
 4. Aprobado: Pull Request `preproduccion` → `main` (publica).
 
 GitHub Actions (`.github/workflows/ci.yml`) compila y corre las pruebas en cada push y Pull Request de las tres ramas.
+
+## Galería y publicaciones (carruseles)
+
+Las fotos de la sección **Galería** y las piezas de **Novedades** se configuran en
+`src/app/core/config/galeria.ts`. Para agregar una imagen:
+
+1. Guárdela en `public/images/galeria/` o `public/images/publicidad/` (WebP de ~900 px de ancho es lo ideal).
+2. Agregue una línea en `GALERIA` o `PUBLICACIONES` con la ruta, la descripción y el título.
+
+El carrusel (`src/app/shared/components/carrusel`) se desliza con el dedo, las flechas o el
+teclado, avanza solo (con botón de pausa) y abre cada imagen en grande; en Novedades además
+permite compartir por WhatsApp y descargar.

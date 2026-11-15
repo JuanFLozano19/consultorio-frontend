@@ -25,6 +25,7 @@ export class Header {
   protected readonly links = [
     { href: '#servicios', label: 'Servicios' },
     { href: '#actividad', label: 'Actividad física' },
+    { href: '#galeria', label: 'Galería' },
     { href: '#sobre-mi', label: 'Sobre mí' },
     { href: '#preguntas', label: 'Preguntas' },
     { href: '#ubicacion', label: 'Ubicación' },

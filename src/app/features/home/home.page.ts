@@ -3,6 +3,8 @@ import { About } from './sections/about/about';
 import { Activity } from './sections/activity/activity';
 import { Booking } from './sections/booking/booking';
 import { Faq } from './sections/faq/faq';
+import { Galeria } from './sections/galeria/galeria';
+import { Novedades } from './sections/novedades/novedades';
 import { Instagram } from './sections/instagram/instagram';
 import { Footer } from './sections/footer/footer';
 import { Header } from './sections/header/header';
@@ -19,6 +21,8 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     Services,
     Activity,
     About,
+    Galeria,
+    Novedades,
     Booking,
     Faq,
     Instagram,
@@ -33,9 +37,11 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
       <app-hero />
       <app-services />
       <app-activity />
+      <app-galeria />
       <app-about />
       <app-booking />
       <app-faq />
+      <app-novedades />
       <app-instagram />
       <app-location />
     </main>
