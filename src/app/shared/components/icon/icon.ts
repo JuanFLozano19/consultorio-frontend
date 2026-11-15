@@ -40,6 +40,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
             stroke="none"
           />
         }
+        @case ('pin') {
+          <path d="M20 36s-11-10-11-18a11 11 0 0 1 22 0c0 8-11 18-11 18z" />
+          <circle cx="20" cy="18" r="4" />
+        }
         @case ('instagram') {
           <rect x="7" y="7" width="26" height="26" rx="8" />
           <circle cx="20" cy="20" r="6" />

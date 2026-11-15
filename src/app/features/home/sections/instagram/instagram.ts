@@ -21,6 +21,23 @@ import { Reveal } from '../../../../shared/directives/reveal';
           </div>
           <a class="btn btn--ghost" [href]="href" target="_blank" rel="noopener">Ver perfil</a>
         </div>
+        <div class="wrap mosaico">
+          @for (f of fotos; track f; let i = $index) {
+            <a
+              class="mosaico__item"
+              [href]="href"
+              target="_blank"
+              rel="noopener"
+              [appReveal]="i * 80"
+              [attr.aria-label]="'Ver en Instagram'"
+            >
+              <img [src]="f" alt="" width="720" height="900" loading="lazy" />
+              <span class="mosaico__over" aria-hidden="true"
+                ><app-icon name="instagram" [size]="34"
+              /></span>
+            </a>
+          }
+        </div>
       </section>
     }
   `,
@@ -60,9 +77,62 @@ import { Reveal } from '../../../../shared/directives/reveal';
     p:not(.eyebrow) {
       color: var(--muted);
     }
+    .mosaico {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin-top: 40px;
+    }
+    .mosaico__item {
+      position: relative;
+      display: block;
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      &:hover img {
+        transform: scale(1.08);
+      }
+      &:hover .mosaico__over {
+        opacity: 1;
+      }
+    }
+    .mosaico__over {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      background: linear-gradient(
+        135deg,
+        rgba(131, 58, 180, 0.55),
+        rgba(253, 29, 29, 0.45),
+        rgba(252, 176, 69, 0.5)
+      );
+      opacity: 0;
+      transition: opacity 0.35s;
+    }
+    @media (max-width: 760px) {
+      .mosaico {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
   `,
 })
 export class Instagram {
   protected readonly usuario = SITE.contact.instagram;
   protected readonly href = instagramHref();
+  protected readonly fotos = [
+    'images/publicidad/01-tu-salud.webp',
+    'images/publicidad/03-movimiento.webp',
+    'images/publicidad/08-agenda-pop.webp',
+    'images/publicidad/02-diagnostico.webp',
+    'images/publicidad/12-actividad.webp',
+    'images/publicidad/06-plan-ejercicio.webp',
+  ];
 }

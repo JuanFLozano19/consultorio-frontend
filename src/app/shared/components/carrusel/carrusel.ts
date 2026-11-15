@@ -68,6 +68,9 @@ export class Carrusel {
   protected readonly entrado = signal(false);
   protected readonly indiceVisor = signal<number | null>(null);
   protected readonly direccion = signal(1);
+  /** Acercamiento en la vista ampliada; el punto de origen sigue al puntero. */
+  protected readonly zoom = signal(false);
+  protected readonly origenZoom = signal('50% 50%');
   protected readonly claveVisor = computed(() => [this.indiceVisor() ?? -1]);
   protected readonly abierta = computed(() => {
     const i = this.indiceVisor();
@@ -232,7 +235,23 @@ export class Carrusel {
     this.visor().nativeElement.close();
   }
 
+  /** Salta a una miniatura. */
+  protected irVisor(i: number): void {
+    const actual = this.indiceVisor() ?? 0;
+    if (i === actual) return;
+    this.moverVisor(i - actual);
+  }
+
+  protected moverZoom(e: PointerEvent): void {
+    if (!this.zoom()) return;
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    const x = Math.round(((e.clientX - r.left) / r.width) * 100);
+    const y = Math.round(((e.clientY - r.top) / r.height) * 100);
+    this.origenZoom.set(`${x}% ${y}%`);
+  }
+
   protected moverVisor(delta: number): void {
+    this.zoom.set(false);
     this.direccion.set(delta < 0 ? -1 : 1);
     const n = this.imagenes().length;
     const i = ((this.indiceVisor() ?? 0) + delta + n) % n;
@@ -243,10 +262,12 @@ export class Carrusel {
   protected tecladoVisor(e: KeyboardEvent): void {
     if (e.key === 'ArrowRight') this.moverVisor(1);
     else if (e.key === 'ArrowLeft') this.moverVisor(-1);
+    else if (e.key === '+' || e.key === '-') this.zoom.set(e.key === '+');
   }
 
   protected clickFondo(e: MouseEvent): void {
-    if (e.target === this.visor().nativeElement) this.cerrar();
+    const t = e.target as HTMLElement;
+    if (t === this.visor().nativeElement || t.classList.contains('lb__fig')) this.cerrar();
   }
 
   protected inicioGesto(e: PointerEvent): void {
@@ -254,7 +275,10 @@ export class Carrusel {
   }
 
   protected finGesto(e: PointerEvent): void {
-    if (this.gestoX === null) return;
+    if (this.gestoX === null || this.zoom()) {
+      this.gestoX = null;
+      return;
+    }
     const dx = e.clientX - this.gestoX;
     this.gestoX = null;
     if (Math.abs(dx) > 50) this.moverVisor(dx < 0 ? 1 : -1);

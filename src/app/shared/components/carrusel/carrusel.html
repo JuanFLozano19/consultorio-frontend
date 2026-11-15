@@ -159,24 +159,107 @@
   class="lb"
   [attr.aria-label]="'Imagen ampliada: ' + (abierta()?.titulo ?? '')"
   (click)="clickFondo($event)"
-  (close)="indiceVisor.set(null)"
+  (close)="indiceVisor.set(null); zoom.set(false)"
   (keydown)="tecladoVisor($event)"
 >
   @if (abierta(); as img) {
-    <figure class="lb__fig" (pointerdown)="inicioGesto($event)" (pointerup)="finGesto($event)">
+    <!-- Fondo: la misma foto, desenfocada -->
+    @for (k of claveVisor(); track k) {
+      <div
+        class="lb__ambiente"
+        [style.background-image]="'url(' + img.src + ')'"
+        aria-hidden="true"
+      ></div>
+    }
+
+    <header class="lb__barra">
+      <span class="lb__num">
+        <b>{{ dosDigitos((indiceVisor() ?? 0) + 1) }}</b> / {{ dosDigitos(imagenes().length) }}
+      </span>
+      <span class="lb__prog" aria-hidden="true">
+        <span
+          [style.transform]="'scaleX(' + ((indiceVisor() ?? 0) + 1) / imagenes().length + ')'"
+        ></span>
+      </span>
+      <span class="lb__herr">
+        <button
+          type="button"
+          class="lb__ic"
+          (click)="zoom.set(!zoom())"
+          [attr.aria-pressed]="zoom()"
+          [attr.aria-label]="zoom() ? 'Alejar' : 'Acercar'"
+        >
+          @if (zoom()) {
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5M8 11h6" />
+            </svg>
+          } @else {
+            <svg
+              viewBox="0 0 24 24"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-3.5-3.5M11 8v6M8 11h6" />
+            </svg>
+          }
+        </button>
+        <button type="button" class="lb__ic" (click)="cerrar()" aria-label="Cerrar">
+          <svg
+            viewBox="0 0 24 24"
+            width="22"
+            height="22"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </span>
+    </header>
+
+    <figure
+      class="lb__fig"
+      [class.lb__fig--zoom]="zoom()"
+      (pointerdown)="inicioGesto($event)"
+      (pointerup)="finGesto($event)"
+      (pointermove)="moverZoom($event)"
+    >
       @for (k of claveVisor(); track k) {
-        <img
-          class="lb__img"
-          [class.lb__img--izq]="direccion() < 0"
-          [src]="img.src"
-          [alt]="img.alt"
-          [attr.width]="img.ancho"
-          [attr.height]="img.alto"
-        />
+        <div class="lb__marco" [class.lb__marco--izq]="direccion() < 0">
+          <img
+            class="lb__img"
+            [src]="img.src"
+            [alt]="img.alt"
+            [attr.width]="img.ancho"
+            [attr.height]="img.alto"
+            [style.transform-origin]="origenZoom()"
+            (click)="zoom.set(!zoom())"
+            draggable="false"
+          />
+        </div>
       }
-      <figcaption>
-        <span class="lb__titulo">{{ img.titulo ?? img.alt }}</span>
-        <span class="lb__num">{{ (indiceVisor() ?? 0) + 1 }} / {{ imagenes().length }}</span>
+    </figure>
+
+    <div class="lb__pie">
+      <div class="lb__info">
+        <p class="lb__eyebrow">{{ etiqueta() }}</p>
+        <p class="lb__titulo">{{ img.titulo ?? img.alt }}</p>
         @if (compartir()) {
           <span class="lb__acciones">
             <a
@@ -184,26 +267,55 @@
               [href]="enlaceCompartir(img)"
               target="_blank"
               rel="noopener"
-              >Compartir por WhatsApp</a
             >
-            <a class="lb__btn" [href]="img.src" [attr.download]="nombreDescarga(img)">Descargar</a>
+              <svg
+                viewBox="0 0 40 40"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.4"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M7 33l2.2-6.5A13.3 13.3 0 1 1 13.5 31z" />
+              </svg>
+              Compartir
+            </a>
+            <a class="lb__btn" [href]="img.src" [attr.download]="nombreDescarga(img)">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 4v11m-5-5 5 5 5-5M5 20h14" />
+              </svg>
+              Descargar
+            </a>
           </span>
         }
-      </figcaption>
-    </figure>
-    <button type="button" class="lb__x" (click)="cerrar()" aria-label="Cerrar">
-      <svg
-        viewBox="0 0 24 24"
-        width="24"
-        height="24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-      >
-        <path d="M6 6l12 12M18 6 6 18" />
-      </svg>
-    </button>
+      </div>
+      <div class="lb__miniaturas" role="group" aria-label="Elegir imagen">
+        @for (m of imagenes(); track m.src; let i = $index) {
+          <button
+            type="button"
+            class="lb__mini"
+            [class.lb__mini--on]="i === indiceVisor()"
+            [attr.aria-label]="'Ver imagen ' + (i + 1)"
+            [attr.aria-current]="i === indiceVisor() ? 'true' : null"
+            (click)="irVisor(i)"
+          >
+            <img [src]="m.src" alt="" loading="lazy" draggable="false" />
+          </button>
+        }
+      </div>
+    </div>
+
     <button
       type="button"
       class="lb__flecha lb__flecha--izq"

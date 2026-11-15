@@ -1,33 +1,96 @@
-<footer class="footer">
-  <div class="wrap footer__inner">
-    <div class="footer__brand">
-      <app-logo [size]="44" />
-      <span>
-        <span class="footer__name">{{ doctor.name }}</span>
-        <span class="footer__sub">{{ doctor.title.toUpperCase() }}</span>
-      </span>
+<!-- Franja de llamado a la acción -->
+<section class="cta" aria-labelledby="cta-titulo">
+  <div class="wrap cta__inner">
+    <div>
+      <p class="cta__eyebrow">Consulta particular · {{ address.floor }}, {{ address.building }}</p>
+      <h2 id="cta-titulo">Tu salud no puede esperar. <em>Agenda hoy.</em></h2>
     </div>
-    <p>
-      Registro médico {{ doctor.medicalRegistry }} · {{ address.street }},
-      {{ address.floor.toLowerCase() }},
-      {{ address.building }}
-    </p>
-    @if (instagram) {
-      <a
-        class="footer__ig"
-        [href]="instagramHref"
-        target="_blank"
-        rel="noopener"
-        [attr.aria-label]="'Instagram @' + instagram"
-      >
-        <app-icon name="instagram" [size]="26" /> &#64;{{ instagram }}
+    <div class="cta__acciones">
+      <a class="btn cta__btn" href="#reserva">Reservar consulta</a>
+      <a class="btn cta__wa" [href]="wa" target="_blank" rel="noopener">
+        <app-icon name="whatsapp" [size]="22" /> {{ waTexto }}
       </a>
-    }
-    <p class="footer__copy">
-      © {{ year }} {{ doctor.name }}
-      @if (enLinea) {
-        · <a routerLink="/admin">Acceso consultorio</a>
-      }
-    </p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div class="footer__col footer__col--marca">
+        <div class="footer__brand">
+          <app-logo [size]="48" />
+          <span>
+            <span class="footer__name">{{ doctor.name }}</span>
+            <span class="footer__sub">{{ doctor.title.toUpperCase() }}</span>
+          </span>
+        </div>
+        <p class="footer__lema">
+          Medicina general con tiempo para escucharte y un plan de actividad física para tu salud.
+        </p>
+        <p class="footer__reg">Registro médico {{ doctor.medicalRegistry }}</p>
+      </div>
+
+      <nav class="footer__col" aria-label="Secciones del sitio">
+        <h3>Explora</h3>
+        <ul>
+          @for (l of links; track l.href) {
+            <li>
+              <a [href]="l.href">{{ l.label }}</a>
+            </li>
+          }
+        </ul>
+      </nav>
+
+      <div class="footer__col">
+        <h3>Horario</h3>
+        <ul class="footer__horario">
+          @for (h of horario; track h.dias) {
+            <li>
+              <span>{{ h.dias }}</span
+              ><b>{{ h.texto }}</b>
+            </li>
+          }
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h3>Contacto</h3>
+        <ul class="footer__contacto">
+          <li>
+            <a [href]="maps" target="_blank" rel="noopener">
+              <app-icon name="pin" [size]="22" />
+              <span
+                >{{ address.street }}, {{ address.floor.toLowerCase() }}<br />{{
+                  address.building
+                }}</span
+              >
+            </a>
+          </li>
+          <li>
+            <a [href]="wa" target="_blank" rel="noopener"
+              ><app-icon name="whatsapp" [size]="22" /> {{ waTexto }}</a
+            >
+          </li>
+          @if (instagram) {
+            <li>
+              <a [href]="instagramHref" target="_blank" rel="noopener"
+                ><app-icon name="instagram" [size]="22" /> &#64;{{ instagram }}</a
+              >
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__base">
+      <p>
+        © {{ year }} {{ doctor.name }}
+        @if (enLinea) {
+          · <a routerLink="/admin">Acceso consultorio</a>
+        }
+      </p>
+      <a class="footer__arriba" href="#inicio">Volver arriba ↑</a>
+    </div>
   </div>
 </footer>

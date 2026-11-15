@@ -1,21 +1,39 @@
 <section id="servicios" class="band band--sand">
   <div class="wrap">
-    <div class="section-head" appReveal>
-      <p class="eyebrow">Servicios</p>
-      <h2>Lo que hacemos en consulta</h2>
-      <p>
-        Atención particular, sin filas ni afanes. Si no ves lo que necesitas, escríbenos y te
-        orientamos.
-      </p>
+    <div class="cab">
+      <div class="section-head" appReveal>
+        <p class="eyebrow">Servicios</p>
+        <h2>Lo que hacemos <em>en consulta</em></h2>
+        <p>
+          Atención particular, sin filas ni afanes. Si no ves lo que necesitas, escríbenos y te
+          orientamos.
+        </p>
+      </div>
+      <a class="btn btn--ghost cab__btn" href="#reserva" appReveal>Reservar una consulta</a>
     </div>
     <div class="services">
       @for (s of servicios(); track s.id; let i = $index) {
-        <article class="svc" [appReveal]="i * 90">
-          <app-icon class="svc__icon" [name]="s.icono" />
-          <div>
-            <h3>{{ s.nombre }}</h3>
-            <p>{{ s.descripcion }}</p>
-          </div>
+        <article class="svc" [appReveal]="i * 90" (pointermove)="luz($event)">
+          <span class="svc__num" aria-hidden="true">0{{ i + 1 }}</span>
+          <span class="svc__icon"><app-icon [name]="s.icono" [size]="34" /></span>
+          <h3>{{ s.nombre }}</h3>
+          <p>{{ s.descripcion }}</p>
+          <a class="svc__link" href="#reserva">
+            Agendar
+            <svg
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14m-6-6 6 6-6 6" />
+            </svg>
+          </a>
         </article>
       }
     </div>

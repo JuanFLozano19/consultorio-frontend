@@ -17,4 +17,12 @@ export class Services {
   protected readonly servicios = toSignal(this.servicioService.listarActivos(), {
     initialValue: SITE.servicios,
   });
+
+  /** Mueve el brillo de la tarjeta según la posición del mouse. */
+  protected luz(e: PointerEvent): void {
+    const el = e.currentTarget as HTMLElement;
+    const r = el.getBoundingClientRect();
+    el.style.setProperty('--x', `${e.clientX - r.left}px`);
+    el.style.setProperty('--y', `${e.clientY - r.top}px`);
+  }
 }
