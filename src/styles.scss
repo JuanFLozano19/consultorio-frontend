@@ -209,21 +209,34 @@ section {
   .entrada--5 {
     animation-delay: 0.6s;
   }
+}
 
-  .btn {
-    transition:
-      background 0.2s,
-      transform 0.2s,
-      box-shadow 0.2s;
-  }
+/* Curvas de movimiento (criterios de Emil Kowalski) */
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+.btn {
+  transition:
+    background-color 200ms ease,
+    box-shadow 200ms var(--ease-out),
+    transform 160ms var(--ease-out);
+}
+/* Respuesta inmediata al presionar */
+.btn:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+@media (hover: hover) and (pointer: fine) {
   .btn:hover {
-    transform: translateY(-2px);
     box-shadow: 0 10px 22px -12px rgb(30 45 50 / 0.55);
   }
-  .btn:active {
-    transform: translateY(0);
-    box-shadow: none;
-  }
+}
+/* Foco visible solo con teclado */
+:focus-visible {
+  outline: 2.5px solid var(--clay);
+  outline-offset: 3px;
+  border-radius: 6px;
 }
 
 /* Abrir y cerrar preguntas con suavidad (navegadores que lo soportan) */

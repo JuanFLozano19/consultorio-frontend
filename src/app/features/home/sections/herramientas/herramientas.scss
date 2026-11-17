@@ -32,9 +32,11 @@ h2 em {
     background 0.3s,
     border-color 0.3s,
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-  &:hover {
-    transform: translateX(4px);
-    border-color: var(--slate);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateX(4px);
+      border-color: var(--slate);
+    }
   }
   &[aria-selected='true'] {
     background: var(--slate);
@@ -433,8 +435,10 @@ h2 em {
     flex: 1 1 0;
     justify-content: center;
     padding: 12px 14px;
-    &:hover {
-      transform: none;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        transform: none;
+      }
     }
   }
   .tab__txt small {

@@ -4,17 +4,8 @@
   overflow: hidden;
   padding-block: 84px;
   background:
-    radial-gradient(
-      60% 120% at 100% 0%,
-      rgba(138, 75, 46, 0.55),
-      transparent 60%
-    ),
-    radial-gradient(
-      50% 100% at 0% 100%,
-      rgba(74, 102, 112, 0.8),
-      transparent 60%
-    ),
-    #2f474f;
+    radial-gradient(60% 120% at 100% 0%, rgba(138, 75, 46, 0.55), transparent 60%),
+    radial-gradient(50% 100% at 0% 100%, rgba(74, 102, 112, 0.8), transparent 60%), #2f474f;
   color: #f3eadf;
   /* Anillo decorativo */
   &::after {

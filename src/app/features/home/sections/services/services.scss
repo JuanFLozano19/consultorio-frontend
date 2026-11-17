@@ -53,20 +53,22 @@ h2 em {
     opacity: 0;
     transition: opacity 0.4s;
   }
-  &:hover {
-    transform: translateY(-8px);
-    border-color: color-mix(in srgb, var(--slate) 45%, var(--line));
-    box-shadow: 0 30px 50px -28px rgba(20, 40, 46, 0.45);
-    &::before {
-      opacity: 1;
-    }
-    .svc__icon {
-      background: var(--slate);
-      color: var(--on-slate);
-      transform: rotate(-6deg) scale(1.05);
-    }
-    .svc__link svg {
-      transform: translateX(4px);
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: translateY(-8px);
+      border-color: color-mix(in srgb, var(--slate) 45%, var(--line));
+      box-shadow: 0 30px 50px -28px rgba(20, 40, 46, 0.45);
+      &::before {
+        opacity: 1;
+      }
+      .svc__icon {
+        background: var(--slate);
+        color: var(--on-slate);
+        transform: rotate(-6deg) scale(1.05);
+      }
+      .svc__link svg {
+        transform: translateX(4px);
+      }
     }
   }
 }

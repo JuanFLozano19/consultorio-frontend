@@ -4,6 +4,7 @@ import { Activity } from './sections/activity/activity';
 import { Booking } from './sections/booking/booking';
 import { Faq } from './sections/faq/faq';
 import { Galeria } from './sections/galeria/galeria';
+import { Manifiesto } from './sections/manifiesto/manifiesto';
 import { Herramientas } from './sections/herramientas/herramientas';
 import { Pasos } from './sections/pasos/pasos';
 import { Progreso } from '../../shared/components/progreso/progreso';
@@ -25,6 +26,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     Activity,
     About,
     Galeria,
+    Manifiesto,
     Herramientas,
     Pasos,
     Progreso,
@@ -42,6 +44,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     <app-header />
     <main>
       <app-hero />
+      <app-manifiesto />
       <app-services />
       <app-activity />
       <app-herramientas />

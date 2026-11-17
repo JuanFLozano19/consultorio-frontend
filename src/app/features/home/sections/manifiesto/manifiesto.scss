@@ -1,0 +1,86 @@
+:host {
+  display: block;
+}
+/* Colores fijos de campaña: se ven igual en modo claro y oscuro */
+.man {
+  background: #e2774a;
+  color: #fff3e6;
+  overflow: hidden;
+  padding-block: clamp(64px, 9vw, 120px);
+}
+.man__grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 48px;
+  align-items: center;
+}
+.esc {
+  display: block;
+  width: 100%;
+  height: auto;
+  color: #fff3e6;
+}
+.man__eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  font-weight: 500;
+  opacity: 0.85;
+}
+h2 {
+  margin: 18px 0 0;
+  color: #fff3e6;
+  font-size: clamp(44px, 5.4vw, 76px);
+  line-height: 0.95;
+  em {
+    font-style: italic;
+    color: #123840;
+  }
+}
+.man__p {
+  margin-top: 22px;
+  font-size: 18px;
+  line-height: 1.55;
+  max-width: 30em;
+}
+.man__acc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 22px;
+  margin-top: 30px;
+}
+.man__btn {
+  background: #123840;
+  color: #fff3e6;
+}
+.man__wa {
+  color: inherit;
+  text-underline-offset: 4px;
+}
+
+/* El tubo se dibuja una vez; la campana y las olivas aparecen al final */
+@media (prefers-reduced-motion: no-preference) {
+  .dib {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.6s var(--ease-in-out, ease-in-out);
+  }
+  .obj > :not(.dib) {
+    opacity: 0;
+    transition: opacity 500ms ease 1.2s;
+  }
+  :host(.visto) .dib {
+    stroke-dashoffset: 0;
+  }
+  :host(.visto) .obj > :not(.dib) {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .man__grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+}
