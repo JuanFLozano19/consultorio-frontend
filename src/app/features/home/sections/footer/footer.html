@@ -10,8 +10,30 @@
       <a class="btn cta__wa" [href]="wa" target="_blank" rel="noopener">
         <app-icon name="whatsapp" [size]="22" /> {{ waTexto }}
       </a>
+      <button type="button" class="btn cta__share" (click)="compartir()">
+        <svg
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="18" cy="5" r="3" />
+          <circle cx="6" cy="12" r="3" />
+          <circle cx="18" cy="19" r="3" />
+          <path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4" />
+        </svg>
+        Compartir
+      </button>
     </div>
   </div>
+  @if (aviso()) {
+    <div class="toast" role="status">{{ aviso() }}</div>
+  }
 </section>
 
 <footer class="footer">

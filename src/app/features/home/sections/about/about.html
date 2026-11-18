@@ -1,15 +1,16 @@
 <section id="sobre-mi" class="band">
   <div class="wrap about">
     @if (doctor.photo) {
-      <img
-        appReveal
-        class="photo"
-        [src]="doctor.photo"
-        [alt]="'Foto de ' + doctor.name + ', médico general'"
-        width="640"
-        height="640"
-        loading="lazy"
-      />
+      <div appReveal class="reveal--foto foto-marco">
+        <img
+          class="photo"
+          [src]="doctor.photo"
+          [alt]="'Foto de ' + doctor.name + ', médico general'"
+          width="640"
+          height="640"
+          loading="lazy"
+        />
+      </div>
     } @else {
       <div appReveal class="photo photo--empty">[FOTO DEL DR. JEISON CON BATA]</div>
     }

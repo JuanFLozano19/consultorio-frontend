@@ -193,3 +193,30 @@ ul {
     justify-content: center;
   }
 }
+
+.cta__share {
+  background: transparent;
+  color: #f3eadf;
+  border: 1.5px solid rgba(243, 234, 223, 0.5);
+  cursor: pointer;
+}
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 30;
+  padding: 12px 22px;
+  border-radius: 999px;
+  background: #13343b;
+  color: #f3eadf;
+  font-weight: 500;
+  box-shadow: 0 18px 40px -14px rgba(0, 0, 0, 0.5);
+  transform: translateX(-50%);
+  transition:
+    opacity 400ms ease,
+    transform 400ms ease;
+  @starting-style {
+    opacity: 0;
+    transform: translate(-50%, 16px);
+  }
+}

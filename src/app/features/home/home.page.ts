@@ -5,6 +5,8 @@ import { Booking } from './sections/booking/booking';
 import { Faq } from './sections/faq/faq';
 import { Galeria } from './sections/galeria/galeria';
 import { Manifiesto } from './sections/manifiesto/manifiesto';
+import { Cinta } from './sections/cinta/cinta';
+import { Preparar } from './sections/preparar/preparar';
 import { Herramientas } from './sections/herramientas/herramientas';
 import { Pasos } from './sections/pasos/pasos';
 import { Progreso } from '../../shared/components/progreso/progreso';
@@ -27,6 +29,8 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     About,
     Galeria,
     Manifiesto,
+    Cinta,
+    Preparar,
     Herramientas,
     Pasos,
     Progreso,
@@ -45,12 +49,14 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     <main>
       <app-hero />
       <app-manifiesto />
+      <app-cinta />
       <app-services />
       <app-activity />
       <app-herramientas />
       <app-galeria />
       <app-about />
       <app-pasos />
+      <app-preparar />
       <app-booking />
       <app-faq />
       <app-novedades />

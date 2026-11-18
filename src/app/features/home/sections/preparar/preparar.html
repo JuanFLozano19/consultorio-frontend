@@ -1,0 +1,136 @@
+<section id="preparar" class="band" aria-labelledby="prep-titulo">
+  <div class="wrap">
+    <div class="section-head" appReveal>
+      <p class="eyebrow">Antes de tu cita</p>
+      <h2 id="prep-titulo">Prepara tu <em>consulta</em></h2>
+      <p>Marca lo que ya tienes listo y anota tus preguntas para que no se te olvide ninguna.</p>
+    </div>
+
+    <div class="prep">
+      <!-- Lista de qué llevar -->
+      <div class="tarjeta" [appReveal]="80">
+        <div class="cab">
+          <h3>Qué llevar</h3>
+          <div
+            class="anillo"
+            [attr.aria-label]="listos() + ' de ' + items.length + ' listos'"
+            role="img"
+          >
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <circle cx="24" cy="24" r="20" class="anillo__f" pathLength="1" />
+              <circle
+                cx="24"
+                cy="24"
+                r="20"
+                class="anillo__v"
+                pathLength="1"
+                [style.stroke-dasharray]="avance() + ' 1'"
+              />
+            </svg>
+            <span>{{ listos() }}/{{ items.length }}</span>
+          </div>
+        </div>
+        <ul class="lista">
+          @for (it of items; track it.t; let i = $index) {
+            <li>
+              <button
+                type="button"
+                class="check"
+                role="checkbox"
+                [attr.aria-checked]="hechos()[i]"
+                (click)="alternar(i)"
+              >
+                <span class="caja" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" pathLength="1" /></svg>
+                </span>
+                <span class="txt"
+                  ><b>{{ it.t }}</b
+                  ><small>{{ it.s }}</small></span
+                >
+              </button>
+            </li>
+          }
+        </ul>
+        @if (listos() === items.length) {
+          <p class="listo">¡Todo listo para tu consulta!</p>
+        }
+      </div>
+
+      <!-- Preguntas -->
+      <div class="tarjeta tarjeta--oscura" [appReveal]="180">
+        <div class="cab">
+          <h3>Mis preguntas para el doctor</h3>
+          <span class="contador">{{ preguntas().length }}/12</span>
+        </div>
+        <form class="nueva" (submit)="$event.preventDefault(); agregar()">
+          <label class="sr" for="prep-pregunta">Escribe una pregunta</label>
+          <input
+            id="prep-pregunta"
+            type="text"
+            maxlength="200"
+            autocomplete="off"
+            placeholder="Ej.: ¿Puedo hacer ejercicio si me duele la rodilla?"
+            [value]="borrador()"
+            (input)="borrador.set($any($event.target).value)"
+          />
+          <button
+            type="submit"
+            class="mas"
+            [disabled]="!borrador().trim()"
+            aria-label="Agregar pregunta"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              width="22"
+              height="22"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+          </button>
+        </form>
+        @if (preguntas().length) {
+          <ol class="preguntas">
+            @for (p of preguntas(); track $index; let i = $index) {
+              <li>
+                <span>{{ p }}</span>
+                <button
+                  type="button"
+                  class="quitar"
+                  (click)="quitar(i)"
+                  [attr.aria-label]="'Quitar pregunta ' + (i + 1)"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="16"
+                    height="16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.4"
+                    stroke-linecap="round"
+                  >
+                    <path d="M6 6l12 12M18 6 6 18" />
+                  </svg>
+                </button>
+              </li>
+            }
+          </ol>
+          <div class="acciones">
+            <a class="btn btn--wa" [href]="enlace()" target="_blank" rel="noopener"
+              >Enviar por WhatsApp</a
+            >
+            <button type="button" class="btn btn--linea" (click)="copiar()">
+              {{ copiado() ? '¡Copiadas!' : 'Copiar' }}
+            </button>
+          </div>
+        } @else {
+          <p class="vacio">Tus preguntas aparecerán aquí. Se guardan solo en este dispositivo.</p>
+        }
+        <button type="button" class="reiniciar" (click)="reiniciar()">Empezar de nuevo</button>
+      </div>
+    </div>
+  </div>
+</section>

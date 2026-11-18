@@ -171,3 +171,19 @@ h1 {
     height: 76px;
   }
 }
+
+/* La foto sube como un telón al cargar */
+@media (prefers-reduced-motion: no-preference) {
+  .arco__foto {
+    animation: telon 1.3s var(--ease-in-out) 200ms both;
+  }
+}
+@keyframes telon {
+  from {
+    clip-path: inset(100% 0 0 0);
+    transform: scale(1.06);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}

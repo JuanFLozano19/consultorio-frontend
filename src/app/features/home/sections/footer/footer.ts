@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   SITE,
@@ -19,6 +19,33 @@ import { Logo } from '../../../../shared/components/logo/logo';
   styleUrl: './footer.scss',
 })
 export class Footer {
+  protected readonly aviso = signal('');
+
+  /** Comparte la página (menú del sistema en celular) o copia el enlace. */
+  protected async compartir(): Promise<void> {
+    const url = location.origin + location.pathname;
+    const datos = {
+      title: 'Dr. Jeison Patiño · Medicina general',
+      text: 'Consulta médica particular, con tiempo para escucharte.',
+      url,
+    };
+    try {
+      if (navigator.share) {
+        await navigator.share(datos);
+        return;
+      }
+      await navigator.clipboard.writeText(url);
+      this.mostrar('Enlace copiado');
+    } catch (e) {
+      if ((e as DOMException)?.name !== 'AbortError') this.mostrar('No se pudo compartir');
+    }
+  }
+
+  private mostrar(t: string): void {
+    this.aviso.set(t);
+    setTimeout(() => this.aviso.set(''), 2200);
+  }
+
   protected readonly doctor = SITE.doctor;
   protected readonly address = SITE.contact.address;
   protected readonly year = new Date().getFullYear();
@@ -33,6 +60,7 @@ export class Footer {
     { href: '#servicios', label: 'Servicios' },
     { href: '#actividad', label: 'Actividad física' },
     { href: '#herramientas', label: 'Herramientas de salud' },
+    { href: '#preparar', label: 'Prepara tu cita' },
     { href: '#galeria', label: 'Galería' },
     { href: '#sobre-mi', label: 'Sobre mí' },
     { href: '#preguntas', label: 'Preguntas frecuentes' },
