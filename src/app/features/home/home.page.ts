@@ -8,6 +8,7 @@ import { Manifiesto } from './sections/manifiesto/manifiesto';
 import { Cinta } from './sections/cinta/cinta';
 import { Preparar } from './sections/preparar/preparar';
 import { Herramientas } from './sections/herramientas/herramientas';
+import { MitoDatoJuego } from './sections/mito-dato/mito-dato';
 import { Pasos } from './sections/pasos/pasos';
 import { Progreso } from '../../shared/components/progreso/progreso';
 import { Novedades } from './sections/novedades/novedades';
@@ -32,6 +33,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     Cinta,
     Preparar,
     Herramientas,
+    MitoDatoJuego,
     Pasos,
     Progreso,
     Novedades,
@@ -53,6 +55,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
       <app-services />
       <app-activity />
       <app-herramientas />
+      <app-mito-dato />
       <app-galeria />
       <app-about />
       <app-pasos />

@@ -1,0 +1,122 @@
+<section id="mito-o-dato" class="band band--sand" aria-labelledby="md-titulo">
+  <div class="wrap">
+    <div class="section-head" appReveal>
+      <p class="eyebrow">Juego de salud</p>
+      <h2 id="md-titulo">¿<em>Mito</em> o dato?</h2>
+      <p>Cinco frases que escuchamos todos los días. Tú decides cuáles son ciertas.</p>
+    </div>
+
+    <div class="md" [appReveal]="120">
+      @switch (fase()) {
+        @case ('inicio') {
+          <div class="md__card md__inicio">
+            <div class="md__signos" aria-hidden="true">
+              <span class="paleta paleta--mito">MITO</span>
+              <span class="paleta paleta--dato">DATO</span>
+            </div>
+            <p class="md__intro">
+              {{ porRonda }} preguntas al azar entre {{ totalFrases }} frases de los videos del
+              doctor. Cada respuesta trae su explicación.
+            </p>
+            <button type="button" class="btn md__empezar" (click)="empezar()">
+              Empezar a jugar
+            </button>
+          </div>
+        }
+        @case ('jugando') {
+          @if (actual(); as q) {
+            <div
+              class="md__card md__pregunta"
+              [class.es-ok]="acerto() === true"
+              [class.es-error]="acerto() === false"
+            >
+              <div class="md__barra">
+                <span class="md__cont">Pregunta {{ indice() + 1 }} de {{ ronda().length }}</span>
+                <ol class="md__puntos" aria-hidden="true">
+                  @for (x of ronda(); track $index; let i = $index) {
+                    <li
+                      [class.actual]="i === indice()"
+                      [class.ok]="resultados()[i] === true"
+                      [class.mal]="resultados()[i] === false"
+                    ></li>
+                  }
+                </ol>
+              </div>
+
+              @for (k of [indice()]; track k) {
+                <p class="md__frase" tabindex="-1">«{{ q.frase }}»</p>
+              }
+
+              <div class="md__botones" role="group" aria-label="Tu respuesta">
+                <button
+                  type="button"
+                  class="paleta paleta--mito"
+                  [class.elegida]="respuesta() === false"
+                  [class.atenuada]="respuesta() !== null && respuesta() !== false"
+                  [disabled]="respuesta() !== null"
+                  [attr.aria-pressed]="respuesta() === false"
+                  (click)="responder(false)"
+                >
+                  MITO
+                </button>
+                <button
+                  type="button"
+                  class="paleta paleta--dato"
+                  [class.elegida]="respuesta() === true"
+                  [class.atenuada]="respuesta() !== null && respuesta() !== true"
+                  [disabled]="respuesta() !== null"
+                  [attr.aria-pressed]="respuesta() === true"
+                  (click)="responder(true)"
+                >
+                  DATO
+                </button>
+              </div>
+
+              <div class="md__resultado" aria-live="polite">
+                @if (respuesta() !== null) {
+                  <div class="md__exp">
+                    <p class="md__veredicto">
+                      {{ acerto() ? '¡Correcto!' : 'Casi.' }} Es un
+                      <b [class.t-dato]="q.esDato" [class.t-mito]="!q.esDato">{{
+                        q.esDato ? 'dato' : 'mito'
+                      }}</b
+                      >.
+                    </p>
+                    <p>{{ q.explicacion }}</p>
+                    <button type="button" class="btn md__siguiente" (click)="siguiente()">
+                      {{ indice() + 1 < ronda().length ? 'Siguiente frase' : 'Ver mi resultado' }}
+                      <span aria-hidden="true">→</span>
+                    </button>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        }
+        @case ('fin') {
+          <div class="md__card md__fin">
+            <p class="md__puntaje" tabindex="-1">
+              <b>{{ aciertos() }}</b
+              ><span>/{{ ronda().length }}</span>
+              <span class="sr-only"> respuestas correctas.</span>
+            </p>
+            <p class="md__mensaje">{{ mensaje() }}</p>
+            <p class="md__intro">
+              ¿Te quedó alguna duda? En consulta hay tiempo para resolverla con calma.
+            </p>
+            <div class="md__acciones">
+              <button type="button" class="btn" (click)="empezar()">Jugar otra ronda</button>
+              <a class="btn btn--ghost" [href]="whatsapp()" target="_blank" rel="noopener"
+                >Pregúntale al doctor por WhatsApp</a
+              >
+            </div>
+          </div>
+        }
+      }
+      <p class="md__nota">
+        Información general de fuentes reconocidas, principalmente la Organización Mundial de la
+        Salud. Es orientativa y no reemplaza la consulta médica.
+      </p>
+    </div>
+  </div>
+</section>

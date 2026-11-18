@@ -48,8 +48,8 @@ export const SITE = {
       street: 'Carrera 18 # 80-74',
       floor: 'Piso 5',
       building: 'Edificio Habital Medical Center',
-      city: '',
-      mapsQuery: 'Habital Medical Center Carrera 18 80-74',
+      city: 'Bogotá D.C.',
+      mapsQuery: 'Habital Medical Center, Carrera 18 # 80-74, Bogotá',
     },
     /**
      * Horario de atención. La web lo usa para mostrar la tabla, el aviso
@@ -88,7 +88,7 @@ export const SITE = {
     },
     {
       q: '¿Dónde queda el consultorio?',
-      a: 'En la Carrera 18 # 80-74, Edificio Habital Medical Center, piso 5.',
+      a: 'En Bogotá, en la Carrera 18 # 80-74, Edificio Habital Medical Center, piso 5.',
     },
   ],
   activity: {
