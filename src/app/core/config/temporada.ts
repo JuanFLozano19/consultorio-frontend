@@ -3,12 +3,16 @@
  * y el mensaje cambia según el día en Bogotá. Para otra temporada basta con
  * cambiar las fechas y los textos de este archivo.
  */
+import { ahoraEnBogota } from './horario';
+
 export interface AvisoTemporada {
   /** Clave para recordar si la persona lo cerró (cambia con cada mensaje). */
   clave: string;
   etiqueta: string;
   texto: string;
   accion?: { texto: string; destino: 'instagram' | 'whatsapp' };
+  /** Ícono del aviso: estrella (por defecto) o velita (Día de Velitas). */
+  icono?: 'estrella' | 'vela';
 }
 
 /** [año, mes (1-12), día] */
@@ -37,6 +41,28 @@ export function temporadaActiva(hoy: Date): boolean {
   return n >= num(INICIO) && n <= num(FIN);
 }
 
+/** 7 de diciembre: noche de velitas. */
+export function esDiaDeVelitas(hoy: Date): boolean {
+  return hoy.getMonth() === 11 && hoy.getDate() === 7;
+}
+
+/**
+ * Fecha de hoy en Bogotá. Para revisar cómo se verá la página otro día, se puede abrir con
+ * `?fecha=2026-12-07` (solo cambia la decoración y el aviso; no afecta el horario).
+ */
+export function hoyTemporada(): Date {
+  try {
+    const f = new URLSearchParams(location.search).get('fecha');
+    if (f && /^\d{4}-\d{2}-\d{2}$/.test(f)) {
+      const [a, m, d] = f.split('-').map(Number);
+      return new Date(a, m - 1, d);
+    }
+  } catch {
+    /* sin ventana (pruebas): fecha real */
+  }
+  return ahoraEnBogota().hoy;
+}
+
 export function avisoTemporada(hoy: Date): AvisoTemporada | null {
   const dia: Dia = [hoy.getFullYear(), hoy.getMonth() + 1, hoy.getDate()];
   const n = num(dia);
@@ -44,6 +70,14 @@ export function avisoTemporada(hoy: Date): AvisoTemporada | null {
   const [a, m, d] = dia;
   const insta = { texto: 'Síguela en Instagram', destino: 'instagram' as const };
 
+  if (esDiaDeVelitas(hoy)) {
+    return {
+      clave: `velitas-${a}`,
+      etiqueta: 'Noche de velitas',
+      texto: 'Prende tus velas lejos de cortinas y de los niños, y celebra sin pólvora.',
+      icono: 'vela',
+    };
+  }
   if (m === 12 && d >= 16 && d <= 24) {
     const i = d - 16;
     return {

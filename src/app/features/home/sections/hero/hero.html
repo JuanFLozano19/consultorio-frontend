@@ -1,4 +1,9 @@
-<section id="inicio" class="hero" [class.hero--navidad]="navidad">
+<section
+  id="inicio"
+  class="hero"
+  [class.hero--navidad]="navidad"
+  [class.hero--velitas]="velitas.length"
+>
   @if (navidad) {
     <div class="destellos" aria-hidden="true">
       @for (d of destellos; track $index) {
@@ -103,4 +108,19 @@
       >
     </div>
   </div>
+  @if (velitas.length) {
+    <div class="velitas" role="img" aria-label="Velitas encendidas por el Día de Velitas">
+      @for (v of velitas; track $index) {
+        <span
+          class="velita"
+          [style.--alto.px]="v.alto"
+          [style.--cera]="v.color"
+          [style.--ritmo.s]="v.ritmo"
+        >
+          <i class="velita__llama"></i>
+        </span>
+      }
+      <p class="velitas__texto">Feliz noche de velitas ✦ con cuidado y sin pólvora</p>
+    </div>
+  }
 </section>

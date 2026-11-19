@@ -6,8 +6,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { ahoraEnBogota } from '../../../../core/config/horario';
-import { temporadaActiva } from '../../../../core/config/temporada';
+import { hoyTemporada, temporadaActiva } from '../../../../core/config/temporada';
 import { CategoriaVideo, VIDEOS, categoriasVisibles } from '../../../../core/config/videos';
 import { Reveal } from '../../../../shared/directives/reveal';
 
@@ -207,7 +206,7 @@ import { Reveal } from '../../../../shared/directives/reveal';
 })
 export class Videos {
   private readonly pista = viewChild.required<ElementRef<HTMLElement>>('pista');
-  protected readonly categorias = categoriasVisibles(temporadaActiva(ahoraEnBogota().hoy));
+  protected readonly categorias = categoriasVisibles(temporadaActiva(hoyTemporada()));
   protected readonly activa = signal<CategoriaVideo>(this.categorias[0].id);
   protected readonly lista = computed(() => VIDEOS.filter((v) => v.categoria === this.activa()));
 

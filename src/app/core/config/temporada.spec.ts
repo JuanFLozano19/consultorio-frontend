@@ -1,4 +1,4 @@
-import { NOVENA, avisoTemporada, temporadaActiva } from './temporada';
+import { NOVENA, avisoTemporada, esDiaDeVelitas, temporadaActiva } from './temporada';
 
 const dia = (a: number, m: number, d: number) => new Date(a, m - 1, d);
 
@@ -40,5 +40,15 @@ describe('temporadaActiva', () => {
     expect(temporadaActiva(dia(2026, 11, 18))).toBe(true);
     expect(temporadaActiva(dia(2027, 1, 6))).toBe(true);
     expect(temporadaActiva(dia(2027, 1, 7))).toBe(false);
+  });
+});
+
+describe('Día de Velitas', () => {
+  it('el 7 de diciembre muestra el aviso de velitas', () => {
+    expect(esDiaDeVelitas(dia(2026, 12, 7))).toBe(true);
+    expect(esDiaDeVelitas(dia(2026, 12, 8))).toBe(false);
+    const a = avisoTemporada(dia(2026, 12, 7));
+    expect(a?.etiqueta).toBe('Noche de velitas');
+    expect(a?.icono).toBe('vela');
   });
 });

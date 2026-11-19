@@ -9,8 +9,7 @@ import {
 import { SITE } from '../../../../core/config/site.config';
 import { Logo } from '../../../../shared/components/logo/logo';
 import { Guirnalda } from '../../../../shared/components/guirnalda/guirnalda';
-import { ahoraEnBogota } from '../../../../core/config/horario';
-import { temporadaActiva } from '../../../../core/config/temporada';
+import { hoyTemporada, temporadaActiva } from '../../../../core/config/temporada';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +24,7 @@ import { temporadaActiva } from '../../../../core/config/temporada';
 })
 export class Header {
   protected readonly doctor = SITE.doctor;
-  protected readonly navidad = temporadaActiva(ahoraEnBogota().hoy);
+  protected readonly navidad = temporadaActiva(hoyTemporada());
   protected readonly links = [
     { href: '#servicios', label: 'Servicios' },
     { href: '#actividad', label: 'Actividad' },

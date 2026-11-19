@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { ahoraEnBogota } from '../../../../core/config/horario';
 import { instagramHref, whatsappHref } from '../../../../core/config/site.config';
-import { avisoTemporada } from '../../../../core/config/temporada';
+import { avisoTemporada, hoyTemporada } from '../../../../core/config/temporada';
 
 const LLAVE = 'aviso-temporada-cerrado';
 
@@ -18,12 +17,23 @@ const LLAVE = 'aviso-temporada-cerrado';
           }
         </span>
         <p class="txt">
-          <svg class="estrella" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-            <path
-              d="M12 2.5l2.6 6 6.5.6-4.9 4.3 1.5 6.4L12 16.5l-5.7 3.3 1.5-6.4L2.9 9.1l6.5-.6z"
-              fill="currentColor"
-            />
-          </svg>
+          @if (a.icono === 'vela') {
+            <svg class="vela" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <rect x="9" y="11" width="6" height="11" rx="1.5" fill="currentColor" opacity=".9" />
+              <path
+                class="vela__llama"
+                d="M12 2c2.2 2.6 2.6 4.6 0 7.2C9.4 6.6 9.8 4.6 12 2z"
+                fill="#ffd23f"
+              />
+            </svg>
+          } @else {
+            <svg class="estrella" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path
+                d="M12 2.5l2.6 6 6.5.6-4.9 4.3 1.5 6.4L12 16.5l-5.7 3.3 1.5-6.4L2.9 9.1l6.5-.6z"
+                fill="currentColor"
+              />
+            </svg>
+          }
           <b>{{ a.etiqueta }}</b>
           <span class="sep" aria-hidden="true">·</span>
           <span>{{ a.texto }}</span>
@@ -89,6 +99,22 @@ const LLAVE = 'aviso-temporada-cerrado';
     }
     .estrella {
       color: #f0b893;
+    }
+    .vela {
+      color: #f6efe4;
+    }
+    .vela__llama {
+      transform-origin: 12px 9px;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .vela__llama {
+        animation: llama 1.1s ease-in-out infinite alternate;
+      }
+    }
+    @keyframes llama {
+      to {
+        transform: scale(0.85, 1.12) skewX(4deg);
+      }
     }
     b {
       font-weight: 600;
@@ -167,7 +193,7 @@ export class Temporada {
   );
   private readonly cerrado = signal(leer());
   protected readonly aviso = computed(() => {
-    const a = avisoTemporada(ahoraEnBogota().hoy);
+    const a = avisoTemporada(hoyTemporada());
     return a && a.clave !== this.cerrado() ? a : null;
   });
 
