@@ -188,20 +188,23 @@ h1 {
   }
 }
 
-/* Parallax suave al bajar: la foto va más lenta y las tarjetas más rápido (--sy lo pone appScrollProgreso) */
-@media (prefers-reduced-motion: no-preference) {
+/* Parallax suave al bajar (solo pantallas grandes). La foto, su marco y la guirnalda se mueven
+   juntos; las tarjetas un poco distinto. Rango pequeño para que nada se monte sobre el texto.
+   --p (0 → 1 mientras la foto cruza la pantalla) lo pone appScrollProgreso. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 861px) {
   .arco__foto,
-  .arco__fondo {
-    translate: 0 calc(min(var(--sy, 0), 900) * 0.09px);
+  .arco__fondo,
+  .arco__luces {
+    translate: 0 calc((var(--p, 0.5) - 0.5) * 36px);
   }
   .flota--1 {
-    translate: 0 calc(min(var(--sy, 0), 900) * -0.12px);
+    translate: 0 calc((var(--p, 0.5) - 0.5) * -40px);
   }
   .flota--2 {
-    translate: 0 calc(min(var(--sy, 0), 900) * -0.06px);
+    translate: 0 calc((var(--p, 0.5) - 0.5) * -24px);
   }
   .sello {
-    translate: 0 calc(min(var(--sy, 0), 900) * -0.04px);
+    translate: 0 calc((var(--p, 0.5) - 0.5) * -16px);
   }
 }
 
