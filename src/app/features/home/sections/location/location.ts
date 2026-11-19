@@ -28,6 +28,7 @@ export class Location {
   protected readonly whatsappDisplay = whatsappDisplay();
   protected readonly instagram = SITE.contact.instagram;
   protected readonly instagramHref = instagramHref();
+  protected readonly google = SITE.contact.google;
   /** Mapa embebido de Google (no requiere API key). La URL es fija, no viene del usuario. */
   protected readonly mapaEmbed = inject(DomSanitizer).bypassSecurityTrustResourceUrl(
     `https://www.google.com/maps?q=${encodeURIComponent(SITE.contact.address.mapsQuery)}&output=embed`,

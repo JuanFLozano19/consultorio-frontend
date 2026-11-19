@@ -21,6 +21,20 @@
         <a class="btn btn--ghost" [href]="mapsHref" target="_blank" rel="noopener">Google Maps</a>
         <a class="btn btn--ghost" [href]="wazeHref" target="_blank" rel="noopener">Waze</a>
       </div>
+      @if (google.perfil || google.opinar) {
+        <div class="loc__google">
+          @if (google.perfil) {
+            <a class="enlace-google" [href]="google.perfil" target="_blank" rel="noopener"
+              >Ver el consultorio en Google →</a
+            >
+          }
+          @if (google.opinar) {
+            <a class="enlace-google" [href]="google.opinar" target="_blank" rel="noopener"
+              >¿Ya viniste? Déjanos tu opinión en Google →</a
+            >
+          }
+        </div>
+      }
     </div>
     <div [appReveal]="150">
       <p class="eyebrow loc__label">Horario de atención</p>

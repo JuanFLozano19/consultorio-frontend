@@ -52,6 +52,17 @@ export const SITE = {
       mapsQuery: 'Habital Medical Center, Carrera 18 # 80-74, Bogotá',
     },
     /**
+     * Perfil de Google del consultorio (Google Maps). Cuando el perfil esté verificado,
+     * pegar aquí sus enlaces y la página mostrará los botones «Ver en Google» y
+     * «Déjanos tu opinión». Vacío = no se muestran.
+     * - perfil: enlace para compartir el perfil (ej. https://maps.app.goo.gl/…)
+     * - opinar: enlace «Pedir reseñas» que da Google (ej. https://g.page/r/…/review)
+     */
+    google: {
+      perfil: '',
+      opinar: '',
+    },
+    /**
      * Horario de atención. La web lo usa para mostrar la tabla, el aviso
      * "Abierto ahora" y los días que se pueden elegir al reservar.
      * dias: 0 = domingo … 6 = sábado. Los festivos de Colombia se calculan solos.

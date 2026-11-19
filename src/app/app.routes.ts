@@ -24,5 +24,15 @@ export const routes: Routes = [
     title: 'Dr. Jeison Patiño · Médico general',
   },
   ...(SITE.features.citasEnLinea ? adminRoutes : []),
-  { path: '**', redirectTo: '' },
+  {
+    path: 'privacidad',
+    loadComponent: () => import('./features/legal/privacidad.page').then((m) => m.PrivacidadPage),
+    title: 'Aviso de privacidad · Dr. Jeison Patiño',
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./features/legal/no-encontrada.page').then((m) => m.NoEncontradaPage),
+    title: 'Página no encontrada · Dr. Jeison Patiño',
+  },
 ];

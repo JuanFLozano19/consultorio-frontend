@@ -13,6 +13,7 @@ import { Pasos } from './sections/pasos/pasos';
 import { Progreso } from '../../shared/components/progreso/progreso';
 import { Novedades } from './sections/novedades/novedades';
 import { Noticias } from './sections/noticias/noticias';
+import { Videos } from './sections/videos/videos';
 import { Temporada } from './sections/temporada/temporada';
 import { Instagram } from './sections/instagram/instagram';
 import { Footer } from './sections/footer/footer';
@@ -40,6 +41,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     Progreso,
     Novedades,
     Noticias,
+    Videos,
     Temporada,
     Booking,
     Faq,
@@ -61,6 +63,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
       <app-activity />
       <app-herramientas />
       <app-mito-dato />
+      <app-videos />
       <app-galeria />
       <app-about />
       <app-pasos />

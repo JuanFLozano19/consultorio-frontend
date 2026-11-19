@@ -101,3 +101,15 @@
   gap: 12px;
   margin-top: 18px;
 }
+
+.loc__google {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 16px;
+}
+.enlace-google {
+  color: var(--slate-ink);
+  font-weight: 500;
+  text-underline-offset: 4px;
+}
