@@ -1,0 +1,74 @@
+/**
+ * Enlaces internos (#reserva, #servicios…) sin dejar el «#» en la dirección.
+ *
+ * Antes, al tocar un enlace del menú la dirección quedaba como `/#reserva`. Si la persona
+ * volvía a entrar desde el historial, el autocompletado o una pestaña guardada, la página
+ * cargaba arriba y luego «se bajaba sola» hasta esa sección. Ahora:
+ * - Los clics en enlaces internos desplazan la página pero no cambian la dirección.
+ * - Si alguien entra con un enlace que sí trae «#» (por ejemplo, compartido), se respeta y
+ *   luego se limpia, para que al recargar empiece arriba.
+ */
+export function iniciarEnlacesInternos(): void {
+  if (typeof window === 'undefined') return;
+
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+      return;
+    }
+    const a = (e.target as Element | null)?.closest?.('a[href^="#"]') as HTMLAnchorElement | null;
+    if (!a) return;
+    const id = decodeURIComponent(a.getAttribute('href')!.slice(1));
+    const destino = id ? document.getElementById(id) : null;
+    if (id && !destino) return;
+    e.preventDefault();
+    // Si el clic vino del menú abierto del celular, esperar a que termine de cerrarse
+    // (la página sube ~0,45 s); si no, el destino se calcularía corrido hacia abajo.
+    const desdeMenu = !!a.closest('.header--menu');
+    setTimeout(() => irA(destino), desdeMenu ? 470 : 0);
+  });
+
+  if (location.hash) limpiarDespues();
+}
+
+/** Desplaza hasta el elemento (o arriba del todo) y le pasa el foco para teclado y lectores. */
+export function irA(destino: HTMLElement | null): void {
+  const suave = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!destino || destino.id === 'inicio') {
+    window.scrollTo({ top: 0, behavior: suave ? 'smooth' : 'auto' });
+  } else {
+    destino.scrollIntoView({ behavior: suave ? 'smooth' : 'auto', block: 'start' });
+    corregirAlTerminar(destino);
+    if (!destino.hasAttribute('tabindex')) destino.setAttribute('tabindex', '-1');
+    destino.focus({ preventScroll: true });
+  }
+  quitarHash();
+}
+
+/** Quita el «#…» de la dirección sin recargar ni tocar el estado del router. */
+export function quitarHash(): void {
+  if (!location.hash) return;
+  history.replaceState(history.state, '', location.pathname + location.search);
+}
+
+/**
+ * Si mientras bajaba cambió el alto de algo de arriba (imágenes que terminan de cargar,
+ * animaciones), ajusta al final para que la sección quede justo debajo del menú.
+ */
+function corregirAlTerminar(destino: HTMLElement): void {
+  let hecho = false;
+  const ajustar = (): void => {
+    if (hecho) return;
+    hecho = true;
+    window.removeEventListener('scrollend', ajustar);
+    const margen = parseFloat(getComputedStyle(destino).scrollMarginTop) || 0;
+    const delta = destino.getBoundingClientRect().top - margen;
+    if (Math.abs(delta) > 6) window.scrollBy({ top: delta, behavior: 'auto' });
+  };
+  window.addEventListener('scrollend', ajustar, { once: true });
+  setTimeout(ajustar, 1600);
+}
+
+function limpiarDespues(): void {
+  // Deja que Angular haga el desplazamiento inicial al ancla y luego limpia la dirección.
+  setTimeout(quitarHash, 1500);
+}
