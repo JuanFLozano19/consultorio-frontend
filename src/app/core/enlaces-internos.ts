@@ -5,8 +5,8 @@
  * volvía a entrar desde el historial, el autocompletado o una pestaña guardada, la página
  * cargaba arriba y luego «se bajaba sola» hasta esa sección. Ahora:
  * - Los clics en enlaces internos desplazan la página pero no cambian la dirección.
- * - Si alguien entra con un enlace que sí trae «#» (por ejemplo, compartido), se respeta y
- *   luego se limpia, para que al recargar empiece arriba.
+ * - Si la dirección trae «#» al entrar, index.html lo quita antes de cargar: la página
+ *   siempre abre arriba.
  */
 export function iniciarEnlacesInternos(): void {
   if (typeof window === 'undefined') return;
@@ -26,8 +26,6 @@ export function iniciarEnlacesInternos(): void {
     const desdeMenu = !!a.closest('.header--menu');
     setTimeout(() => irA(destino), desdeMenu ? 470 : 0);
   });
-
-  if (location.hash) limpiarDespues();
 }
 
 /** Desplaza hasta el elemento (o arriba del todo) y le pasa el foco para teclado y lectores. */
@@ -66,9 +64,4 @@ function corregirAlTerminar(destino: HTMLElement): void {
   };
   window.addEventListener('scrollend', ajustar, { once: true });
   setTimeout(ajustar, 1600);
-}
-
-function limpiarDespues(): void {
-  // Deja que Angular haga el desplazamiento inicial al ancla y luego limpia la dirección.
-  setTimeout(quitarHash, 1500);
 }
