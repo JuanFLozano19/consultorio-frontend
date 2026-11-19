@@ -1,0 +1,100 @@
+@if (escena(); as e) {
+  <div class="escena" role="img" [attr.aria-label]="etiqueta()">
+    @switch (e.tipo) {
+      @case ('velitas') {
+        <div class="fila">
+          @for (v of velitas; track $index) {
+            <span
+              class="velita"
+              [style.--alto.px]="v.alto"
+              [style.--cera]="v.color"
+              [style.--ritmo.s]="v.ritmo"
+              ><i class="llama"></i
+            ></span>
+          }
+        </div>
+        <p class="texto">Feliz noche de velitas ✦ con cuidado y sin pólvora</p>
+      }
+      @case ('novena') {
+        <div class="fila fila--estrellas">
+          @for (i of estrellas; track i) {
+            <svg
+              class="estrella"
+              [class.on]="i < e.dia"
+              [class.hoy]="i === e.dia - 1"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M12 2.5l2.6 6 6.5.6-4.9 4.3 1.5 6.4L12 16.5l-5.7 3.3 1.5-6.4L2.9 9.1l6.5-.6z"
+              />
+            </svg>
+          }
+        </div>
+        <p class="texto">
+          <b>Novena de la salud · Día {{ e.dia }} de 9</b> · {{ e.consejo }}
+        </p>
+      }
+      @case ('nochebuena') {
+        <div class="fila fila--estrellas">
+          @for (i of estrellas; track i) {
+            <svg class="estrella on" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 2.5l2.6 6 6.5.6-4.9 4.3 1.5 6.4L12 16.5l-5.7 3.3 1.5-6.4L2.9 9.1l6.5-.6z"
+              />
+            </svg>
+          }
+        </div>
+        <p class="cuenta">
+          Faltan <b>{{ e.faltan }}</b> para la Navidad
+        </p>
+        <p class="texto">¡Feliz Nochebuena! Que esta noche tengas tiempo para los tuyos.</p>
+      }
+      @case ('navidad') {
+        <div class="fila fila--regalos">
+          @for (r of regalos; track $index) {
+            <span
+              class="regalo"
+              [style.--caja]="r.caja"
+              [style.--cinta]="r.cinta"
+              [style.--tam.px]="r.tam"
+              [style.--giro.deg]="r.giro"
+              [style.--k]="$index"
+            ></span>
+          }
+        </div>
+        <p class="grande">¡Feliz <em>Navidad</em>!</p>
+        <p class="texto">Con tiempo para lo que más importa: tu familia y tu salud.</p>
+      }
+      @case ('nochevieja') {
+        <div class="fila fila--uvas">
+          @for (i of uvas; track i) {
+            <span class="uva" [style.--k]="i"></span>
+          }
+        </div>
+        <p class="cuenta">
+          Faltan <b>{{ e.faltan }}</b> para {{ e.anio }}
+        </p>
+        <p class="texto">Las 12 uvas, sin pólvora y, si tomas, no manejes.</p>
+      }
+      @case ('anonuevo') {
+        <div class="confeti" aria-hidden="true">
+          @for (c of confeti; track $index) {
+            <i
+              [style.left.%]="c.x"
+              [style.background]="c.c"
+              [style.--dur.s]="c.dur"
+              [style.--ret.s]="c.ret"
+              [style.--giro.deg]="c.giro"
+            ></i>
+          }
+        </div>
+        <p class="grande">
+          ¡Feliz <em>{{ e.anio }}</em
+          >!
+        </p>
+        <p class="texto">Propósito número 1: tu chequeo preventivo.</p>
+      }
+    }
+  </div>
+}

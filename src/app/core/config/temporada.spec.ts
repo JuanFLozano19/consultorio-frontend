@@ -52,3 +52,47 @@ describe('Día de Velitas', () => {
     expect(a?.icono).toBe('vela');
   });
 });
+
+describe('fechas especiales con hora', () => {
+  const h = (hh: number, mm = 0) => hh * 60 + mm;
+
+  it('la cuenta regresiva se escribe bonito', async () => {
+    const { faltaParaMedianoche } = await import('./temporada');
+    expect(faltaParaMedianoche(h(20, 40))).toBe('3 h 20 min');
+    expect(faltaParaMedianoche(h(23, 15))).toBe('45 min');
+    expect(faltaParaMedianoche(h(22))).toBe('2 h');
+    expect(faltaParaMedianoche(h(23, 59) + 0.5)).toBe('menos de 1 min');
+  });
+
+  it('el 24 es novena de día y Nochebuena desde las 6 p. m.', async () => {
+    const { escenaTemporada } = await import('./temporada');
+    expect(escenaTemporada(dia(2026, 12, 24), h(10))?.tipo).toBe('novena');
+    const e = escenaTemporada(dia(2026, 12, 24), h(21, 30));
+    expect(e?.tipo).toBe('nochebuena');
+    expect(avisoTemporada(dia(2026, 12, 24), h(21, 30))?.texto).toContain('2 h 30 min');
+  });
+
+  it('a la medianoche del 24 llega la Navidad', async () => {
+    const { escenaTemporada } = await import('./temporada');
+    expect(escenaTemporada(dia(2026, 12, 25), 0)?.tipo).toBe('navidad');
+  });
+
+  it('el 31 es noche vieja con cuenta regresiva al año siguiente', async () => {
+    const { escenaTemporada } = await import('./temporada');
+    const e = escenaTemporada(dia(2026, 12, 31), h(23, 50));
+    expect(e).toEqual({ tipo: 'nochevieja', faltan: '10 min', anio: 2027 });
+    expect(avisoTemporada(dia(2026, 12, 31), h(23, 50))?.texto).toContain('para 2027');
+  });
+
+  it('el 1 de enero es año nuevo y el 2 ya no hay escena', async () => {
+    const { escenaTemporada } = await import('./temporada');
+    expect(escenaTemporada(dia(2027, 1, 1), 1)).toEqual({ tipo: 'anonuevo', anio: 2027 });
+    expect(escenaTemporada(dia(2027, 1, 2), 1)).toBeNull();
+  });
+
+  it('la novena enciende una estrella por día', async () => {
+    const { escenaTemporada } = await import('./temporada');
+    expect(escenaTemporada(dia(2026, 12, 16))).toMatchObject({ tipo: 'novena', dia: 1 });
+    expect(escenaTemporada(dia(2026, 12, 20))).toMatchObject({ tipo: 'novena', dia: 5 });
+  });
+});

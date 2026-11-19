@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { instagramHref, whatsappHref } from '../../../../core/config/site.config';
-import { avisoTemporada, hoyTemporada } from '../../../../core/config/temporada';
+import { RelojTemporada } from '../../../../core/reloj-temporada';
 
 const LLAVE = 'aviso-temporada-cerrado';
 
@@ -25,6 +25,33 @@ const LLAVE = 'aviso-temporada-cerrado';
                 d="M12 2c2.2 2.6 2.6 4.6 0 7.2C9.4 6.6 9.8 4.6 12 2z"
                 fill="#ffd23f"
               />
+            </svg>
+          } @else if (a.icono === 'regalo') {
+            <svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <rect x="4" y="10" width="16" height="11" rx="2" fill="#e2774a" />
+              <rect x="3" y="7" width="18" height="4" rx="1.5" fill="#f0b893" />
+              <rect x="11" y="7" width="2" height="14" fill="#ffd23f" />
+              <path d="M12 7c-2-4-5-3-4-1s4 1 4 1zm0 0c2-4 5-3 4-1s-4 1-4 1z" fill="#ffd23f" />
+            </svg>
+          } @else if (a.icono === 'uvas') {
+            <svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <g fill="#b48ad8">
+                <circle cx="9" cy="9" r="3" />
+                <circle cx="15" cy="9" r="3" />
+                <circle cx="12" cy="13" r="3" />
+                <circle cx="8" cy="15" r="3" />
+                <circle cx="16" cy="15" r="3" />
+                <circle cx="12" cy="19" r="3" />
+              </g>
+              <path d="M12 6V2" stroke="#8fd3c8" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          } @else if (a.icono === 'confeti') {
+            <svg class="ico" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+              <path d="M3 21l5-14 9 9z" fill="#ffd23f" />
+              <circle cx="16" cy="5" r="1.6" fill="#e2774a" />
+              <circle cx="20" cy="10" r="1.6" fill="#8fd3c8" />
+              <circle cx="12" cy="3" r="1.2" fill="#f6efe4" />
+              <circle cx="21" cy="4" r="1.2" fill="#f0b893" />
             </svg>
           } @else {
             <svg class="estrella" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -191,9 +218,10 @@ export class Temporada {
   protected readonly luces = [...Array(18)].map(
     (_, i) => ['#ffd23f', '#e2774a', '#f6efe4', '#8fd3c8'][i % 4],
   );
+  private readonly reloj = inject(RelojTemporada);
   private readonly cerrado = signal(leer());
   protected readonly aviso = computed(() => {
-    const a = avisoTemporada(hoyTemporada());
+    const a = this.reloj.aviso();
     return a && a.clave !== this.cerrado() ? a : null;
   });
 

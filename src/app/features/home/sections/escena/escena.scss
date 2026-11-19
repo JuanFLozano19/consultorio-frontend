@@ -1,0 +1,251 @@
+:host {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 18px;
+  z-index: 1;
+  pointer-events: none;
+}
+.escena {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-inline: 16px;
+}
+.fila {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 0 clamp(14px, 3vw, 34px);
+}
+.texto {
+  margin: 12px 0 0;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  b {
+    color: var(--slate-ink);
+    font-weight: 500;
+  }
+}
+.cuenta {
+  margin: 12px 0 0;
+  font-size: 18px;
+  color: var(--slate-ink);
+  b {
+    font-family: var(--display);
+    font-size: 30px;
+    color: var(--clay);
+    font-variant-numeric: tabular-nums;
+  }
+}
+.grande {
+  margin: 10px 0 0;
+  font-family: var(--display);
+  font-size: clamp(34px, 5vw, 48px);
+  line-height: 1;
+  color: var(--slate-ink);
+  em {
+    font-style: italic;
+    color: var(--clay);
+  }
+}
+
+/* ----- Velitas ----- */
+.velita {
+  position: relative;
+  width: 14px;
+  height: var(--alto);
+  border-radius: 4px 4px 2px 2px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--cera) 75%, #000) 0,
+    var(--cera) 40%,
+    var(--cera) 70%,
+    color-mix(in srgb, var(--cera) 85%, #000)
+  );
+  box-shadow: 0 6px 10px -6px rgba(0, 0, 0, 0.4);
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -26px;
+    width: 64px;
+    height: 64px;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 210, 63, 0.45), transparent 65%);
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -6px;
+    width: 2px;
+    height: 7px;
+    translate: -50% 0;
+    background: #3a2a20;
+  }
+}
+.llama {
+  position: absolute;
+  left: 50%;
+  top: -27px;
+  width: 11px;
+  height: 22px;
+  translate: -50% 0;
+  border-radius: 50% 50% 45% 45% / 62% 62% 38% 38%;
+  background: radial-gradient(ellipse at 50% 72%, #fff7d1 0 22%, #ffd23f 45%, #e2774a 85%);
+  transform-origin: 50% 90%;
+}
+
+/* ----- Estrellas de la novena ----- */
+.fila--estrellas {
+  gap: clamp(8px, 2vw, 20px);
+}
+.estrella {
+  width: clamp(24px, 4vw, 34px);
+  height: auto;
+  fill: color-mix(in srgb, var(--muted) 30%, transparent);
+  transition: fill 0.4s ease;
+  &.on {
+    fill: #ffd23f;
+    filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.7));
+  }
+  &.hoy {
+    fill: #e2774a;
+    filter: drop-shadow(0 0 10px rgba(226, 119, 74, 0.8));
+  }
+}
+
+/* ----- Regalos ----- */
+.fila--regalos {
+  flex-wrap: nowrap;
+  gap: 0 clamp(8px, 2.5vw, 26px);
+  padding-top: 24px;
+}
+.regalo {
+  position: relative;
+  width: var(--tam);
+  height: calc(var(--tam) * 0.8);
+  border-radius: 6px;
+  rotate: var(--giro);
+  background:
+    linear-gradient(90deg, transparent 42%, var(--cinta) 42% 58%, transparent 58%), var(--caja);
+  box-shadow: 0 8px 14px -8px rgba(0, 0, 0, 0.45);
+  &::before {
+    /* tapa */
+    content: '';
+    position: absolute;
+    left: -4px;
+    right: -4px;
+    top: -10px;
+    height: 12px;
+    border-radius: 4px;
+    background:
+      linear-gradient(90deg, transparent 42%, var(--cinta) 42% 58%, transparent 58%),
+      color-mix(in srgb, var(--caja) 85%, #fff);
+  }
+  &::after {
+    /* moño */
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: -22px;
+    width: 22px;
+    height: 14px;
+    translate: -50% 0;
+    border: 4px solid var(--cinta);
+    border-radius: 50% 50% 10% 10%;
+    border-bottom: 0;
+  }
+}
+
+/* ----- 12 uvas ----- */
+.fila--uvas {
+  gap: clamp(6px, 1.6vw, 14px);
+}
+.uva {
+  width: clamp(18px, 2.6vw, 26px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #c9a3e6 0 12%, #7b4fa0 55%, #4f2f6e);
+  box-shadow: 0 4px 8px -4px rgba(0, 0, 0, 0.5);
+}
+
+/* ----- Confeti de año nuevo ----- */
+.confeti {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -18px;
+  height: min(100vh, 900px);
+  overflow: hidden;
+  i {
+    position: absolute;
+    top: -20px;
+    width: 9px;
+    height: 14px;
+    border-radius: 2px;
+    opacity: 0.85;
+    rotate: var(--giro);
+  }
+}
+
+@keyframes titila {
+  0% {
+    transform: scale(1, 1) rotate(-2deg);
+  }
+  50% {
+    transform: scale(0.9, 1.1) rotate(2deg);
+  }
+  100% {
+    transform: scale(1.05, 0.94) rotate(-1deg);
+  }
+}
+@keyframes brilla {
+  50% {
+    transform: scale(1.18);
+  }
+}
+@keyframes salta {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+}
+@keyframes cae {
+  to {
+    transform: translateY(calc(min(100vh, 900px) + 40px)) rotate(540deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .llama {
+    animation: titila var(--ritmo) ease-in-out infinite alternate;
+  }
+  .velita::before {
+    animation: titila calc(var(--ritmo) * 1.6) ease-in-out infinite alternate;
+  }
+  .estrella.hoy {
+    animation: brilla 1.6s ease-in-out infinite;
+  }
+  .regalo,
+  .uva {
+    animation: salta 2.4s ease-in-out infinite;
+    animation-delay: calc(var(--k) * 0.18s);
+  }
+  .confeti i {
+    animation: cae var(--dur) linear var(--ret) infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .confeti {
+    display: none;
+  }
+}
