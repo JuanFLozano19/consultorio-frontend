@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { whatsappHref } from '../../../../core/config/site.config';
 import { Reveal } from '../../../../shared/directives/reveal';
+import { ScrollProgreso } from '../../../../shared/directives/scroll-progreso';
 
 @Component({
   selector: 'app-pasos',
-  imports: [Reveal],
+  imports: [Reveal, ScrollProgreso],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="primera-consulta" class="band pasos" aria-labelledby="pasos-titulo">
@@ -14,9 +15,9 @@ import { Reveal } from '../../../../shared/directives/reveal';
           <h2 id="pasos-titulo">Así de <em>fácil</em></h2>
           <p>Cuatro pasos, sin filas ni enredos.</p>
         </div>
-        <ol class="lista">
+        <ol class="lista" appScrollProgreso [desde]="0.8" [hasta]="0.55">
           @for (p of pasos; track p.titulo; let i = $index) {
-            <li class="paso" [appReveal]="i * 140">
+            <li class="paso" [appReveal]="i * 140" [style.--n]="i">
               <span class="paso__num" aria-hidden="true">{{ i + 1 }}</span>
               <h3>{{ p.titulo }}</h3>
               <p>{{ p.texto }}</p>
@@ -75,7 +76,25 @@ import { Reveal } from '../../../../shared/directives/reveal';
         transparent 8px 16px
       );
     }
+    /* Línea que se va dibujando con el scroll (--p la pone appScrollProgreso) */
+    .lista::after {
+      content: '';
+      position: absolute;
+      top: 31px;
+      left: 32px;
+      right: calc((100% - 78px) / 4 - 32px);
+      height: 3px;
+      border-radius: 3px;
+      background: var(--acento);
+      transform-origin: left;
+      transform: scaleX(var(--p, 1));
+    }
+    .lista {
+      --acento: color-mix(in srgb, var(--clay) 75%, var(--pf));
+    }
     .paso {
+      /* 0 → 1 cuando la línea llega a este paso */
+      --on: clamp(0, (var(--p, 1) * 3 - var(--n, 0)) * 4 + 1, 1);
       position: relative;
       display: flex;
       flex-direction: column;
@@ -89,11 +108,19 @@ import { Reveal } from '../../../../shared/directives/reveal';
       place-items: center;
       font-family: var(--display);
       font-size: 32px;
-      background: var(--pf);
-      color: var(--slate-ink);
-      box-shadow: 0 0 0 8px var(--slate-ink);
+      background: color-mix(in srgb, var(--acento) calc(var(--on) * 100%), var(--pf));
+      color: color-mix(in srgb, var(--pf) calc(var(--on) * 100%), var(--slate-ink));
+      box-shadow:
+        0 0 0 8px var(--slate-ink),
+        0 0 0 calc(8px + var(--on) * 6px) color-mix(in srgb, var(--acento) 35%, transparent);
       position: relative;
+      z-index: 1;
+      transform: scale(calc(0.86 + var(--on) * 0.14));
       transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .paso h3,
+    .paso p {
+      opacity: calc(0.5 + var(--on) * 0.5);
     }
     .paso:hover .paso__num {
       transform: scale(1.1) rotate(-6deg);
@@ -103,7 +130,6 @@ import { Reveal } from '../../../../shared/directives/reveal';
       margin-top: 8px;
     }
     .paso p {
-      opacity: 0.85;
       font-size: 16px;
     }
     .acciones {
@@ -128,7 +154,8 @@ import { Reveal } from '../../../../shared/directives/reveal';
       .lista {
         grid-template-columns: 1fr 1fr;
       }
-      .lista::before {
+      .lista::before,
+      .lista::after {
         display: none;
       }
     }
@@ -144,6 +171,30 @@ import { Reveal } from '../../../../shared/directives/reveal';
       }
       .paso__num {
         grid-row: span 2;
+      }
+      /* En celular la línea baja en vertical entre los números */
+      .lista::before,
+      .lista::after {
+        display: block;
+        top: 32px;
+        bottom: 60px;
+        left: 31px;
+        right: auto;
+        width: 3px;
+        height: auto;
+      }
+      .lista::before {
+        width: 1.5px;
+        left: 32px;
+        background: repeating-linear-gradient(
+          180deg,
+          color-mix(in srgb, var(--pf) 45%, transparent) 0 8px,
+          transparent 8px 16px
+        );
+      }
+      .lista::after {
+        transform-origin: top;
+        transform: scaleY(var(--p, 1));
       }
       h3 {
         margin-top: 4px;

@@ -24,7 +24,7 @@ import { Reveal } from '../../../../shared/directives/reveal';
         <div class="wrap mosaico">
           @for (f of fotos; track f; let i = $index) {
             <a
-              class="mosaico__item"
+              class="mosaico__item reveal--foto"
               [href]="href"
               target="_blank"
               rel="noopener"

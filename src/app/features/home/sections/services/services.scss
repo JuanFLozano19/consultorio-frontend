@@ -129,3 +129,16 @@ p {
     margin-bottom: 36px;
   }
 }
+
+/* En celular las tarjetas se apilan una sobre otra al bajar */
+@media (max-width: 560px) and (prefers-reduced-motion: no-preference) {
+  .services {
+    gap: 18px;
+    padding-bottom: 8px;
+  }
+  .svc {
+    position: sticky;
+    top: calc(84px + var(--n, 0) * 14px);
+    box-shadow: 0 -12px 30px -18px rgba(20, 40, 46, 0.35);
+  }
+}

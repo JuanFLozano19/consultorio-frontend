@@ -87,3 +87,11 @@ dd {
     grid-template-columns: 1fr;
   }
 }
+
+/* La foto se desplaza un poco más lento que la página (--p lo pone appScrollProgreso) */
+@media (prefers-reduced-motion: no-preference) {
+  .foto-marco .photo {
+    scale: 1.08;
+    translate: 0 calc((var(--p, 0.5) - 0.5) * -36px);
+  }
+}

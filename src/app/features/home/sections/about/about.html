@@ -1,7 +1,7 @@
 <section id="sobre-mi" class="band">
   <div class="wrap about">
     @if (doctor.photo) {
-      <div appReveal class="reveal--foto foto-marco">
+      <div appReveal appScrollProgreso [desde]="1" [hasta]="0" class="reveal--foto foto-marco">
         <img
           class="photo"
           [src]="doctor.photo"

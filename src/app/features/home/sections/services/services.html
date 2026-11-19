@@ -13,7 +13,7 @@
     </div>
     <div class="services">
       @for (s of servicios(); track s.id; let i = $index) {
-        <article class="svc" [appReveal]="i * 90" (pointermove)="luz($event)">
+        <article class="svc" [appReveal]="i * 90" [style.--n]="i" (pointermove)="luz($event)">
           <span class="svc__num" aria-hidden="true">0{{ i + 1 }}</span>
           <span class="svc__icon"><app-icon [name]="s.icono" [size]="34" /></span>
           <h3>{{ s.nombre }}</h3>

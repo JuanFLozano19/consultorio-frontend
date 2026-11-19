@@ -20,4 +20,20 @@
       }
     </ul>
   </div>
+  <div class="wrap cifras" appReveal>
+    <p class="cifras__t">Lo que recomienda la OMS</p>
+    <ul class="cifras__lista">
+      @for (c of cifras; track c.texto) {
+        <li>
+          <p class="cifras__n">
+            <span class="sr-only">{{ c.n }}</span
+            ><span aria-hidden="true" [appContar]="c.n">{{ c.n }}</span>
+            <small>{{ c.unidad }}</small>
+          </p>
+          <p>{{ c.texto }}</p>
+        </li>
+      }
+    </ul>
+    <p class="cifras__fuente">Fuente: Organización Mundial de la Salud.</p>
+  </div>
 </section>

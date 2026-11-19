@@ -187,3 +187,20 @@ h1 {
     clip-path: inset(0 0 0 0);
   }
 }
+
+/* Parallax suave al bajar: la foto va más lenta y las tarjetas más rápido (--sy lo pone appScrollProgreso) */
+@media (prefers-reduced-motion: no-preference) {
+  .arco__foto,
+  .arco__fondo {
+    translate: 0 calc(min(var(--sy, 0), 900) * 0.09px);
+  }
+  .flota--1 {
+    translate: 0 calc(min(var(--sy, 0), 900) * -0.12px);
+  }
+  .flota--2 {
+    translate: 0 calc(min(var(--sy, 0), 900) * -0.06px);
+  }
+  .sello {
+    translate: 0 calc(min(var(--sy, 0), 900) * -0.04px);
+  }
+}
