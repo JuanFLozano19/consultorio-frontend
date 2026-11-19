@@ -8,8 +8,10 @@ describe('avisoTemporada', () => {
     expect(avisoTemporada(dia(2027, 1, 7))).toBeNull();
   });
 
-  it('antes de la novena invita a seguirla', () => {
-    expect(avisoTemporada(dia(2026, 12, 1))?.etiqueta).toBe('Novena de la salud');
+  it('antes de la novena no hay aviso (salvo el Día de Velitas)', () => {
+    expect(avisoTemporada(dia(2026, 11, 20))).toBeNull();
+    expect(avisoTemporada(dia(2026, 12, 15))).toBeNull();
+    expect(avisoTemporada(dia(2026, 12, 16))?.etiqueta).toContain('Día 1');
   });
 
   it('durante la novena muestra el consejo del día', () => {

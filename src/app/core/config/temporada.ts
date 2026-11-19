@@ -159,12 +159,8 @@ export function avisoTemporada(hoy: Date, minutos = 0): AvisoTemporada | null {
       accion: { texto: 'Agenda por WhatsApp', destino: 'whatsapp' },
     };
   }
-  return {
-    clave: `previa-${a}`,
-    etiqueta: 'Novena de la salud',
-    texto: 'Del 16 al 24 de diciembre, un consejo de salud cada día.',
-    accion: insta,
-  };
+  // Antes del 16 de diciembre no se anuncia la novena: el aviso aparece cuando empieza.
+  return null;
 }
 
 /**
