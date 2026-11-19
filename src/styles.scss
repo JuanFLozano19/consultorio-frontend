@@ -338,3 +338,13 @@ details[open]::details-content {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Temporada: más espacio arriba en las secciones con esferas colgando */
+section:has(> app-adornos) {
+  padding-top: 140px;
+}
+@media (max-width: 700px) {
+  section:has(> app-adornos) {
+    padding-top: 112px;
+  }
+}

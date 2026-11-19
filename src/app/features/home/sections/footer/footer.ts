@@ -1,3 +1,6 @@
+import { Adornos } from '../../../../shared/components/adornos/adornos';
+import { Destellos } from '../../../../shared/components/destellos/destellos';
+import { hoyTemporada, temporadaActiva } from '../../../../core/config/temporada';
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
@@ -13,7 +16,7 @@ import { Logo } from '../../../../shared/components/logo/logo';
 
 @Component({
   selector: 'app-footer',
-  imports: [Logo, RouterLink, Icon],
+  imports: [Logo, RouterLink, Icon, Adornos, Destellos],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './footer.html',
   styleUrl: './footer.scss',
@@ -53,6 +56,7 @@ export class Footer {
   protected readonly instagram = SITE.contact.instagram;
   protected readonly instagramHref = instagramHref();
   protected readonly wa = whatsappHref();
+  protected readonly navidad = temporadaActiva(hoyTemporada());
   protected readonly waTexto = whatsappDisplay();
   protected readonly maps = mapsHref();
   protected readonly horario = tablaHorario();

@@ -1,3 +1,4 @@
+import { Adornos } from '../../../../shared/components/adornos/adornos';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,10 +14,13 @@ import { Reveal } from '../../../../shared/directives/reveal';
 /** Videos cortos (Reels) por categoría; se reproducen al tocarlos, uno a la vez. */
 @Component({
   selector: 'app-videos',
-  imports: [Reveal],
+  imports: [Reveal, Adornos],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <section id="videos" class="band" aria-labelledby="videos-titulo">
+    <section id="videos" class="band videos" aria-labelledby="videos-titulo">
+      @if (navidad) {
+        <app-adornos [cantidad]="9" />
+      }
       <div class="wrap">
         <div class="cab">
           <div class="section-head" appReveal>
@@ -76,6 +80,9 @@ import { Reveal } from '../../../../shared/directives/reveal';
     </section>
   `,
   styles: `
+    .videos {
+      position: relative;
+    }
     h2 em {
       font-style: italic;
       color: var(--clay);
@@ -206,7 +213,8 @@ import { Reveal } from '../../../../shared/directives/reveal';
 })
 export class Videos {
   private readonly pista = viewChild.required<ElementRef<HTMLElement>>('pista');
-  protected readonly categorias = categoriasVisibles(temporadaActiva(hoyTemporada()));
+  protected readonly navidad = temporadaActiva(hoyTemporada());
+  protected readonly categorias = categoriasVisibles(this.navidad);
   protected readonly activa = signal<CategoriaVideo>(this.categorias[0].id);
   protected readonly lista = computed(() => VIDEOS.filter((v) => v.categoria === this.activa()));
 

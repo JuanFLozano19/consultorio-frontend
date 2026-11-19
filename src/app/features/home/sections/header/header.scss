@@ -222,3 +222,18 @@
     display: block;
   }
 }
+
+/* Temporada: gorrito navideño sobre el logo */
+.brand__logo {
+  position: relative;
+  display: inline-flex;
+}
+.gorrito {
+  position: absolute;
+  width: 34px;
+  left: 7px;
+  top: -14px;
+  rotate: -14deg;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
+}

@@ -1,3 +1,4 @@
+import { Ramas } from '../../../../shared/components/ramas/ramas';
 import { ScrollProgreso } from '../../../../shared/directives/scroll-progreso';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { SITE } from '../../../../core/config/site.config';
@@ -10,7 +11,7 @@ import { EscenaTemporada } from '../escena/escena';
 
 @Component({
   selector: 'app-hero',
-  imports: [Logo, Estado, ScrollProgreso, Guirnalda, EscenaTemporada],
+  imports: [Logo, Estado, ScrollProgreso, Guirnalda, EscenaTemporada, Ramas],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './hero.html',
   styleUrl: './hero.scss',

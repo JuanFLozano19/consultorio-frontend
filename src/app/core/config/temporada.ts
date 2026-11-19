@@ -3,6 +3,8 @@
  * Todo cambia solo según la fecha y la hora de Bogotá. Para otra temporada basta con
  * cambiar las fechas y los textos de este archivo.
  *
+ * La decoración va del 1 de diciembre al 6 de enero.
+ *
  * Fechas especiales:
  * - 7 dic: noche de velitas.
  * - 16–24 dic: novena (un consejo por día; estrellas que se van encendiendo).
@@ -33,7 +35,7 @@ export type Escena =
 
 /** [año, mes (1-12), día] */
 type Dia = [number, number, number];
-const INICIO: Dia = [2026, 11, 18];
+const INICIO: Dia = [2026, 12, 1];
 const FIN: Dia = [2027, 1, 6];
 /** Hora (en minutos) desde la que el 24 se vuelve «Nochebuena». */
 const NOCHEBUENA = 18 * 60;

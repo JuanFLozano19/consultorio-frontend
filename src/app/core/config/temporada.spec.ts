@@ -4,12 +4,12 @@ const dia = (a: number, m: number, d: number) => new Date(a, m - 1, d);
 
 describe('avisoTemporada', () => {
   it('no se muestra fuera de la temporada', () => {
-    expect(avisoTemporada(dia(2026, 11, 17))).toBeNull();
+    expect(avisoTemporada(dia(2026, 11, 30))).toBeNull();
     expect(avisoTemporada(dia(2027, 1, 7))).toBeNull();
   });
 
   it('antes de la novena no hay aviso (salvo el Día de Velitas)', () => {
-    expect(avisoTemporada(dia(2026, 11, 20))).toBeNull();
+    expect(avisoTemporada(dia(2026, 12, 2))).toBeNull();
     expect(avisoTemporada(dia(2026, 12, 15))).toBeNull();
     expect(avisoTemporada(dia(2026, 12, 16))?.etiqueta).toContain('Día 1');
   });
@@ -37,9 +37,9 @@ describe('avisoTemporada', () => {
 });
 
 describe('temporadaActiva', () => {
-  it('solo entre el 18 de noviembre y el 6 de enero', () => {
-    expect(temporadaActiva(dia(2026, 11, 17))).toBe(false);
-    expect(temporadaActiva(dia(2026, 11, 18))).toBe(true);
+  it('solo entre el 1 de diciembre y el 6 de enero', () => {
+    expect(temporadaActiva(dia(2026, 11, 30))).toBe(false);
+    expect(temporadaActiva(dia(2026, 12, 1))).toBe(true);
     expect(temporadaActiva(dia(2027, 1, 6))).toBe(true);
     expect(temporadaActiva(dia(2027, 1, 7))).toBe(false);
   });

@@ -5,6 +5,8 @@
   [class.hero--escena]="hayEscena()"
 >
   @if (navidad) {
+    <app-ramas />
+    <app-ramas lado="derecha" />
     <div class="destellos" aria-hidden="true">
       @for (d of destellos; track $index) {
         <svg

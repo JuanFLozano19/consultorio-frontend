@@ -1,5 +1,9 @@
 <!-- Franja de llamado a la acción -->
 <section class="cta" aria-labelledby="cta-titulo">
+  @if (navidad) {
+    <app-destellos [cantidad]="14" />
+    <app-adornos class="cta__adornos" [cantidad]="9" />
+  }
   <div class="wrap cta__inner">
     <div>
       <p class="cta__eyebrow">

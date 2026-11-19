@@ -10,7 +10,23 @@
       [attr.aria-label]="doctor.name + ', inicio'"
       (click)="menuAbierto.set(false)"
     >
-      <app-logo [size]="44" class="brand__mark" />
+      <span class="brand__logo">
+        <app-logo [size]="44" class="brand__mark" />
+        @if (navidad) {
+          <svg class="gorrito" viewBox="0 0 60 48" aria-hidden="true">
+            <path d="M6 38 C 14 14 34 4 50 14 C 44 20 42 28 44 38 Z" fill="#c0533a" />
+            <path
+              d="M50 14 C 56 18 58 26 54 30"
+              stroke="#c0533a"
+              stroke-width="7"
+              fill="none"
+              stroke-linecap="round"
+            />
+            <circle cx="54" cy="31" r="6" fill="#f6efe4" />
+            <rect x="2" y="34" width="46" height="11" rx="5.5" fill="#f6efe4" />
+          </svg>
+        }
+      </span>
       <span>
         <span class="brand__name">{{ doctor.name }}</span>
         <span class="brand__sub">{{ doctor.title.toUpperCase() }}</span>

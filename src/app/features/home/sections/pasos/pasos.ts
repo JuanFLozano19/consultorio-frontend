@@ -1,3 +1,5 @@
+import { Adornos } from '../../../../shared/components/adornos/adornos';
+import { hoyTemporada, temporadaActiva } from '../../../../core/config/temporada';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { whatsappHref } from '../../../../core/config/site.config';
 import { Reveal } from '../../../../shared/directives/reveal';
@@ -5,10 +7,13 @@ import { ScrollProgreso } from '../../../../shared/directives/scroll-progreso';
 
 @Component({
   selector: 'app-pasos',
-  imports: [Reveal, ScrollProgreso],
+  imports: [Reveal, ScrollProgreso, Adornos],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <section id="primera-consulta" class="band pasos" aria-labelledby="pasos-titulo">
+      @if (navidad) {
+        <app-adornos [cantidad]="11" />
+      }
       <div class="wrap">
         <div class="section-head" appReveal>
           <p class="eyebrow">Tu primera consulta</p>
@@ -35,6 +40,7 @@ import { ScrollProgreso } from '../../../../shared/directives/scroll-progreso';
   `,
   styles: `
     .pasos {
+      position: relative;
       --pf: var(--on-slate);
       background: var(--slate-ink);
       color: var(--pf);
@@ -204,6 +210,7 @@ import { ScrollProgreso } from '../../../../shared/directives/scroll-progreso';
 })
 export class Pasos {
   protected readonly wa = whatsappHref();
+  protected readonly navidad = temporadaActiva(hoyTemporada());
   protected readonly pasos = [
     {
       titulo: 'Escríbenos',
