@@ -1,4 +1,20 @@
-<section id="inicio" class="hero">
+<section id="inicio" class="hero" [class.hero--navidad]="navidad">
+  @if (navidad) {
+    <div class="destellos" aria-hidden="true">
+      @for (d of destellos; track $index) {
+        <svg
+          viewBox="0 0 24 24"
+          [style.left.%]="d.x"
+          [style.width.px]="d.s"
+          [style.--dur.s]="d.d"
+          [style.--ret.s]="d.r"
+          [style.color]="d.c"
+        >
+          <path d="M12 0l2.6 9.4L24 12l-9.4 2.6L12 24l-2.6-9.4L0 12l9.4-2.6z" fill="currentColor" />
+        </svg>
+      }
+    </div>
+  }
   <div class="wrap">
     <div class="hero__grid">
       <div>
@@ -25,6 +41,9 @@
       <div class="hero__art entrada entrada--3" appScrollProgreso>
         <div class="arco">
           <span class="arco__fondo" aria-hidden="true"></span>
+          @if (navidad) {
+            <app-guirnalda class="arco__luces" forma="arco" [cantidad]="15" />
+          }
           <img
             class="arco__foto"
             src="images/dr-jeison-hero.webp"

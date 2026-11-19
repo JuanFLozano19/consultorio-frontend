@@ -1,4 +1,8 @@
 <header class="header" [class.header--compacto]="compacto()" [class.header--menu]="menuAbierto()">
+  @if (navidad) {
+    <app-guirnalda class="header__luces header__luces--ancho" [cantidad]="28" />
+    <app-guirnalda class="header__luces header__luces--movil" [cantidad]="11" />
+  }
   <div class="wrap nav">
     <a
       class="brand"

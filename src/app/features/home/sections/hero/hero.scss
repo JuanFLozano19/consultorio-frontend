@@ -204,3 +204,50 @@ h1 {
     translate: 0 calc(min(var(--sy, 0), 900) * -0.04px);
   }
 }
+
+/* ----- Temporada navideña ----- */
+.hero--navidad {
+  position: relative;
+  overflow: hidden;
+  > .wrap {
+    position: relative;
+    z-index: 1;
+  }
+}
+.destellos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  svg {
+    position: absolute;
+    top: -30px;
+    opacity: 0.55;
+    height: auto;
+  }
+}
+@keyframes caer {
+  from {
+    transform: translateY(0) rotate(0deg);
+  }
+  to {
+    transform: translateY(110vh) rotate(220deg);
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .destellos svg {
+    animation: caer var(--dur) linear var(--ret) infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .destellos svg {
+    top: calc(var(--ret) * -4%);
+  }
+}
+.arco__luces {
+  position: absolute;
+  z-index: 2;
+  left: -2.6%;
+  right: -2.6%;
+  top: -3%;
+  aspect-ratio: 400 / 210;
+}

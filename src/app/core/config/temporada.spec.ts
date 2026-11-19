@@ -1,4 +1,4 @@
-import { NOVENA, avisoTemporada } from './temporada';
+import { NOVENA, avisoTemporada, temporadaActiva } from './temporada';
 
 const dia = (a: number, m: number, d: number) => new Date(a, m - 1, d);
 
@@ -31,5 +31,14 @@ describe('avisoTemporada', () => {
     expect(avisoTemporada(dia(2026, 12, 16))?.clave).not.toBe(
       avisoTemporada(dia(2026, 12, 17))?.clave,
     );
+  });
+});
+
+describe('temporadaActiva', () => {
+  it('solo entre el 18 de noviembre y el 6 de enero', () => {
+    expect(temporadaActiva(dia(2026, 11, 17))).toBe(false);
+    expect(temporadaActiva(dia(2026, 11, 18))).toBe(true);
+    expect(temporadaActiva(dia(2027, 1, 6))).toBe(true);
+    expect(temporadaActiva(dia(2027, 1, 7))).toBe(false);
   });
 });

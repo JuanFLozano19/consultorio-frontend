@@ -196,3 +196,29 @@
     display: block;
   }
 }
+
+/* Temporada: guirnalda colgando del borde inferior del menú */
+.header__luces {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -20px;
+  height: 26px;
+}
+@media (max-width: 560px) {
+  .header__luces {
+    bottom: -18px;
+    height: 22px;
+  }
+}
+.header__luces--movil {
+  display: none;
+}
+@media (max-width: 700px) {
+  .header__luces--ancho {
+    display: none;
+  }
+  .header__luces--movil {
+    display: block;
+  }
+}

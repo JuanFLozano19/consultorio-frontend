@@ -31,6 +31,12 @@ export const NOVENA = [
 
 const num = ([a, m, d]: Dia) => a * 10000 + m * 100 + d;
 
+/** true entre INICIO y FIN (decoración navideña de la página). */
+export function temporadaActiva(hoy: Date): boolean {
+  const n = num([hoy.getFullYear(), hoy.getMonth() + 1, hoy.getDate()]);
+  return n >= num(INICIO) && n <= num(FIN);
+}
+
 export function avisoTemporada(hoy: Date): AvisoTemporada | null {
   const dia: Dia = [hoy.getFullYear(), hoy.getMonth() + 1, hoy.getDate()];
   const n = num(dia);

@@ -8,10 +8,13 @@ import {
 } from '@angular/core';
 import { SITE } from '../../../../core/config/site.config';
 import { Logo } from '../../../../shared/components/logo/logo';
+import { Guirnalda } from '../../../../shared/components/guirnalda/guirnalda';
+import { ahoraEnBogota } from '../../../../core/config/horario';
+import { temporadaActiva } from '../../../../core/config/temporada';
 
 @Component({
   selector: 'app-header',
-  imports: [Logo],
+  imports: [Logo, Guirnalda],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './header.html',
   styleUrl: './header.scss',
@@ -22,6 +25,7 @@ import { Logo } from '../../../../shared/components/logo/logo';
 })
 export class Header {
   protected readonly doctor = SITE.doctor;
+  protected readonly navidad = temporadaActiva(ahoraEnBogota().hoy);
   protected readonly links = [
     { href: '#servicios', label: 'Servicios' },
     { href: '#actividad', label: 'Actividad' },
