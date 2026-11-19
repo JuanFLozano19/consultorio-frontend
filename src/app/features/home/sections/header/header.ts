@@ -28,6 +28,7 @@ export class Header {
     { href: '#herramientas', label: 'Herramientas' },
     { href: '#galeria', label: 'Galería' },
     { href: '#sobre-mi', label: 'Sobre mí' },
+    { href: '#noticias', label: 'Noticias' },
     { href: '#ubicacion', label: 'Ubicación' },
   ];
 

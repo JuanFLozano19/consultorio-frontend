@@ -12,6 +12,8 @@ import { MitoDatoJuego } from './sections/mito-dato/mito-dato';
 import { Pasos } from './sections/pasos/pasos';
 import { Progreso } from '../../shared/components/progreso/progreso';
 import { Novedades } from './sections/novedades/novedades';
+import { Noticias } from './sections/noticias/noticias';
+import { Temporada } from './sections/temporada/temporada';
 import { Instagram } from './sections/instagram/instagram';
 import { Footer } from './sections/footer/footer';
 import { Header } from './sections/header/header';
@@ -37,6 +39,8 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
     Pasos,
     Progreso,
     Novedades,
+    Noticias,
+    Temporada,
     Booking,
     Faq,
     Instagram,
@@ -47,6 +51,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <app-progreso />
+    <app-temporada />
     <app-header />
     <main>
       <app-hero />
@@ -62,6 +67,7 @@ import { WhatsappFloat } from './sections/whatsapp-float/whatsapp-float';
       <app-preparar />
       <app-booking />
       <app-faq />
+      <app-noticias />
       <app-novedades />
       <app-instagram />
       <app-location />
