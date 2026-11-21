@@ -70,12 +70,23 @@
         "sameAs": ["https://www.instagram.com/dr.jeisonpatino/"]
       }
     </script>
+    <!-- La foto del inicio es lo más grande que se ve primero: se pide desde ya -->
+    <link
+      rel="preload"
+      as="image"
+      href="images/dr-jeison-hero.webp"
+      imagesrcset="images/dr-jeison-hero-420.webp 420w, images/dr-jeison-hero.webp 720w"
+      imagesizes="(max-width: 860px) 78vw, 420px"
+      fetchpriority="high"
+    />
   </head>
   <body>
     <script>
       try {
         var t = localStorage.getItem('tema');
         if (t === 'dark' || t === 'light') document.documentElement.dataset.theme = t;
+        if (localStorage.getItem('letra') === 'grande')
+          document.documentElement.classList.add('letra-grande');
       } catch (e) {}
       if (
         'IntersectionObserver' in window &&

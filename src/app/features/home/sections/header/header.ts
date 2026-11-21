@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  afterNextRender,
-  inject,
-  signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, afterNextRender, inject, signal } from '@angular/core';
 import { SITE } from '../../../../core/config/site.config';
 import { Logo } from '../../../../shared/components/logo/logo';
 import { Guirnalda } from '../../../../shared/components/guirnalda/guirnalda';
@@ -44,7 +37,6 @@ export class Header {
   protected readonly oscuro = signal(false);
 
   constructor() {
-    const destroyRef = inject(DestroyRef);
     afterNextRender(() => {
       const elegido = document.documentElement.dataset['theme'];
       this.oscuro.set(
@@ -53,29 +45,52 @@ export class Header {
           : (window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false),
       );
       this.alHacerScroll();
-      if (typeof IntersectionObserver === 'undefined') return;
-      const obs = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) if (e.isIntersecting) this.activo.set('#' + e.target.id);
-        },
-        { rootMargin: '-45% 0px -50% 0px' },
-      );
-      for (const l of this.links) {
-        const el = document.querySelector(l.href);
-        if (el) obs.observe(el);
-      }
-      const inicio = document.querySelector('#inicio');
-      if (inicio) obs.observe(inicio);
-      destroyRef.onDestroy(() => obs.disconnect());
     });
   }
 
+  private cuadro = 0;
+
   protected alHacerScroll(): void {
     this.compacto.set(window.scrollY > 24);
+    if (!this.cuadro) this.cuadro = requestAnimationFrame(() => this.marcarActivo());
+  }
+
+  /**
+   * Resalta el enlace de la sección que cruza la mitad de la pantalla. Se calcula al
+   * hacer scroll (y no con observadores fijos) porque varias secciones se cargan
+   * después, cuando la persona se acerca a ellas.
+   */
+  private marcarActivo(): void {
+    this.cuadro = 0;
+    const medio = window.innerHeight * 0.5;
+    let activo = '';
+    for (const l of this.links) {
+      const el = document.querySelector(l.href);
+      if (!el) continue;
+      const r = el.getBoundingClientRect();
+      if (r.top <= medio && r.bottom > medio) activo = l.href;
+    }
+    this.activo.set(activo);
   }
 
   protected alternarMenu(): void {
     this.menuAbierto.update((v) => !v);
+  }
+
+  /** Letra más grande para leer cómodo (se recuerda en este navegador). */
+  protected readonly letraGrande = signal(
+    typeof document !== 'undefined' && document.documentElement.classList.contains('letra-grande'),
+  );
+
+  protected alternarLetra(): void {
+    const grande = !this.letraGrande();
+    this.letraGrande.set(grande);
+    document.documentElement.classList.toggle('letra-grande', grande);
+    try {
+      localStorage.setItem('letra', grande ? 'grande' : 'normal');
+    } catch {
+      /* sin almacenamiento: dura hasta recargar */
+    }
   }
 
   /** Cambia entre modo claro y oscuro y lo recuerda en este navegador. */

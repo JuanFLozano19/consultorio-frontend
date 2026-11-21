@@ -237,3 +237,33 @@
   pointer-events: none;
   filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.15));
 }
+
+/* Botón de letra grande: en celular va dentro del menú */
+.letra[aria-pressed='true'] {
+  background: var(--slate-ink);
+  color: var(--on-slate);
+  border-color: var(--slate-ink);
+}
+@media (max-width: 860px) {
+  .letra {
+    display: none;
+  }
+}
+.movil__letra {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1.5px solid var(--line);
+  background: transparent;
+  color: var(--slate-ink);
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  &[aria-pressed='true'] {
+    background: var(--slate-ink);
+    color: var(--on-slate);
+  }
+}

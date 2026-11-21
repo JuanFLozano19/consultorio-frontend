@@ -348,3 +348,33 @@ section:has(> app-adornos) {
     padding-top: 112px;
   }
 }
+
+/* ----- Letra más grande (botón «A A» del menú) -----
+   Agranda toda la página como el zoom del navegador, para leer cómodo. */
+html.letra-grande {
+  zoom: 1.15;
+}
+@media (max-width: 860px) {
+  html.letra-grande {
+    zoom: 1.12;
+  }
+  html.letra-grande .brand__sub {
+    display: none;
+  }
+}
+@media (max-width: 380px) {
+  html.letra-grande .brand__name {
+    font-size: 18px;
+  }
+}
+
+/* Secciones que se cargan al acercarse: reservan su alto para que la página no salte */
+.diferido {
+  min-height: var(--h-m);
+  scroll-margin-top: 80px;
+}
+@media (min-width: 861px) {
+  .diferido {
+    min-height: var(--h-d);
+  }
+}

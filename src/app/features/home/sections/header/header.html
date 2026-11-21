@@ -7,7 +7,7 @@
     <a
       class="brand"
       href="#inicio"
-      [attr.aria-label]="doctor.name + ', inicio'"
+      [attr.aria-label]="doctor.name + ' ' + doctor.title + ', ir al inicio'"
       (click)="menuAbierto.set(false)"
     >
       <span class="brand__logo">
@@ -80,6 +80,37 @@
           </svg>
         }
       </button>
+      <button
+        type="button"
+        class="tema letra"
+        (click)="alternarLetra()"
+        [attr.aria-pressed]="letraGrande()"
+        [attr.aria-label]="letraGrande() ? 'Volver a la letra normal' : 'Agrandar la letra'"
+        [attr.title]="letraGrande() ? 'Letra normal' : 'Letra más grande'"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <text
+            x="2"
+            y="18"
+            font-size="13"
+            font-weight="600"
+            fill="currentColor"
+            font-family="inherit"
+          >
+            A
+          </text>
+          <text
+            x="11"
+            y="19"
+            font-size="18"
+            font-weight="600"
+            fill="currentColor"
+            font-family="inherit"
+          >
+            A
+          </text>
+        </svg>
+      </button>
       <a class="btn nav__cta" href="#reserva">Reservar cita</a>
       <button
         type="button"
@@ -104,6 +135,36 @@
           >{{ l.label }}</a
         >
       }
+      <button
+        type="button"
+        class="movil__letra"
+        (click)="alternarLetra()"
+        [attr.aria-pressed]="letraGrande()"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <text
+            x="2"
+            y="18"
+            font-size="13"
+            font-weight="600"
+            fill="currentColor"
+            font-family="inherit"
+          >
+            A
+          </text>
+          <text
+            x="11"
+            y="19"
+            font-size="18"
+            font-weight="600"
+            fill="currentColor"
+            font-family="inherit"
+          >
+            A
+          </text>
+        </svg>
+        {{ letraGrande() ? 'Volver a la letra normal' : 'Letra más grande' }}
+      </button>
       <a class="btn" href="#reserva" (click)="menuAbierto.set(false)">Reserva tu consulta</a>
     </div>
   </nav>

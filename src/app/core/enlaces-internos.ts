@@ -52,16 +52,28 @@ export function quitarHash(): void {
  * Si mientras bajaba cambió el alto de algo de arriba (imágenes que terminan de cargar,
  * animaciones), ajusta al final para que la sección quede justo debajo del menú.
  */
-function corregirAlTerminar(destino: HTMLElement): void {
+function corregirAlTerminar(destinoInicial: HTMLElement): void {
+  // Si la sección se estaba cargando, el elemento de reserva se reemplaza por el real:
+  // se vuelve a buscar por id en cada ajuste.
+  const actual = (): HTMLElement => document.getElementById(destinoInicial.id) ?? destinoInicial;
   let hecho = false;
   const ajustar = (): void => {
     if (hecho) return;
     hecho = true;
     window.removeEventListener('scrollend', ajustar);
+    const destino = actual();
     const margen = parseFloat(getComputedStyle(destino).scrollMarginTop) || 0;
     const delta = destino.getBoundingClientRect().top - margen;
     if (Math.abs(delta) > 6) window.scrollBy({ top: delta, behavior: 'auto' });
   };
   window.addEventListener('scrollend', ajustar, { once: true });
   setTimeout(ajustar, 1600);
+  // Las secciones que se cargan al acercarse pueden cambiar el alto un momento después:
+  // un segundo ajuste deja la sección en su sitio.
+  setTimeout(() => {
+    const destino = actual();
+    const margen = parseFloat(getComputedStyle(destino).scrollMarginTop) || 0;
+    const delta = destino.getBoundingClientRect().top - margen;
+    if (Math.abs(delta) > 6) window.scrollBy({ top: delta, behavior: 'auto' });
+  }, 2400);
 }

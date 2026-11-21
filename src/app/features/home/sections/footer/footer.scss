@@ -63,11 +63,12 @@
   }
 }
 .cta__wa {
-  background: #1fa855;
+  /* verde más oscuro para que el texto blanco se lea bien (contraste AA) */
+  background: #137a3d;
   color: #fff;
   padding: 16px 26px;
   &:hover {
-    background: #188a45;
+    background: #0f6632;
   }
 }
 
